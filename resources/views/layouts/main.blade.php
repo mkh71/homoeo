@@ -61,36 +61,33 @@
                                     </li>
                                     
                                     <li>
-                                        <a href="{{route('power.index')}}">
+                                        <a href="#">
                                             <i class="fas fa-user-injured"></i>
                                             <span>Power</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{route('does.index')}}">
+                                        <a href="#">
                                             <i class="fas fa-user-injured"></i>
                                             <span>Does</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{{route('madicine.index')}}">
+                                        <a href="#">
                                             <i class="fas fa-user-injured"></i>
                                             <span>Madicine</span>
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="accounts.html">
-                                            <i class="fas fa-file-invoice-dollar"></i>
-                                            <span>Accounts</span>
-                                        </a>
-                                    </li>
-
-                                    <li>
-                                        <a href="index.html">
-                                            <i class="fas fa-sign-out-alt"></i>
-                                            <span>Logout</span>
-                                        </a>
+                                        <a  href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                            document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
                                     </li>
                                 </ul>
                             </nav>
