@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Total Patient</h6>
-                                    <h3>1500</h3>
+                                    <h3>{{$totalPatient}}</h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
@@ -31,8 +31,8 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Today Patient</h6>
-                                    <h3>160</h3>
-                                    <p class="text-muted">06, Nov 2019</p>
+                                    <h3>{{$todayPatient}}</h3>
+                                    <p class="text-muted">{{now()->format('Y M d')}}</p>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Total Dues</h6>
-                                    <h3>$85</h3>
+                                    <h3>{{$totalDues}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -65,10 +65,10 @@
                 <!-- Appointment Tab -->
                 <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#upcoming-appointments" data-bs-toggle="tab">Patient List</a>
+                        <a class="nav-link @if(!isset($id))active @endif" href="#upcoming-appointments" data-bs-toggle="tab">Patient List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#today-appointments" data-bs-toggle="tab">Add Patient</a>
+                        <a class="nav-link @if(isset($id))active @endif" href="#today-appointments" data-bs-toggle="tab">Add Patient</a>
                     </li>
                     <li class="nav-item pull-right">
                         <input type="search" placeholder="Search Name/Serial/Mobile..."
@@ -80,7 +80,7 @@
                 <div class="tab-content">
 
                     <!-- Upcoming Appointment Tab -->
-                    <div class="tab-pane show active" id="upcoming-appointments">
+                    <div class="tab-pane show @if(!isset($id)) active @endif" id="upcoming-appointments">
                         <div class="card card-table mb-0">
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -96,20 +96,41 @@
                                             <th class="text-center">Dues</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>12345</td>
-                                            <td>
-                                                <h2 class="table-avatar">
-                                                    <a href="patient-profile.html">Richard Wilson</a>
-                                                </h2>
-                                            </td>
-                                            <td>20 Yr</td>
-                                            <td>01234567989</td>
-                                            <td>CTG</td>
-                                            <td>Complain</td>
-                                            <td class="text-center">500/=</td>
-                                        </tr>
+                                        <tbody id="ptn_tbl">
+                                        @forelse($patient as $pat)
+                                            <tr>
+
+                                                <td >{{$pat->serial}}</td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a href="{{route('patients.profile',$pat->id)}}">{{$pat->name}}</a>
+                                                    </h2>
+                                                </td>
+                                                <td >{{$pat->age}} Yr.</td>
+                                                <td>{{$pat->mobile}}</td>
+                                                <td>{{$pat->address}}</td>
+                                                <td data-id="{{$pat->id}}" class="complain">{{$pat->last_complain}}</td>
+                                                <td data-id="{{$pat->id}}" class="dues">{{$pat->dues}}</td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="{{route('patients.edit',$pat->id)}}" class="btn btn-sm bg-info-light" id="edit">
+                                                            <i class="far fa-pencil">Edit</i>
+                                                        </a>
+
+                                                        {{--                                                        <a href="javascript:void(0);"--}}
+                                                        {{--                                                           class="btn btn-sm bg-success-light">--}}
+                                                        {{--                                                            <i class="fas fa-check"></i> Accept--}}
+                                                        {{--                                                        </a>--}}
+                                                        {{--                                                        <a href="javascript:void(0);"--}}
+                                                        {{--                                                           class="btn btn-sm bg-danger-light">--}}
+                                                        {{--                                                            <i class="fas fa-times"></i> Cancel--}}
+                                                        {{--                                                        </a>--}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @empty
+
+                                        @endforelse
 
                                         </tbody>
                                     </table>
@@ -120,46 +141,57 @@
                     <!-- /Upcoming Appointment Tab -->
 
                     <!-- Today Appointment Tab -->
-                    <div class="tab-pane" id="today-appointments">
+                    <div class="tab-pane @if(isset($id)) active @endif" id="today-appointments">
                         <div class="card card-table mb-0">
                             <div class="card-body">
+                                @if(isset($id))
+                                    {!! Form::open(['route'=>['patients.update',$id], 'method'=>'post']) !!}
+                                    @method('PATCH')
+                                @else
                                 {!! Form::open(['route'=>'patients.store', 'method'=>'post']) !!}
+                                @endif
                                 <div class="row form-row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Serial No. <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
+                                            <input type="number" class="form-control" name="serial" value="{{$data->serial ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Patient Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" name="name" value="{{$data->name ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group mb-0">
                                             <label>Age</label>
-                                            <input type="text" class="form-control">
+                                            {!! Form::selectRange('age',0,120,$data->age ?? '',['class' => 'form-control']) !!}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Dues</label>
+                                            <input type="number" class="form-control" name="dues" value="{{$data->dues ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Mobile Number</label>
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" name="mobile" value="{{$data->mobile ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" name="address" value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Purpose</label>
-                                            <input type="text" class="form-control">
+                                            <input type="text" class="form-control" name="last_complain" value="{{$data->last_complain ?? ''}}">
                                         </div>
                                     </div>
                                     {{--                                                        --}}
@@ -173,9 +205,10 @@
                                     {{--                                                                </select>--}}
                                     {{--                                                            </div>--}}
                                     {{--                                                        </div>--}}
-                                    <div class="col-md-4 pull-right">
+                                    <div class="col-md-6 pull-right">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-block btn-primary"> Save Patient
+                                            <button type="submit" class="btn btn-block btn-primary pt-10 float-end">
+                                                Save Patient
                                             </button>
                                         </div>
                                     </div>
@@ -190,4 +223,69 @@
             </div>
         </div>
     </div>
+
+
+
+
 @stop
+@section('modal')
+    {{--    patient edit modal start--}}
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                {!! Form::open(['route'=>['patients.complain',0], 'method'=>'post','id'=>'patient_form']) !!}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Patient Update</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="tab-pane" id="today-appointments">
+                        <div class="card card-table mb-0">
+                            <div class="card-body">
+                                <div class="row form-row">
+                                    <input type="hidden" name="id" id="user_id" value="">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Purpose</label>
+                                            <textarea class="form-control" name="last_complain"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Complain</button>
+                </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    </div>
+    {{--    patient edit modal start--}}
+@endsection
+@section('js')
+    <script>
+        $(document).on('keyup', '#search', function () {
+           var word = $(this).val();
+               $.ajax({
+                   method : "post",
+                   url : "{{route('patients.search')}}",
+                   data : {word:word, _token:"{{csrf_token()}}"},
+                   success: function(res){
+                       $('#ptn_tbl').html(res);
+                   }
+               });
+        });
+        $(document).on('click', '.complain', function () {
+
+            $('#exampleModal').modal('show');
+            var id = $(this).attr('data-id');
+            $('#user_id').val(id);
+
+        })
+    </script>
+@endsection

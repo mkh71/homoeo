@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $patient = Patient::query()->latest()->limit(12)->get();
+        $totalPatient = Patient::query()->get()->count();
+        $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
+        $totalDues = Patient::query()->get()->sum('dues');
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues'));
     }
 }

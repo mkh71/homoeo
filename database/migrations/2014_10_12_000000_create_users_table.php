@@ -23,6 +23,12 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        \App\Models\User::query()->create([
+            'name' => 'Dr. Jahid Hossain',
+            'email' => 'admin@gmail.com',
+            'mobile' => '01711265003',
+            'password' => bcrypt('123123'),
+        ]);
     }
 
     /**

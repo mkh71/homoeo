@@ -8,16 +8,17 @@
     <!-- Favicons -->
     <link href="{{asset('assets')}}/img/favicon.png" rel="icon">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"  />
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{asset('assets')}}/css/bootstrap.min.css">
 
     <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{{asset('assets')}}/plugins/fontawesome/css/fontawesome.min.css">
-    <link rel="stylesheet" href="{{asset('assets')}}/plugins/fontawesome/css/all.min.css">
+{{--    <link rel="stylesheet" href="{{asset('assets')}}/plugins/fontawesome/css/fontawesome.min.css">--}}
+{{--    <link rel="stylesheet" href="{{asset('assets')}}/plugins/fontawesome/css/all.min.css">--}}
 
     <!-- Feathericon CSS -->
     <link rel="stylesheet" href="{{asset('assets')}}/css/feather.css">
-
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{asset('assets')}}/css/style.css">
     @yield('css')
@@ -29,7 +30,6 @@
     <!-- Page Content -->
     <div class="content">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
 
@@ -54,15 +54,28 @@
                             <nav class="dashboard-menu">
                                 <ul>
                                     <li class="active">
-                                        <a href="doctor-dashboard.html">
+                                        <a href="{{route('home')}}">
                                             <i class="fas fa-columns"></i>
                                             <span>Dashboard</span>
                                         </a>
                                     </li>
+                                    
                                     <li>
-                                        <a href="my-patients.html">
+                                        <a href="{{route('power.index')}}">
                                             <i class="fas fa-user-injured"></i>
-                                            <span>My Patients</span>
+                                            <span>Power</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('does.index')}}">
+                                            <i class="fas fa-user-injured"></i>
+                                            <span>Does</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('madicine.index')}}">
+                                            <i class="fas fa-user-injured"></i>
+                                            <span>Madicine</span>
                                         </a>
                                     </li>
 
@@ -92,8 +105,8 @@
                 </div>
             </div>
         </div>
+
     </div>
-    <!-- /Page Content -->
 
     <!-- Footer -->
     <footer class="footer">
@@ -115,8 +128,7 @@
                             <!-- Copyright Menu -->
                             <div class="copyright-menu">
                                 <ul class="policy-menu">
-                                    <li><a href="term-condition.html">Terms and Conditions</a></li>
-                                    <li><a href="privacy-policy.html">Policy</a></li>
+                                    {{--  --}}
                                 </ul>
                             </div>
                             <!-- /Copyright Menu -->
@@ -133,7 +145,37 @@
     </footer>
     <!-- /Footer -->
 
+
 </div>
+
+<!-- /Page Content -->
+<div class="js-alert">
+    @if (session()->has('success'))
+        <script type="text/javascript">
+            $(function () {
+                $.notify("{{session()->get("success")}}", {globalPosition: 'bottom right',className: 'success'});
+            });
+        </script>
+    @endif
+
+    @if(session()->has('error'))
+        <script type="text/javascript">
+            $(function () {
+                $.notify("{{session()->get("error")}}", {globalPosition: 'bottom right', className: 'error'});
+            });
+        </script>
+    @endif
+
+    @if (session()->has('warning'))
+        <script type="text/javascript">
+            $(function () {
+                $.notify("{{session()->get("warning")}}", {globalPosition: 'bottom right', className: 'warn'});
+            });
+        </script>
+    @endif
+</div>
+
+@yield('modal')
 <!-- /Main Wrapper -->
 
 <!-- jQuery -->
@@ -141,7 +183,7 @@
 
 <!-- Bootstrap Core JS -->
 <script src="{{asset('assets')}}/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <!-- Sticky Sidebar JS -->
 <script src="{{asset('assets')}}/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
 <script src="{{asset('assets')}}/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
@@ -154,6 +196,25 @@
 
 <!-- Custom JS -->
 <script src="{{asset('assets')}}/js/script.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @yield('js')
+
+<script type="text/javascript">
+    @if(session('status'))
+    toastr.success("{{ session('status') }}")
+    @endif
+    $(document).ready(function() {
+        bsCustomFileInput.init()
+        console.log('done');
+    })
+    @if(session('success'))
+    swal({
+        title: "Doccure!",
+        text: "{{ session('success') }}",
+        icon: "success",
+    });
+    @endif
+</script>
+
 </body>
 </html>
