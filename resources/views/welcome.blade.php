@@ -191,7 +191,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Purpose</label>
-                                            <input type="text" class="form-control" name="last_complain" value="{{$data->last_complain ?? ''}}">
+                                            <textarea row="3" type="text" class="form-control" name='last_complain'>{{$data->last_complain ?? ''}}</textarea>
                                         </div>
                                     </div>
                                     {{--                                                        --}}

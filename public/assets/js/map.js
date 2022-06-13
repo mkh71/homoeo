@@ -1,6 +1,6 @@
 /*
 Author       : Dreamguys
-Template Name: Doccure - Bootstrap Template
+Template Name: NHP.Ctg - Bootstrap Template
 Version      : 1.3
 */
 
@@ -22,7 +22,7 @@ var locations =[{
 	"total_review":"17",
 	"image":'assets/img/doctors/doctor-01.jpg'
 	}, {
-		
+
 	"id":02,
 	"doc_name":"Dr. Darren Elder",
 	"speciality":"BDS, MDS - Oral & Maxillofacial Surgery",
@@ -201,9 +201,9 @@ function initialize() {
 		center: new google.maps.LatLng(53.470692, -2.220328),
         scrollwheel: false,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-		
+
     };
-  
+
      map = new google.maps.Map(document.getElementById('map'), mapOptions);
     map.slide = true;
 
@@ -218,7 +218,7 @@ function initialize() {
 }
 
 function setInfo(marker) {
-  var content = 
+  var content =
 '<div class="profile-widget" style="width: 100%; display: inline-block;">'+
 	'<div class="doc-img">'+
 		'<a href="' + marker.profile_link + '" tabindex="0" target="_blank">'+

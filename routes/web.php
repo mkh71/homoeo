@@ -37,5 +37,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::resource('power','PowerController');
     Route::resource('does','DoesController');
     Route::resource('madicine','MadicineController');
+
+    Route::get('backup', 'HomeController@backup')->name('backup');
 });
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
