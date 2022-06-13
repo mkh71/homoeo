@@ -11,7 +11,10 @@ class PatientController extends Controller
     public function index()
     {
         $patient = Patient::query()->latest()->limit(12)->get();
-        return view('welcome', compact('patient'));
+        $totalPatient = Patient::query()->get()->count();
+        $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
+        $totalDues = Patient::query()->get()->sum('dues');
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues'));
     }
 
     public function create()
@@ -37,7 +40,10 @@ class PatientController extends Controller
     {
         $patient = Patient::query()->latest()->limit(12)->get();
         $data = Patient::query()->find($id);
-        return view('welcome', compact('data', 'id', 'patient'));
+        $totalPatient = Patient::query()->get()->count();
+        $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
+        $totalDues = Patient::query()->get()->sum('dues');
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues', 'data', 'id', ));
     }
 
     public function update(Request $request, $id)

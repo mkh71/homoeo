@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Doccure</title>
+    <title>NHP.Ctg</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
     <!-- Favicons -->
@@ -59,7 +59,7 @@
                                             <span>Dashboard</span>
                                         </a>
                                     </li>
-                                    
+
                                     <li>
                                         <a href="#">
                                             <i class="fas fa-user-injured"></i>
@@ -78,6 +78,13 @@
                                             <span>Madicine</span>
                                         </a>
                                     </li>
+
+{{--                                    <li>--}}
+{{--                                        <a href="{{route('backup')}}">--}}
+{{--                                            <i class="fas fa-user-injured"></i>--}}
+{{--                                            <span>Backup</span>--}}
+{{--                                        </a>--}}
+{{--                                    </li>--}}
 
                                     <li>
                                         <a  href="{{ route('logout') }}"
@@ -117,7 +124,7 @@
                     <div class="row">
                         <div class="col-md-6 col-lg-6">
                             <div class="copyright-text">
-                                <p class="mb-0">&copy; 2022 Doccure. All rights reserved.</p>
+                                <p class="mb-0">&copy; 2022 NHP.Ctg. All rights reserved.</p>
                             </div>
                         </div>
                         <div class="col-md-6 col-lg-6">
@@ -206,7 +213,7 @@
     })
     @if(session('success'))
     swal({
-        title: "Doccure!",
+        title: "NHP.Ctg!",
         text: "{{ session('success') }}",
         icon: "success",
     });
