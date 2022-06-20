@@ -1456,7 +1456,21 @@ button.bg-danger:hover {
 
 .select2-container .select2-selection--single {
 	border: 1px solid #E6E9F4;
-	height: 46px;
+	z-index: 9999 !important;
+	width: 100%;
+	z-index: 9998;
+	z-index: 9999;
+	z-index: 10000;
+	height: 80px;
+
+}
+.select2{
+	z-index: 9999 !important;
+	width: 100%;
+	z-index: 9998;
+	z-index: 9999 !important;
+	z-index: 10000;
+	min-width:248px !important;
 }
 .select2-container--default .select2-selection--single .select2-selection__arrow {
 	height: 46px;
@@ -1485,6 +1499,9 @@ button.bg-danger:hover {
 	border-width: 2px 0 0 2px;
 	padding: 3px;
 	margin-top: -2px;
+}
+.select2-container--open .select2-dropdown--below {
+	z-index:99999 !important;
 }
 .select2-container .select2-selection--single .select2-selection__rendered {
 	padding-right: 30px;

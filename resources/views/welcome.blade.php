@@ -187,12 +187,9 @@
                                             <input type="text" class="form-control" name="address" value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
-
+                                    
                                     <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Purpose</label>
-                                            <textarea row="3" type="text" class="form-control" name='last_complain'>{{$data->last_complain ?? ''}}</textarea>
-                                        </div>
+                                        <a href="#" class="btn btn-outline-primary " id="addPurpose" data-toggle="modal" data-target="#addMadicine">Add Purpose</a>
                                     </div>
                                     {{--                                                        --}}
                                     {{--                                                        <div class="col-md-6">--}}
@@ -207,7 +204,7 @@
                                     {{--                                                        </div>--}}
                                     <div class="col-md-6 pull-right">
                                         <div class="form-group">
-                                            <button type="submit" class="btn btn-block btn-primary pt-10 float-end">
+                                            <button type="submit" class="btn btn-block btn-primary pt-10">
                                                 Save Patient
                                             </button>
                                         </div>
@@ -266,6 +263,9 @@
         </div>
     </div>
     {{--    patient edit modal start--}}
+    {{-- purpose modal --}}
+        @include('include.modals.addMadicine')
+    {{-- end purpose modal --}}
 @endsection
 @section('js')
     <script>
@@ -287,5 +287,19 @@
             $('#user_id').val(id);
 
         })
+        $(document).on('click', '#addPurpose', function () {
+
+            $('#addMadicine').modal('show');
+            //var id = $(this).attr('data-id');
+            //$('#user_id').val(id);
+        })
+        $(document).on('click', '#addPurpose', function () {
+
+            $('#addMadicine').modal('show');
+            //var id = $(this).attr('data-id');
+            //$('#user_id').val(id);
+        })
+
+
     </script>
 @endsection

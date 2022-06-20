@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{asset('assets')}}/css/feather.css">
     <!-- Main CSS -->
     <link rel="stylesheet" href="{{asset('assets')}}/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @yield('css')
 </head>
 <body>
@@ -194,6 +195,7 @@
 
 <!-- Circle Progress JS -->
 <script src="{{asset('assets')}}/js/circle-progress.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <!-- Feather Icon JS -->
 <script src="{{asset('assets')}}/js/feather.min.js"></script>
@@ -204,6 +206,15 @@
 @yield('js')
 
 <script type="text/javascript">
+     $(document).on('click', '.clone_select2', function () {
+        new_select2 = $('.form').first().clone();
+        $('.div').append(new_select2);
+        $('.address').select2({
+            placeholder: '--select--'
+        })
+        $('.address').last().next().next().remove();
+        })
+
     @if(session('status'))
     toastr.success("{{ session('status') }}")
     @endif
@@ -218,6 +229,18 @@
         icon: "success",
     });
     @endif
+    $(document).ready(function() {
+        
+        $('.select2').select2({
+            dropdownParent: $('#addMadicine .modal-content') 
+        });
+       $('.add').click(function(){
+         $('#purposeDiv').first().clone().appendTo('#morePurpose')
+        $('.select2').last().next().next().remove();
+        })
+    });
+
+
 </script>
 
 </body>

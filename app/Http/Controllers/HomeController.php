@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\Does;
+use App\Models\Power;
+use App\Models\Madicine;
 use Illuminate\Http\Request;
 use ZipArchive;
 
@@ -29,7 +32,10 @@ class HomeController extends Controller
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues'));
+        $doeses = Does::get()->pluck('name','id');
+        $powers = Power::get()->pluck('name','id');
+        $madicines = Madicine::get()->pluck('name','id');
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','doeses','powers','madicines'));
     }
 
     public function backup(){

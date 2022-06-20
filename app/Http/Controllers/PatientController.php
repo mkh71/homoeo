@@ -43,11 +43,7 @@ class PatientController extends Controller
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
-<<<<<<< HEAD
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','data','id'));
-=======
         return view('welcome',compact('patient','totalPatient','todayPatient','totalDues', 'data', 'id', ));
->>>>>>> f54f6e2aa913fd9e7d456833dde7019b7927057d
     }
 
     public function update(Request $request, $id)
