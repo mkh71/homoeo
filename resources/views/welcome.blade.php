@@ -166,7 +166,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group mb-0">
                                             <label>Age</label>
-                                            {!! Form::selectRange('age',0,120,$data->age ?? '',['class' => 'form-control']) !!}
+                                            {!! Form::number('age', $data->age ?? '',['class' => 'form-control', 'step'=>'any']) !!}
                                         </div>
                                     </div>
                                     <div class="col-md-6">

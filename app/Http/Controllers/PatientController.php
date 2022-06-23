@@ -43,7 +43,8 @@ class PatientController extends Controller
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues', 'data', 'id', ));
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','data','id'));
+
     }
 
     public function update(Request $request, $id)
@@ -66,7 +67,7 @@ class PatientController extends Controller
         $data = Patient::query()
             ->where('serial', 'like', $request->word . '%')
             ->orWhere('name', 'like', $request->word . '%')
-            ->orWhere('address', 'like', $request->word . '%')
+            ->orWhere('mobile', 'like', $request->word . '%')
             ->get();
         if (count($data) ==0){
             echo '<tr colspan="5" class="text-danger text-center">No Data Found</tr>';
