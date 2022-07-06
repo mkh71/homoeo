@@ -5,25 +5,28 @@
         <div class="card card-table mb-0">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <p>
+                            <h4 class="text-center">Add Medicine</h4><hr>
+                        </p>
                         @if(isset($id))
-                            {!! Form::open(['route'=>['madicine.update',$id], 'method'=>'post']) !!}
+                            {!! Form::open(['route'=>['medicine.update',$id], 'method'=>'post']) !!}
                             @method('PATCH')
                         @else
-                            {!! Form::open(['route'=>'madicine.store', 'method'=>'post']) !!}
+                            {!! Form::open(['route'=>'medicine.store', 'method'=>'post']) !!}
                         @endif
-                        <div class="row form-row">
+                        <div class="p-2 form-row">
 
                             <div class="form-group">
                                 <label>Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" required name="name" value="{{$madicine->name ?? ''}}">
+                                <input type="text" class="form-control" required name="name" value="{{$medicine->name ?? ''}}">
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-block btn-primary pt-10">
-                                   @if(isset($madicine->id) && $madicine->id == $id)
-                                    Update Madicine
+                                   @if(isset($medicine->id) && $medicine->id == $id)
+                                    Update medicine
                                 @else
-                                    Save Madicine
+                                    Save medicine
                                 @endif
                                 </button>
                             </div>
@@ -31,34 +34,31 @@
                         </div>
                         {!! Form::close() !!}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="table-responsive">
-                            <table class="table table-hover table-center mb-0 table-bordered">
+                            <table class="table dataTable table-hover table-center mb-0 table-bordered">
                                 <thead>
                                 <tr>
-                                    <th rowspan="3">Madicine List</th>
-                                </tr>
-                                <tr>
-                                    <th>Serial No.</th>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
-                                @forelse($madicines as $madi)
+                                @forelse($medicines as $medi)
                                     <tr>
-                                        <td>{{$madi->id ?? '-'}}</td>
-                                        <td>{{$madi->name ?? '-'}}</td>
+                                        <td>{{$loop->iteration ?? '-'}}</td>
+                                        <td>{{$medi->name}}</td>
                                         <td class="text-end">
                                             <div class="table-action">
-                                                @if(isset($madicine->id) && $madicine->id ==$madi->id)
+                                                @if(isset($medicine->id) && $medicine->id ==$medi->id)
                                                     <a href="#" class="badge badge-rounded badge-success p-1">Updating....</a>
                                                 @else
-                                                <a href="{{route('madicine.edit',$madi->id)}}" class="btn btn-sm bg-info-light" id="edit">
+                                                <a href="{{route('medicine.edit',$medi->id)}}" class="btn btn-sm bg-info-light" id="edit">
                                                     <i class="far fa-pencil">Edit</i>
                                                 </a>
-                                                <a href="{{route('madicine-delete',$madi->id)}}" class="btn btn-sm bg-danger-light" id="delete">
+                                                <a href="{{route('medicine-delete',$medi->id)}}" class="btn btn-sm bg-danger-light" id="delete">
                                                     <i class="far fa-pencil">Delete</i>
                                                 </a>
                                                 @endif

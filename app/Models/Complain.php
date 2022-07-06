@@ -17,4 +17,7 @@ class Complain extends Model
     public function patient(){
         return $this->belongsTo(Patient::class);
     }
+    public function medicines(){
+        return $this->hasMany(PurposeMedicine::class, 'complain_id','id');
+    }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
-use App\Models\Does;
+use App\Models\Dose;
 use App\Models\Power;
-use App\Models\Madicine;
+use App\Models\Medicine;
 use Illuminate\Http\Request;
 use ZipArchive;
 
@@ -28,14 +28,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $patient = Patient::query()->latest()->limit(12)->get();
+        $patient = Patient::query()->latest()->limit(24)->get();
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
-        $doeses = Does::get()->pluck('name','id');
-        $powers = Power::get()->pluck('name','id');
-        $madicines = Madicine::get()->pluck('name','id');
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','doeses','powers','madicines'));
+        $doses = Dose::get();
+        $powers = Power::get();
+        $medicines = Medicine::get();
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','doses','powers','medicines'));
     }
 
     public function backup(){
@@ -46,7 +46,7 @@ class HomeController extends Controller
         $database_name = env('DB_DATABASE');
 
         // Get connection object and set the charset
-        $conn = mysqli_connect('127.0.0.1', 'root', null, 'jahed');
+        $conn = mysqli_connect('127.0.0.1', 'root', null, 'homoeo');
         $conn->set_charset("utf8");
 
 

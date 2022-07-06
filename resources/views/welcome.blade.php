@@ -65,10 +65,12 @@
                 <!-- Appointment Tab -->
                 <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                     <li class="nav-item">
-                        <a class="nav-link @if(!isset($id))active @endif" href="#upcoming-appointments" data-bs-toggle="tab">Patient List</a>
+                        <a class="nav-link @if(!isset($id))active @endif" href="#upcoming-appointments"
+                           data-bs-toggle="tab">Patient List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if(isset($id))active @endif" href="#today-appointments" data-bs-toggle="tab">Add Patient</a>
+                        <a class="nav-link @if(isset($id))active @endif" href="#today-appointments"
+                           data-bs-toggle="tab">Add Patient</a>
                     </li>
                     <li class="nav-item pull-right">
                         <input type="search" placeholder="Search Name/Serial/Mobile..."
@@ -92,7 +94,7 @@
                                             <th>Age</th>
                                             <th>Contact</th>
                                             <th>Address</th>
-                                            <th>Purpose</th>
+                                            <th>Complain</th>
                                             <th class="text-center">Dues</th>
                                         </tr>
                                         </thead>
@@ -100,20 +102,21 @@
                                         @forelse($patient as $pat)
                                             <tr>
 
-                                                <td >{{$pat->serial}}</td>
+                                                <td>{{$pat->serial}}</td>
                                                 <td>
                                                     <h2 class="table-avatar">
                                                         <a href="{{route('patients.profile',$pat->id)}}">{{$pat->name}}</a>
                                                     </h2>
                                                 </td>
-                                                <td >{{$pat->age}} Yr.</td>
+                                                <td>{{$pat->age}} Yr.</td>
                                                 <td>{{$pat->mobile}}</td>
                                                 <td>{{$pat->address}}</td>
                                                 <td data-id="{{$pat->id}}" class="complain">{{$pat->last_complain}}</td>
                                                 <td data-id="{{$pat->id}}" class="dues">{{$pat->dues}}</td>
                                                 <td class="text-end">
                                                     <div class="table-action">
-                                                        <a href="{{route('patients.edit',$pat->id)}}" class="btn btn-sm bg-info-light" id="edit">
+                                                        <a href="{{route('patients.edit',$pat->id)}}"
+                                                           class="btn btn-sm bg-info-light" id="edit">
                                                             <i class="far fa-pencil">Edit</i>
                                                         </a>
 
@@ -148,19 +151,21 @@
                                     {!! Form::open(['route'=>['patients.update',$id], 'method'=>'post']) !!}
                                     @method('PATCH')
                                 @else
-                                {!! Form::open(['route'=>'patients.store', 'method'=>'post']) !!}
+                                    {!! Form::open(['route'=>'patients.store', 'method'=>'post']) !!}
                                 @endif
                                 <div class="row form-row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Serial No. <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" name="serial" value="{{$data->serial ?? ''}}">
+                                            <input type="number" class="form-control" name="serial"
+                                                   value="{{$data->serial ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Patient Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="name" value="{{$data->name ?? ''}}">
+                                            <input type="text" class="form-control" name="name"
+                                                   value="{{$data->name ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -172,36 +177,81 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Dues</label>
-                                            <input type="number" class="form-control" name="dues" value="{{$data->dues ?? ''}}">
+                                            <input type="number" class="form-control" name="dues"
+                                                   value="{{$data->dues ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Mobile Number</label>
-                                            <input type="text" class="form-control" name="mobile" value="{{$data->mobile ?? ''}}">
+                                            <input type="text" class="form-control" name="mobile"
+                                                   value="{{$data->mobile ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" class="form-control" name="address" value="{{$data->address ?? ''}}">
+                                            <input type="text" class="form-control" name="address"
+                                                   value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
-                                    
-                                    <div class="col-md-6">
-                                        <a href="#" class="btn btn-outline-primary " id="addPurpose" data-toggle="modal" data-target="#addMadicine">Add Purpose</a>
-                                    </div>
-                                    {{--                                                        --}}
-                                    {{--                                                        <div class="col-md-6">--}}
-                                    {{--                                                            <div class="form-group">--}}
-                                    {{--                                                                <label>Gender</label>--}}
-                                    {{--                                                                <select class="select form-control">--}}
-                                    {{--                                                                    <option>Select</option>--}}
-                                    {{--                                                                    <option>Male</option>--}}
-                                    {{--                                                                    <option>Female</option>--}}
-                                    {{--                                                                </select>--}}
-                                    {{--                                                            </div>--}}
-                                    {{--                                                        </div>--}}
+                                    @if(!isset($id))
+                                        <table class="table-responsive table-striped" id="medTable">
+                                            <tr>
+                                                <td colspan="3">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <label>Complain</label>
+                                                            <textarea row="3" type="text" class="form-control"
+                                                                      name='last_complain'>{{ $data->last_complain ?? '' }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="position: absolute;z-index: 99999;right: -20px;">
+                                                    <button type="button" class="btn btn-warning add" id="plus">
+                                                        <i class="fa fa-plus-circle"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr class="newRow form-group">
+                                                <td>
+                                                    <select name="medicine[]" id="select-state" required
+                                                            id="medicine_id"
+                                                            placeholder="Pick a state...">
+                                                        <option value="" selected>Select...</option>
+                                                        @foreach($medicines as $item)
+
+                                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select name="power[]" id="" class="form-control" required>
+                                                        <option value="" selected>Select...</option>
+                                                        @foreach($powers as $item)
+                                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{--                                                {!! Form::select('power[]', $powers, NULL , ['class'=>'form-control', 'placeholder'=>"Select Power"]) !!}--}}
+                                                </td>
+                                                <td>
+                                                    <select name="dose[]" id="" class="form-control" required>
+                                                        <option value="" selected>Select...</option>
+                                                        @foreach($doses as $item)
+                                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{--                                                {!! Form::select('dose[]', $doeses, NULL , ['class'=>'form-control', 'placeholder'=>"Select Dose"]) !!}--}}
+                                                </td>
+
+                                            </tr>
+                                        </table>
+
+                                    @endif
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6 pull-right">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-block btn-primary pt-10">
@@ -220,9 +270,6 @@
             </div>
         </div>
     </div>
-
-
-
 
 @stop
 @section('modal')
@@ -246,6 +293,65 @@
                                         <div class="form-group">
                                             <label>Purpose</label>
                                             <textarea class="form-control" name="last_complain"></textarea>
+                                            <div class="col-md-2 plusBtn">
+                                                <button type="button" class="btn btn-warning addRow ">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                </button>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
+                                                    <div class="row appendRow">
+                                                        <div class="col-md-4">
+                                                            <select name="medicine[]" id="select-state" required
+                                                                    id="medicine_id"
+                                                                    placeholder="Pick a Medicine...">
+                                                                <option value="" selected>Select...</option>
+                                                                @foreach($medicines as $item)
+
+                                                                    <option
+                                                                        value="{{$item->id}}">{{$item->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <select name="power[]" id="select-state" required
+                                                                    id="medicine_id"
+                                                                    placeholder="Pick a Power...">
+                                                                <option value="" selected>Select...</option>
+                                                                @foreach($powers as $item)
+
+                                                                    <option
+                                                                        value="{{$item->id}}">{{$item->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <select name="dose[]" id="select-state" required
+                                                                    id="medicine_id"
+                                                                    placeholder="Pick a Dose...">
+                                                                <option value="" selected>Select...</option>
+                                                                @foreach($doses as $item)
+                                                                    <option
+                                                                        value="{{$item->id}}">{{$item->name}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2 addbtn">
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
+                                                    <div class="row mt-2 addCloneData"></div>
+                                                </div>
+                                                <div class="col-md-2 dltBtn">
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -264,21 +370,21 @@
     </div>
     {{--    patient edit modal start--}}
     {{-- purpose modal --}}
-        @include('include.modals.addMadicine')
+    @include('include.modals.addMadicine')
     {{-- end purpose modal --}}
 @endsection
 @section('js')
     <script>
         $(document).on('keyup', '#search', function () {
-           var word = $(this).val();
-               $.ajax({
-                   method : "post",
-                   url : "{{route('patients.search')}}",
-                   data : {word:word, _token:"{{csrf_token()}}"},
-                   success: function(res){
-                       $('#ptn_tbl').html(res);
-                   }
-               });
+            var word = $(this).val();
+            $.ajax({
+                method: "post",
+                url: "{{route('patients.search')}}",
+                data: {word: word, _token: "{{csrf_token()}}"},
+                success: function (res) {
+                    $('#ptn_tbl').html(res);
+                }
+            });
         });
         $(document).on('click', '.complain', function () {
 
@@ -293,6 +399,9 @@
             //var id = $(this).attr('data-id');
             //$('#user_id').val(id);
         })
+        $(document).on('keyUp', '#medicine_id', function () {
+            alert()
+        });
         $(document).on('click', '#addPurpose', function () {
 
             $('#addMadicine').modal('show');
@@ -300,6 +409,31 @@
             //$('#user_id').val(id);
         })
 
+        $(document).ready(function () {
+            $('select').selectize({
+                sortField: 'text'
+            });
+        });
+        $('.add').click(function () {
+            var T = document.getElementById('medTable');
+            var R = document.querySelectorAll('tbody .newRow')[0];
+            var C = R.cloneNode(true);
+            T.appendChild(C);
+            C.insertCell(3).innerHTML = '<button type="button" class="btn btn-danger btn-sm deleteRow"> ' +
+                '<i class="fa fa-times-circle"></i>' +
+                '</button>'
+        })
+        $(document).on('click', '.deleteRow', function () {
+            let row_item = $(this).parent().parent();
+            $(row_item).remove();
+        });
+        $(document).on('click', '.addRow', function () {
+            $('.appendRow').clone().first().appendTo('.addCloneData').after();
+            $('.addbtn').html('<button type="button" class="btn btn-danger btn-sm deleteRow"> ' +
+                '<i class="fa fa-times-circle"></i>' +
+                '</button>')
+
+        })
 
     </script>
 @endsection

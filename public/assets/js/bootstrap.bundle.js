@@ -304,7 +304,7 @@
 
 
   const getNextActiveElement = (list, activeElement, shouldGetNext, isCycleAllowed) => {
-    let index = list.indexOf(activeElement); // if the element does not exist in the list return an element depending on the direction and if cycle is allowed
+    let index = list.indexOf(activeElement); // if the element dose not exist in the list return an element depending on the direction and if cycle is allowed
 
     if (index === -1) {
       return list[!shouldGetNext && isCycleAllowed ? list.length - 1 : 0];
@@ -434,7 +434,7 @@
       handler = delegationFn;
       delegationFn = null;
     } // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
-    // this prevents the handler from being dispatched the same way as mouseover or mouseout does
+    // this prevents the handler from being dispatched the same way as mouseover or mouseout dose
 
 
     if (customEventsRegex.test(originalTypeEvent)) {
@@ -2619,7 +2619,7 @@
 
     if (visualViewport) {
       width = visualViewport.width;
-      height = visualViewport.height; // Uses Layout Viewport (like Chrome; Safari does not currently)
+      height = visualViewport.height; // Uses Layout Viewport (like Chrome; Safari dose not currently)
       // In Chrome, it returns a value very close to 0 (+/-) but contains rounding
       // errors due to floating point numbers, so we need to check precision.
       // Safari returns a number <= 0, usually < -1 when pinch-zoomed
@@ -3460,7 +3460,7 @@
         data: Object.assign({}, existing.data, current.data)
       }) : current;
       return merged;
-    }, {}); // IE11 does not support Object.values
+    }, {}); // IE11 dose not support Object.values
 
     return Object.keys(merged).map(function (key) {
       return merged[key];

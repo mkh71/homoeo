@@ -70,19 +70,32 @@
                     <div class="card card-table mb-0">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover table-center mb-0">
+                                <table class="table dataTable table-hover table-center mb-0 table-bordered">
                                     <thead>
                                     <tr class="table-active">
-                                        <th>Serial No.</th>
+                                        <th>#</th>
                                         <th>purpose</th>
-                                        <th>Duration</th>
+                                        <th>Medicine (Power) : Does</th>
+                                        <th>Date</th>
                                     </tr>
                                     </thead>
                                     <tbody id="ptn_tbl">
                                     @forelse($complain as $com)
+
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$com->details}}</td>
+                                            <td>
+                                                @foreach($com->medicines as $medicine)
+                                                    <table class="">
+                                                        <tr>
+                                                            <td width="50%">{{$medicine->medicine->name}}</td>
+                                                            <td width="10%">({{$medicine->power->name}}) </td>
+                                                            <td width="40%">: {{ $medicine->dose->name}}</td>
+                                                        </tr>
+                                                    </table>
+                                                @endforeach
+                                            </td>
                                             <td>{{ $com->created_at}}</td>
                                         </tr>
                                     @empty

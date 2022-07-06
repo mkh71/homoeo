@@ -4,14 +4,17 @@
         <div class="card card-table mb-0">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4 col-sm-12">
+                        <p>
+                            <h4 class="text-center">Add Dose</h4><hr>
+                        </p>
                         @if(isset($id))
                             {!! Form::open(['route'=>['dose.update',$id], 'method'=>'post']) !!}
                             @method('PATCH')
                         @else
                             {!! Form::open(['route'=>'dose.store', 'method'=>'post']) !!}
                         @endif
-                        <div class="row form-row">
+                        <div class="form-row p-2">
 
                             <div class="form-group">
                                 <label>Name <span class="text-danger">*</span></label>
@@ -30,12 +33,12 @@
                         </div>
                         {!! Form::close() !!}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <div class="table-responsive">
-                            <table class="table table-hover table-center mb-0 table-bordered">
+                            <table class="table table-bordered dataTable table-hover table-center mb-0 table-bordered">
                                 <thead>
                                 <tr>
-                                    <th>Serial No.</th>
+                                    <th>#</th>
                                     <th>Name</th>
                                     <th>Action</th>
                                 </tr>
@@ -44,7 +47,7 @@
 
                                 @forelse($doeses as $d)
                                     <tr>
-                                        <td>{{$d->id ?? '-'}}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{$d->name ?? '-'}}</td>
                                         <td class="text-end">
                                             <div class="table-action">
