@@ -6,10 +6,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         @if(isset($id))
-                            {!! Form::open(['route'=>['does.update',$id], 'method'=>'post']) !!}
+                            {!! Form::open(['route'=>['dose.update',$id], 'method'=>'post']) !!}
                             @method('PATCH')
                         @else
-                            {!! Form::open(['route'=>'does.store', 'method'=>'post']) !!}
+                            {!! Form::open(['route'=>'dose.store', 'method'=>'post']) !!}
                         @endif
                         <div class="row form-row">
 
@@ -51,14 +51,14 @@
                                                 @if(isset($does->id) && $does->id ==$d->id)
                                                     <a href="#" class="badge badge-rounded badge-success p-1">Updating....</a>
                                                 @else
-                                                <a href="{{route('does.edit',$d->id)}}" class="btn btn-sm bg-info-light" id="edit">
+                                                <a href="{{route('dose.edit',$d->id)}}" class="btn btn-sm bg-info-light" id="edit">
                                                         <i class="far fa-pencil">Edit</i>
                                                     </a>
-                                                    <a href="{{route('does-delete',$d->id)}}" class="btn btn-sm bg-danger-light" id="edit">
+                                                    <a href="{{route('dose-delete',$d->id)}}" class="btn btn-sm bg-danger-light" id="edit">
                                                         <i class="far fa-pencil">Delete</i>
                                                     </a>
                                                 @endif
-                                               
+
                                             </div>
                                         </td>
                                     </tr>
