@@ -18,28 +18,8 @@
                 </form>
                 <br>
                 <br> --}}
-                
+
                 {!! Form::open(['route' => ['patients.complain', 0], 'method' => 'post', 'id' => 'patient_form']) !!}
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label>Purpose</label>
-                        <textarea row="3" type="text" class="form-control" name='last_complain'>{{ $data->last_complain ?? '' }}</textarea>
-                    </div>
-                </div>
-                    <div class="row mt-4 div" id="purposeDiv">
-                        <div class="col-md-4" id="addMedicine">
-                              {!! Form::select('madicine[]', $madicines, $madicine->name ?? NULL , ['class'=>'form-control select2 ']) !!}
-                          
-                        </div>
-                        <div class="col-md-4">
-                            {!! Form::select('power[]', $powers, $power->name ?? NULL , ['class'=>'form-control select2']) !!}
-                        </div>
-                        <div class="col-md-4">
-                            {!! Form::select('does[]', $doeses, $does->name ?? NULL , ['class'=>'form-control select2']) !!}
-                        </div>
-                    </div>
-                    <div id="morePurpose" class=""></div>
-                    <button type="button" class="mt-2 btn btn-info add">Add</button>
 
                 {!! Form::close() !!}
             </div>

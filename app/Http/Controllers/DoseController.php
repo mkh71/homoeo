@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Does;
+use App\Models\Dose;
 use Illuminate\Http\Request;
 
-class DoesController extends Controller
+class DoseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class DoesController extends Controller
      */
     public function index()
     {
-        $doeses = Does::query()->latest()->limit(12)->get();
-        return view('does.does',compact('doeses'));
+        $doeses = Dose::query()->latest()->limit(12)->get();
+        return view('dose.dose',compact('doeses'));
     }
 
     /**
@@ -37,18 +37,18 @@ class DoesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request ,['name'=>'required']);
-        Does::query()->create(['name'=>$request->name]);
-        $doeses = Does::query()->latest()->limit(12)->get();
-        return redirect(route('does.index'))->with('success', 'Does has been deleted successfully');
+        Dose::query()->create(['name'=>$request->name]);
+        $doeses = Dose::query()->latest()->limit(12)->get();
+        return redirect(route('dose.index'))->with('success', 'Dose has been deleted successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Does  $does
+     * @param  \App\Models\Dose  $does
      * @return \Illuminate\Http\Response
      */
-    public function show(Does $does)
+    public function show(Dose $does)
     {
         //
     }
@@ -56,41 +56,41 @@ class DoesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Does  $does
+     * @param  \App\Models\Dose  $does
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $doeses = Does::query()->latest()->limit(12)->get();
-        $does = Does::query()->find($id);
-        return view('does.does',compact('does','id','doeses'));
+        $doeses = Dose::query()->latest()->limit(12)->get();
+        $does = Dose::query()->find($id);
+        return view('dose.dose',compact('does','id','doeses'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Does  $does
+     * @param  \App\Models\Dose  $does
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $this->validate($request ,['name'=>'required']);
-        Does::query()->where('id',$id)->update(['name'=>$request->name]);
-        $doeses = Does::query()->latest()->limit(12)->get();
-        return redirect(route('does.index'))->with('success', 'Does has been deleted successfully');
+        Dose::query()->where('id',$id)->update(['name'=>$request->name]);
+        $doeses = Dose::query()->latest()->limit(12)->get();
+        return redirect(route('dose.index'))->with('success', 'Dose has been deleted successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Does  $does
+     * @param  \App\Models\Dose  $does
      * @return \Illuminate\Http\Response
      */
     public function delete($id)
     {
-        $data = Does::query()->find($id);
+        $data = Dose::query()->find($id);
         $data->delete();
-        return redirect(route('does.index'))->with('success', 'Does has been deleted successfully');
+        return redirect(route('dose.index'))->with('success', 'Dose has been deleted successfully');
     }
 }

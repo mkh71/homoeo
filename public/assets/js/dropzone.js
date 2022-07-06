@@ -426,7 +426,7 @@ var Dropzone = function (_Emitter) {
         /**
          * The text that replaces the default message text it the browser is not supported.
          */
-        dictFallbackMessage: "Your browser does not support drag'n'drop file uploads.",
+        dictFallbackMessage: "Your browser dose not support drag'n'drop file uploads.",
 
         /**
          * The text that will be added before the fallback form.
@@ -500,7 +500,7 @@ var Dropzone = function (_Emitter) {
          * that gets invoked with the `files`, `xhr` and, if it's a chunked upload, `chunk` arguments. In case
          * of a function, this needs to return a map.
          *
-         * The default implementation does nothing for normal uploads, but adds relevant information for
+         * The default implementation dose nothing for normal uploads, but adds relevant information for
          * chunked uploads.
          *
          * This is the same as adding hidden input fields in the form element.
@@ -1441,7 +1441,7 @@ var Dropzone = function (_Emitter) {
       return this.options.renameFile(file);
     }
 
-    // Returns a form that can be used as fallback if the browser does not support DragnDrop
+    // Returns a form that can be used as fallback if the browser dose not support DragnDrop
     //
     // If the dropzone is already a form, only the input field and button are returned. Otherwise a complete form element is provided.
     // This code has to pass in IE7 :(
@@ -3027,7 +3027,7 @@ Dropzone.isBrowserSupported = function () {
 
 Dropzone.dataURItoBlob = function (dataURI) {
   // convert base64 to raw binary data held in a string
-  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that dose this
   var byteString = atob(dataURI.split(',')[1]);
 
   // separate out the mime component
