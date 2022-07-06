@@ -36,7 +36,7 @@ class PowerController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request ,['name'=>'required']);
+        $this->validate($request ,['name'=>'required|unique:powers']);
         Power::query()->create(['name'=>$request->name]);
         $powers = Power::query()->latest()->limit(12)->get();
         return redirect(route('power.index'))->with('success', 'Power has been deleted successfully');

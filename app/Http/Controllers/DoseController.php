@@ -36,7 +36,7 @@ class DoseController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request ,['name'=>'required']);
+        $this->validate($request ,['name'=>'required|unique:doses']);
         Dose::query()->create(['name'=>$request->name]);
         $doeses = Dose::query()->latest()->limit(12)->get();
         return redirect(route('dose.index'))->with('success', 'Dose has been deleted successfully');
