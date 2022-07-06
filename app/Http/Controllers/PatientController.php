@@ -66,9 +66,7 @@ class PatientController extends Controller
     public function update(Request $request, $id)
     {
         $pat = Patient::query()->find($id);
-        $complain = Complain::query()->where('details',$pat->last_complain)->latest()->first();
         $pat->update($request->all());
-        $complain->update(['details'=>$request->last_complain]);
         return redirect(route('home'))->with('success', 'Data Updated');
     }
 
