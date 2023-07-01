@@ -87,7 +87,7 @@
                                     <li class="{{request()->is('diseases*') ? 'active' : ''}}">
                                         <a href="{{route('diseases.index')}}">
                                             <i class="fas feather-check-circle"></i>
-                                            <span>Diseases</span>
+                                            <span>Complains</span>
                                         </a>
                                     </li>
 

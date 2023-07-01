@@ -28,13 +28,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-8">
+                            <div class="col-lg-12">
                                 <label>Description <span class="text-danger"></span></label>
-                                <textarea class="form-control row-cols-6 summernote" id="summernote" name="description">{!! $medicine->description ?? null !!}</textarea>
+                                <textarea class="form-control summernote" rows="6" id="summernote" name="description">{!! $medicine->description ?? null !!}</textarea>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-12">
                                 @if(isset($medicine->id) && $medicine->id == $id)
-                                    <div class="form-group btn-inline" style="margin-top: 100px">
+                                    <div class="form-group btn-inline" style="margin-top: 10px">
                                         <button type="submit" class="btn btn-block btn-warning">Update</button>
                                         <button type="button" class="btn btn-block btn-info" onclick="history.back()">Cancel</button>
                                     </div>
