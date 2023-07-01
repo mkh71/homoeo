@@ -37,6 +37,10 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::resource('power','PowerController');
     Route::resource('dose','DoseController');
     Route::resource('medicine','MedicineController');
+    Route::resource('complains','ComplainController');
+    Route::resource('diseases','DiseaseController');
+    Route::get('disease-delete/{id}','DiseaseController@erase')->name('disease.delete');
+    Route::post('medicineByDisease','HomeController@medicineByDisease')->name('medicineByDisease');
 
     Route::get('prescription', function (){
        return view('prescription.index');

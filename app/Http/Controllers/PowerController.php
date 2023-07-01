@@ -14,7 +14,7 @@ class PowerController extends Controller
      */
     public function index()
     {
-        $powers = Power::query()->latest()->limit(12)->get();
+        $powers = Power::query()->latest()->get();
        return view('power.power',compact('powers'));
     }
 

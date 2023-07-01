@@ -29,8 +29,10 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
+        $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
+
         $pat = Patient::query()->create($request->all());
-        $com = Complain::query()->create(['details' => $request->last_complain, 'patient_id' => $pat->id]);
+        Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
         foreach ($request->medicine as $key => $item) {
             PurposeMedicine::query()->create([
                 'user_id' => $pat->id,
@@ -60,7 +62,6 @@ class PatientController extends Controller
         $powers = Power::get();
         $medicines = Medicine::get();
         return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','data','id','doses','powers','medicines'));
-
     }
 
     public function update(Request $request, $id)
@@ -115,10 +116,11 @@ class PatientController extends Controller
 
     public function complain(Request $request){
         $pat = Patient::query()->find($request->id);
-        $pat->update(['last_complain'=>$request->last_complain]);
+        $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
+        $pat->update(['last_complain'=>$com]);
         $complain = Complain::query()->create([
             'patient_id' => $request->id,
-            'details' => $request->last_complain,
+            'details' => $com,
         ]);
 
         foreach ($request->medicine as $key => $item) {

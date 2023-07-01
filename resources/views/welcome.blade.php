@@ -65,17 +65,24 @@
                 <!-- Appointment Tab -->
                 <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                     <li class="nav-item">
-                        <a class="nav-link @if(!isset($id))active @endif" href="#upcoming-appointments"
+                        <a class="nav-link @if(!isset($id)) active @else disabled @endif " href="#upcoming-appointments"
                            data-bs-toggle="tab">Patient List</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @if(isset($id))active @endif" href="#today-appointments"
-                           data-bs-toggle="tab">Add Patient</a>
+                        <a class="nav-link @if(isset($id)) active @endif" href="#today-appointments"
+                           data-bs-toggle="tab"> @if(!isset($id))
+                                Add Patient
+                            @else
+                                Update Patient
+                            @endif </a>
                     </li>
-                    <li class="nav-item pull-right">
-                        <input type="search" placeholder="Search Name/Serial/Mobile..."
-                               class="form-control form-control-lg" id="search" style="width: 400px">
-                    </li>
+                    @if(!isset($id))
+                        <li class="nav-item pull-right">
+                            <input type="search" placeholder="Search Name/Serial/Mobile..."
+                                   class="form-control form-control-lg" id="search"
+                                   style="width: 500px; float: right !important;">
+                        </li>
+                    @endif
                 </ul>
                 <!-- /Appointment Tab -->
 
@@ -111,7 +118,7 @@
                                                 <td>{{$pat->age}} Yr.</td>
                                                 <td>{{$pat->mobile}}</td>
                                                 <td>{{$pat->address}}</td>
-                                                <td data-id="{{$pat->id}}" class="complain">{{$pat->last_complain}}</td>
+                                                <td data-id="{{$pat->id}}" class="complain" style="cursor: pointer">{{$pat->last_complain}}</td>
                                                 <td data-id="{{$pat->id}}" class="dues">{{$pat->dues}}</td>
                                                 <td class="text-end">
                                                     <div class="table-action">
@@ -196,38 +203,38 @@
                                         </div>
                                     </div>
                                     @if(!isset($id))
-                                        <table class="table-responsive table-striped" id="medTable">
-                                            <tr>
-                                                <td colspan="3">
-                                                    <div class="col-md-12">
-                                                        <div class="form-group">
-                                                            <label>Complain</label>
-                                                            <textarea row="3" type="text" class="form-control"
-                                                                      name='last_complain'>{{ $data->last_complain ?? '' }}</textarea>
-                                                        </div>
+                                        <table class="table table-borderless table-responsive" id="medTable">
+                                            <tr style="border: 0">
+                                                <td colspan="3" style="border: 0; margin: 0">
+                                                    <div class="form-group">
+                                                        <label>Complain</label>
+                                                        <select name="last_complain[]" required
+                                                                class="form-control last_complain"
+                                                                placeholder="Pick complain(s)" multiple="multiple">
+                                                            @foreach($diseases as $item)
+                                                                <option value="{{$item->name}}"
+                                                                        data-id="{{$item->id}}">{{$item->name}}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="position: absolute;z-index: 99999;right: -20px;">
+                                                <td style="position: absolute; z-index: 99999; right: -20px; border: 0">
                                                     <button type="button" class="btn btn-warning add" id="plus">
                                                         <i class="fa fa-plus-circle"></i>
                                                     </button>
                                                 </td>
                                             </tr>
                                             <tr class="newRow form-group">
-                                                <td>
-                                                    <select name="medicine[]" id="select-state" required
-                                                            id="medicine_id"
-                                                            placeholder="Pick a state...">
-                                                        <option value="" selected>Select...</option>
-                                                        @foreach($medicines as $item)
-
-                                                            <option value="{{$item->id}}">{{$item->name}}</option>
-                                                        @endforeach
-                                                    </select>
+                                                <td style="border: 0; width: 35%;">
+                                                    <span class="disease_medicines">
+                                                        <select name="medicine[]" id="" class="form-control" required>
+                                                        <option value="" selected>Select medicines</option>
+                                                        </select>
+                                                    </span>
                                                 </td>
-                                                <td>
+                                                <td style="border: 0; width: 30%;">
                                                     <select name="power[]" id="" class="form-control" required>
                                                         <option value="" selected>Select...</option>
                                                         @foreach($powers as $item)
@@ -236,7 +243,7 @@
                                                     </select>
                                                     {{--                                                {!! Form::select('power[]', $powers, NULL , ['class'=>'form-control', 'placeholder'=>"Select Power"]) !!}--}}
                                                 </td>
-                                                <td>
+                                                <td style="border: 0; width: 35%;">
                                                     <select name="dose[]" id="" class="form-control" required>
                                                         <option value="" selected>Select...</option>
                                                         @foreach($doses as $item)
@@ -245,7 +252,6 @@
                                                     </select>
                                                     {{--                                                {!! Form::select('dose[]', $doeses, NULL , ['class'=>'form-control', 'placeholder'=>"Select Dose"]) !!}--}}
                                                 </td>
-
                                             </tr>
                                         </table>
 
@@ -257,6 +263,11 @@
                                             <button type="submit" class="btn btn-block btn-primary pt-10">
                                                 Save Patient
                                             </button>
+                                            @if(isset($id))
+                                                <a href="{{route('home')}}" class="btn btn-warning pt-10">
+                                                    Cancel
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -276,7 +287,7 @@
     {{--    patient edit modal start--}}
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 {!! Form::open(['route'=>['patients.complain',0], 'method'=>'post','id'=>'patient_form']) !!}
                 <div class="modal-header">
@@ -292,26 +303,25 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Purpose</label>
-                                            <textarea class="form-control" name="last_complain"></textarea>
-                                            <div class="col-md-2 plusBtn">
-                                                <button type="button" class="btn btn-warning addRow ">
-                                                    <i class="fa fa-plus-circle"></i>
-                                                </button>
+                                            <div class="form-group">
+                                                <select name="last_complain[]" required
+                                                        class="form-control last_complain"
+                                                        placeholder="Pick complain(s)" multiple="multiple">
+                                                    @foreach($diseases as $item)
+                                                        <option value="{{$item->name}}"
+                                                                data-id="{{$item->id}}">{{$item->name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="row mt-2">
                                                 <div class="col-md-12">
                                                     <div class="row appendRow">
                                                         <div class="col-md-4">
-                                                            <select name="medicine[]" id="select-state" required
-                                                                    id="medicine_id"
-                                                                    placeholder="Pick a Medicine...">
-                                                                <option value="" selected>Select...</option>
-                                                                @foreach($medicines as $item)
-
-                                                                    <option
-                                                                        value="{{$item->id}}">{{$item->name}}</option>
-                                                                @endforeach
-                                                            </select>
+                                                            <span class="disease_medicines">
+                                                                <select name="medicine[]" id="" class="form-control" required>
+                                                                    <option value="" selected>Select medicines</option>
+                                                                </select>
+                                                            </span>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <select name="power[]" id="select-state" required
@@ -319,7 +329,6 @@
                                                                     placeholder="Pick a Power...">
                                                                 <option value="" selected>Select...</option>
                                                                 @foreach($powers as $item)
-
                                                                     <option
                                                                         value="{{$item->id}}">{{$item->name}}</option>
                                                                 @endforeach
@@ -337,9 +346,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-2 addbtn">
-
                                                         </div>
-
                                                     </div>
                                                 </div>
 
@@ -354,15 +361,22 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div class="plusBtn">
+                                    <button type="button" class="btn btn-warning addRow ">
+                                        <i class="fa fa-plus-circle">Add More Medicine</i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Complain</button>
+                    <div class="btn-group">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Complain</button>
+                    </div>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -382,28 +396,36 @@
                 url: "{{route('patients.search')}}",
                 data: {word: word, _token: "{{csrf_token()}}"},
                 success: function (res) {
+                    console.log(res);
                     $('#ptn_tbl').html(res);
                 }
             });
         });
+        $(document).on('change', '.last_complain', function () {
+            var name = $(this).val();
+            var id = $(this).data('id');
+            $.ajax({
+                method: 'post',
+                url: '{{route('medicineByDisease')}}',
+                data: {id: id, name: name, _token: "{{csrf_token()}}"},
+                success: function (response) {
+                    $(".disease_medicines").html(response);
+                }
+            })
+        })
         $(document).on('click', '.complain', function () {
-
             $('#exampleModal').modal('show');
             var id = $(this).attr('data-id');
             $('#user_id').val(id);
 
         })
         $(document).on('click', '#addPurpose', function () {
-
             $('#addMadicine').modal('show');
             //var id = $(this).attr('data-id');
             //$('#user_id').val(id);
         })
-        $(document).on('keyUp', '#medicine_id', function () {
-            alert()
-        });
-        $(document).on('click', '#addPurpose', function () {
 
+        $(document).on('click', '#addPurpose', function () {
             $('#addMadicine').modal('show');
             //var id = $(this).attr('data-id');
             //$('#user_id').val(id);
@@ -432,8 +454,6 @@
             $('.addbtn').html('<button type="button" class="btn btn-danger btn-sm deleteRow"> ' +
                 '<i class="fa fa-times-circle"></i>' +
                 '</button>')
-
         })
-
     </script>
 @endsection

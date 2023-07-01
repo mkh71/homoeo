@@ -87,16 +87,16 @@
                                             <td>{{$com->details}}</td>
                                             <td>
                                                 @foreach($com->medicines as $medicine)
-                                                    <table class="">
+                                                    <table class="table-responsive, table-striped">
                                                         <tr>
-                                                            <td width="50%">{{$medicine->medicine->name}}</td>
+                                                            <td width="45%">{{$medicine->medicine->name}}</td>
                                                             <td width="10%">({{$medicine->power->name}}) </td>
-                                                            <td width="40%">: {{ $medicine->dose->name}}</td>
+                                                            <td width="45%">: {{ $medicine->dose->name}}</td>
                                                         </tr>
                                                     </table>
                                                 @endforeach
                                             </td>
-                                            <td>{{ $com->created_at}}</td>
+                                            <td>{{ date("d F, Y", strtotime($com->created_at))}} <br>({{ $com->updated_at->diffForHumans() }})</td>
                                         </tr>
                                     @empty
 

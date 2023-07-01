@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 {{--    data table link--}}
     <link href="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @yield('css')
 </head>
 <body>
@@ -36,7 +38,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                <div class="col-md-3 col-lg-3 col-xl-3 theiaStickySidebar">
 
                     <!-- Profile Sidebar -->
                     <div class="profile-sidebar">
@@ -82,6 +84,12 @@
                                             <span>Medicine</span>
                                         </a>
                                     </li>
+                                    <li class="{{request()->is('diseases*') ? 'active' : ''}}">
+                                        <a href="{{route('diseases.index')}}">
+                                            <i class="fas feather-check-circle"></i>
+                                            <span>Diseases</span>
+                                        </a>
+                                    </li>
 
                                     <li>
                                         <a href="{{route('backup')}}">
@@ -110,7 +118,7 @@
 
                 </div>
 
-                <div class="col-md-7 col-lg-8 col-xl-9">
+                <div class="col-md-9 col-lg-9 col-xl-9">
                     @yield('content')
                 </div>
             </div>
@@ -209,6 +217,8 @@
 <!-- Feather Icon JS -->
 <script src="{{asset('assets')}}/js/feather.min.js"></script>
 <script src="{{asset('assets')}}/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @yield('js')
 
 <script type="text/javascript">
@@ -216,9 +226,11 @@
     toastr.success("{{ session('status') }}")
     @endif
     $(document).ready(function() {
+        $('#summernote').summernote();
         $('.dataTable').DataTable();
-        bsCustomFileInput.init()
-        console.log('done');
+        $('.select2').select2({
+            placeholder: 'Select Item(s)'
+        });
     })
     @if(session('success'))
     swal({

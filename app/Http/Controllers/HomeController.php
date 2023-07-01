@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Disease;
 use App\Models\Patient;
 use App\Models\Dose;
 use App\Models\Power;
@@ -35,7 +36,20 @@ class HomeController extends Controller
         $doses = Dose::get();
         $powers = Power::get();
         $medicines = Medicine::get();
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','doses','powers','medicines'));
+        $diseases = Disease::all();
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','doses','powers','medicines', 'diseases'));
+    }
+    public function medicineByDisease(Request $request)
+    {
+        $diseases = Disease::query()->whereIn('name', $request->name)->get();
+        $data = '<select name="medicine[]" required class="form-control select2" id="medicine_id" placeholder="Pick Medicines">';
+        foreach ($diseases as $disease){
+            foreach ($disease->medicines as $item) {
+                $data .= '<option value="' . $item->id . '">' . $item->name . '</option>';
+            }
+        }
+        $data .= '</select>';
+        return $data;
     }
 
     public function backup(){

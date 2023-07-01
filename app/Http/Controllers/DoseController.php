@@ -9,7 +9,7 @@ class DoseController extends Controller
 {
     public function index()
     {
-        $doeses = Dose::query()->latest()->limit(12)->get();
+        $doeses = Dose::query()->latest()->get();
         return view('dose.dose',compact('doeses'));
     }
 
@@ -32,7 +32,7 @@ class DoseController extends Controller
 
     public function edit($id)
     {
-        $doeses = Dose::query()->latest()->limit(12)->get();
+        $doeses = Dose::query()->latest()->get();
         $does = Dose::query()->find($id);
         return view('dose.dose',compact('does','id','doeses'));
     }
@@ -41,7 +41,7 @@ class DoseController extends Controller
     {
         $this->validate($request ,['name'=>'required']);
         Dose::query()->where('id',$id)->update(['name'=>$request->name]);
-        $doeses = Dose::query()->latest()->limit(12)->get();
+        $doeses = Dose::query()->latest()->get();
         return redirect(route('dose.index'))->with('success', 'Dose has been deleted successfully');
     }
 
