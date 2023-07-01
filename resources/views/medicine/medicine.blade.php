@@ -39,7 +39,7 @@
                                         <button type="button" class="btn btn-block btn-info" onclick="history.back()">Cancel</button>
                                     </div>
                                 @else
-                                    <button type="submit" class="btn btn-block btn-primary" style="margin-top: 100px">Save</button>
+                                    <button type="submit" class="btn btn-block btn-primary" style="margin-top: 10px">Save</button>
                                 @endif
                             </div>
 
