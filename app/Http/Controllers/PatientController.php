@@ -39,11 +39,11 @@ class PatientController extends Controller
             'dues' => $request->dues,
             'last_complain' => $com,
         ]);
-        Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
+        $complain = Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
         foreach ($request->medicine as $key => $item) {
             PurposeMedicine::query()->create([
                 'user_id' => $pat->id,
-                'complain_id' => $com->id,
+                'complain_id' => $complain->id,
                 'medicine_id' => $item,
                 'power_id' => $request->power[$key],
                 'dose_id' => $request->dose[$key],
