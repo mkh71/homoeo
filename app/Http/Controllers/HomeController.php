@@ -59,7 +59,7 @@ class HomeController extends Controller
         $database_name = env('DB_DATABASE');
 
         // Get connection object and set the charset
-        $conn = mysqli_connect('127.0.0.1', 'root', null, 'homoeo');
+        $conn = mysqli_connect('127.0.0.1', 'root', null, 'jahed');
         $conn->set_charset("utf8");
 
 
