@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Complain;
+use App\Models\Disease;
 use App\Models\Dose;
 use App\Models\Medicine;
 use App\Models\Patient;
@@ -19,7 +20,8 @@ class PatientController extends Controller
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues'));
+        $diseases = Disease::all();
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues', 'diseases'));
     }
 
     public function create()
@@ -68,7 +70,8 @@ class PatientController extends Controller
         $doses = Dose::get();
         $powers = Power::get();
         $medicines = Medicine::get();
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','data','id','doses','powers','medicines'));
+        $diseases = Disease::all();
+        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','data','id','doses','powers','medicines', 'diseases'));
     }
 
     public function update(Request $request, $id)

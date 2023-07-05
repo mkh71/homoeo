@@ -126,22 +126,11 @@
                                                            class="btn btn-sm bg-info-light" id="edit">
                                                             <i class="far fa-pencil">Edit</i>
                                                         </a>
-
-                                                        {{--                                                        <a href="javascript:void(0);"--}}
-                                                        {{--                                                           class="btn btn-sm bg-success-light">--}}
-                                                        {{--                                                            <i class="fas fa-check"></i> Accept--}}
-                                                        {{--                                                        </a>--}}
-                                                        {{--                                                        <a href="javascript:void(0);"--}}
-                                                        {{--                                                           class="btn btn-sm bg-danger-light">--}}
-                                                        {{--                                                            <i class="fas fa-times"></i> Cancel--}}
-                                                        {{--                                                        </a>--}}
                                                     </div>
                                                 </td>
                                             </tr>
                                         @empty
-
                                         @endforelse
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -164,15 +153,15 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Serial No. <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control" name="serial"
-                                                   value="{{$data->serial ?? ''}}">
+                                            <input type="number" class="form-control"
+                                                   name="serial" value="{{$data->serial ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Patient Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="name"
-                                                   value="{{$data->name ?? ''}}">
+                                            <input type="text" class="form-control"
+                                                   name="name" value="{{$data->name ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -184,22 +173,22 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Dues</label>
-                                            <input type="number" class="form-control" name="dues"
-                                                   value="{{$data->dues ?? ''}}">
+                                            <input type="number" class="form-control"
+                                                   name="dues" value="{{$data->dues ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Mobile Number</label>
-                                            <input type="text" class="form-control" name="mobile"
-                                                   value="{{$data->mobile ?? ''}}">
+                                            <input type="text" class="form-control"
+                                                   name="mobile" value="{{$data->mobile ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" class="form-control" name="address"
-                                                   value="{{$data->address ?? ''}}">
+                                            <input type="text" class="form-control"
+                                                   name="address" value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
                                     @if(!isset($id))
@@ -207,9 +196,9 @@
                                             <tr style="border: 0">
                                                 <td colspan="3" style="border: 0; margin: 0">
                                                     <div class="form-group">
-                                                        <label>Complain</label>
+                                                        <label>Complain</label><br>
                                                         <select name="last_complain[]" required
-                                                                class="form-control last_complain"
+                                                                class="form-control last_complain select2" style="width: 100%"
                                                                 placeholder="Pick complain(s)" multiple="multiple">
                                                             @foreach($diseases as $item)
                                                                 <option value="{{$item->name}}"
@@ -219,24 +208,15 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td style="position: absolute; z-index: 99999; right: -20px; border: 0">
-                                                    <button type="button" class="btn btn-warning add" id="plus">
-                                                        <i class="fa fa-plus-circle"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
                                             <tr class="newRow form-group">
                                                 <td style="border: 0; width: 35%;">
-                                                    <span class="disease_medicines">
-                                                        <select name="medicine[]" id="" class="form-control" required>
+                                                    <select name="medicine[]" class="form-control select2 disease_medicines" required>
                                                         <option value="" selected>Select medicines</option>
-                                                        </select>
-                                                    </span>
+                                                    </select>
                                                 </td>
                                                 <td style="border: 0; width: 30%;">
-                                                    <select name="power[]" id="" class="form-control" required>
-                                                        <option value="" selected>Select...</option>
+                                                    <select name="power[]" class="form-control" required>
+                                                        <option value="" selected>Select Power</option>
                                                         @foreach($powers as $item)
                                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                                         @endforeach
@@ -244,8 +224,8 @@
                                                     {{--                                                {!! Form::select('power[]', $powers, NULL , ['class'=>'form-control', 'placeholder'=>"Select Power"]) !!}--}}
                                                 </td>
                                                 <td style="border: 0; width: 35%;">
-                                                    <select name="dose[]" id="" class="form-control" required>
-                                                        <option value="" selected>Select...</option>
+                                                    <select name="dose[]" class="form-control" required>
+                                                        <option value="" selected>Select Dose</option>
                                                         @foreach($doses as $item)
                                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                                         @endforeach
@@ -254,10 +234,14 @@
                                                 </td>
                                             </tr>
                                         </table>
-
                                     @endif
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-6 pull-right">
+                                        <button type="button" class="btn btn-warning add" id="plus">
+                                            <i class="fa fa-plus-circle"> Add More Medicine</i>
+                                        </button>
+                                    </div>
                                     <div class="col-md-6 pull-right">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-block btn-primary pt-10">
@@ -277,11 +261,9 @@
                     </div>
                 </div>
                 <!-- /Today Appointment Tab -->
-
             </div>
         </div>
     </div>
-
 @stop
 @section('modal')
     {{--    patient edit modal start--}}
@@ -302,11 +284,11 @@
                                     <input type="hidden" name="id" id="user_id" value="">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Purpose</label>
+                                            <label>Purpose</label><br>
                                             <div class="form-group">
                                                 <select name="last_complain[]" required
-                                                        class="form-control last_complain"
-                                                        placeholder="Pick complain(s)" multiple="multiple">
+                                                        class="form-control last_complain select2"
+                                                        placeholder="Pick complain(s)" multiple="multiple" style="width: 100%">
                                                     @foreach($diseases as $item)
                                                         <option value="{{$item->name}}"
                                                                 data-id="{{$item->id}}">{{$item->name}}</option>
@@ -317,31 +299,23 @@
                                                 <div class="col-md-12">
                                                     <div class="row appendRow">
                                                         <div class="col-md-4">
-                                                            <span class="disease_medicines">
-                                                                <select name="medicine[]" id="" class="form-control" required>
+                                                                <select name="medicine[]" class="form-control disease_medicines select2" required>
                                                                     <option value="" selected>Select medicines</option>
                                                                 </select>
-                                                            </span>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <select name="power[]" id="select-state" required
-                                                                    id="medicine_id"
-                                                                    placeholder="Pick a Power...">
-                                                                <option value="" selected>Select...</option>
+                                                            <select name="power[]" required>
+                                                                <option value="" selected>Select Power</option>
                                                                 @foreach($powers as $item)
-                                                                    <option
-                                                                        value="{{$item->id}}">{{$item->name}}</option>
+                                                                    <option value="{{$item->id}}">{{$item->name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
                                                         <div class="col-md-3">
-                                                            <select name="dose[]" id="select-state" required
-                                                                    id="medicine_id"
-                                                                    placeholder="Pick a Dose...">
+                                                            <select name="dose[]" required>
                                                                 <option value="" selected>Select...</option>
                                                                 @foreach($doses as $item)
-                                                                    <option
-                                                                        value="{{$item->id}}">{{$item->name}}</option>
+                                                                    <option value="{{$item->id}}">{{$item->name}}</option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
@@ -431,17 +405,12 @@
             //$('#user_id').val(id);
         })
 
-        $(document).ready(function () {
-            $('select').selectize({
-                sortField: 'text'
-            });
-        });
         $('.add').click(function () {
             var T = document.getElementById('medTable');
             var R = document.querySelectorAll('tbody .newRow')[0];
             var C = R.cloneNode(true);
             T.appendChild(C);
-            C.insertCell(3).innerHTML = '<button type="button" class="btn btn-danger btn-sm deleteRow"> ' +
+            C.insertCell(3).innerHTML = '<button type="button" class="btn-danger btn-sm deleteRow"> ' +
                 '<i class="fa fa-times-circle"></i>' +
                 '</button>'
         })
@@ -451,9 +420,26 @@
         });
         $(document).on('click', '.addRow', function () {
             $('.appendRow').clone().first().appendTo('.addCloneData').after();
-            $('.addbtn').html('<button type="button" class="btn btn-danger btn-sm deleteRow"> ' +
+            $('.addbtn').html('<button type="button" class="btn-sm btn-danger deleteRow"> ' +
                 '<i class="fa fa-times-circle"></i>' +
                 '</button>')
-        })
+        });
+        function allergiesPlus() {
+            console.log("hello");
+            count3++;
+            var data =
+                ` <tr id="allergiesCount${count3}">
+                     <td><input class="form-control " type="text" name="allergiesProduct[]" placeholder="Product" /></td>
+                      <td><input class="form-control" type="text" name="allergiesReaction[]" placeholder="Reaction"/></td>
+                      <td><input class="form-control datepicker${count3} " type="text" name="allergiesReactionDate[]" placeholder="dd-mm-yy" /></td>
+                    <td style="display:flex;"> <button type="button" onclick="allergiesMinus(count3)" class="btn btn-danger bi-trash"></button> </td>
+                </tr>`;
+            $("#allergies").append(data);
+
+            flatpickr(`.datepicker${count3}`,{
+                dateFormat: "Y-m-d",
+            });
+        }
+
     </script>
 @endsection

@@ -28,6 +28,12 @@
     <link href="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+        body{
+            font-size: 16px !important;
+            font-weight: 550 !important;
+        }
+    </style>
     @yield('css')
 </head>
 <body>
@@ -228,9 +234,7 @@
     $(document).ready(function() {
         $('#summernote').summernote();
         $('.dataTable').DataTable();
-        $('.select2').select2({
-            placeholder: 'Select Item(s)'
-        });
+        $('.select2').select2();
     })
     @if(session('success'))
     swal({

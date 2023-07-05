@@ -42,13 +42,12 @@ class HomeController extends Controller
     public function medicineByDisease(Request $request)
     {
         $diseases = Disease::query()->whereIn('name', $request->name)->get();
-        $data = '<select name="medicine[]" required class="form-control select2" id="medicine_id" placeholder="Pick Medicines">';
+        $data = '';
         foreach ($diseases as $disease){
             foreach ($disease->medicines as $item) {
                 $data .= '<option value="' . $item->id . '">' . $item->name . '</option>';
             }
         }
-        $data .= '</select>';
         return $data;
     }
 
