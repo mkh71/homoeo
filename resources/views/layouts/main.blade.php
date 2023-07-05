@@ -31,7 +31,7 @@
     <style>
         body{
             font-size: 16px !important;
-            font-weight: 55 0 !important;
+            font-weight: 550 !important;
         }
     </style>
     @yield('css')

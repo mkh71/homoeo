@@ -210,7 +210,7 @@
                                             </tr>
                                             <tr class="newRow form-group">
                                                 <td style="border: 0; width: 35%;">
-                                                    <select name="medicine[]" class="form-control select2 disease_medicines" required>
+                                                    <select name="medicine[]" class="form-control disease_medicines" required>
                                                         <option value="" selected>Select medicines</option>
                                                     </select>
                                                 </td>
@@ -299,7 +299,7 @@
                                                 <div class="col-md-12">
                                                     <div class="row appendRow">
                                                         <div class="col-md-4">
-                                                                <select name="medicine[]" class="form-control disease_medicines select2" required>
+                                                                <select name="medicine[]" class="form-control disease_medicines" required>
                                                                     <option value="" selected>Select medicines</option>
                                                                 </select>
                                                         </div>

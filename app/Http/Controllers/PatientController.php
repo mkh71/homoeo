@@ -32,6 +32,7 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
+        dd($request->all());
         $pat = Patient::query()->create([
             'serial' => $request->serial,
             'name' => $request->name,

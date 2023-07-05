@@ -47,21 +47,15 @@ class HomeController extends Controller
             foreach ($disease->medicines as $item) {
                 $data .= '<option value="' . $item->id . '">' . $item->name . '</option>';
             }
+
         }
         return $data;
     }
 
     public function backup(){
-        // Database configuration
-        $host = env('DB_HOST');
-        $username = env('DB_USERNAME');
-        $password = env('DB_PASSWORD');
-        $database_name = env('DB_DATABASE');
-
         // Get connection object and set the charset
-        $conn = mysqli_connect('127.0.0.1', 'root', null, 'jahed');
+        $conn = mysqli_connect('127.0.0.1', 'root', null, 'nhp');
         $conn->set_charset("utf8");
-
 
         // Get All Table Names From the Database
         $tables = array();
