@@ -75,7 +75,7 @@
                                     <tr class="table-active">
                                         <th>#</th>
                                         <th>purpose</th>
-                                        <th>Medicine (Power) : Does</th>
+                                        <th>Medicine (Power) : Does :PackSize :Qty</th>
                                         <th>Date</th>
                                     </tr>
                                     </thead>
@@ -89,9 +89,11 @@
                                                 @foreach($com->medicines as $medicine)
                                                     <table class="table-responsive, table-striped">
                                                         <tr>
-                                                            <td width="45%">{{$medicine->medicine->name}}</td>
-                                                            <td width="10%">({{$medicine->power->name}}) </td>
-                                                            <td width="45%">: {{ $medicine->dose->name}}</td>
+                                                            <td width="40%">{{@$medicine->medicine->name}}</td>
+                                                            <td width="10%">({{@$medicine->power->name}}) </td>
+                                                            <td width="20%">: {{ @$medicine->dose->name}}</td>
+                                                            <td width="20%">: {{ $medicine->pack_size}}</td>
+                                                            <td width="10%">: {{ $medicine->qty}}</td>
                                                         </tr>
                                                     </table>
                                                 @endforeach

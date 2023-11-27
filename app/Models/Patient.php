@@ -17,6 +17,9 @@ class Patient extends Model
         'age',
         'dues',
         'last_complain',
+        'total',
+        'paid',
+        'date',
     ];
 
     public function complains(){

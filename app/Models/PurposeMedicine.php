@@ -13,7 +13,9 @@ class PurposeMedicine extends Model
         'complain_id',
         'medicine_id',
         'power_id',
-        'dose_id'
+        'dose_id',
+        'pack_size',
+        'qty'
     ];
     public function user(){
         return $this->belongsTo(User::class);

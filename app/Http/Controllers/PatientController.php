@@ -7,10 +7,12 @@ use App\Models\Disease;
 use App\Models\Dose;
 use App\Models\Medicine;
 use App\Models\Patient;
+use App\Models\PatientPayment;
 use App\Models\Power;
 use App\Models\PurposeMedicine;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
 {
@@ -31,27 +33,51 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
-        $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
-        $pat = Patient::query()->create([
-            'serial' => $request->serial,
-            'name' => $request->name,
-            'mobile' => $request->mobile,
-            'address' => $request->address,
-            'age' => $request->age,
-            'dues' => $request->dues,
-            'last_complain' => $com,
-        ]);
-        $complain = Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
-        foreach ($request->medicine as $key => $item) {
-            PurposeMedicine::query()->create([
-                'user_id' => $pat->id,
-                'complain_id' => $complain->id,
-                'medicine_id' => $item,
-                'power_id' => $request->power[$key],
-                'dose_id' => $request->dose[$key],
+        try {
+            DB::beginTransaction();
+            $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
+            $pat = Patient::query()->create([
+                'serial' => $request->serial,
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+                'address' => $request->address,
+                'age' => $request->age,
+                'total' => $request->total,
+                'paid' => $request->paid,
+                'dues' => $request->total - $request->paid,
+                'last_complain' => $com,
+                'date' => $request->date,
             ]);
+
+            $pay = PatientPayment::query()
+                ->create(
+                    [
+                        'patient_id'=>$pat->id,
+                        'total' => $request->total,
+                        'paid' => $request->paid,
+                        'dues' => $request->total - $request->paid,
+                    ]);
+            $complain = Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
+            foreach ($request->medicine as $key => $item) {
+                PurposeMedicine::query()->create([
+                    'user_id' => $pat->id,
+                    'complain_id' => $complain->id,
+                    'medicine_id' => $item,
+                    'power_id' => $request->power[$key],
+                    'dose_id' => $request->dose[$key],
+                    'qty' => $request->qty[$key],
+                    'pack_size' => $request->pack_size[$key]
+                ]);
+                $med = Medicine::query()->findOrFail($item);
+                $med->update(['qty'=>$med->qty - $request->qty[$key]]);
+            }
+            DB::commit();
+            return redirect()->back()->with('success', 'Patient has been created successfully');
+        }catch ( \Throwable $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Patient Create fail');
         }
-        return redirect()->back()->with('success', 'Patient has been created successfully');
+
     }
 
     public function show($id)
@@ -84,9 +110,32 @@ class PatientController extends Controller
             'mobile' => $request->mobile,
             'address' => $request->address,
             'age' => $request->age,
-            'dues' => $request->dues,
-            'last_complain' => $com,
+            'total' => $request->total,
+            'paid' => $request->paid,
+            'dues' => $request->total - $request->paid,
+//            'last_complain' => $com,
+            'date' => $request->date,
         ]);
+       $pay =  PatientPayment::query()
+            ->where('patient_id',$pat->id)
+            ->latest()
+            ->first();
+        if ($pay == null){
+            PatientPayment::query()->create([
+                    'patient_id'=>$pat->id,
+                    'total' => $request->total,
+                    'paid' => $request->paid,
+                    'dues' => $request->total - $request->paid,
+            ]);
+        }else{
+            $pay->update([
+                    'patient_id'=>$pat->id,
+                    'total' => $request->total,
+                    'paid' => $request->paid,
+                    'dues' => $request->total - $request->paid,
+                ]);
+        }
+
         return redirect(route('home'))->with('success', 'Data Updated');
     }
 
@@ -134,25 +183,55 @@ class PatientController extends Controller
     }
 
     public function complain(Request $request){
-        $pat = Patient::query()->find($request->id);
-        $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
-        $pat->update(['last_complain'=>$com]);
-        $complain = Complain::query()->create([
-            'patient_id' => $request->id,
-            'details' => $com,
-        ]);
 
-        foreach ($request->medicine as $key => $item) {
-            PurposeMedicine::query()->create([
-                'user_id' => $pat->id,
-                'complain_id' => $complain->id,
-                'medicine_id' => $item,
-                'power_id' => $request->power[$key],
-                'dose_id' => $request->dose[$key],
+        try {
+            DB::beginTransaction();
+            $pat = Patient::query()->find($request->id);
+            $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
+            $pat->update(
+                [
+                    'last_complain'=>$com,
+                    'total' => $request->total,
+                    'paid' => $request->paid,
+                    'dues' => $request->total - $request->paid,
+                    'date' => $request->date,
+                ]);
+            $complain = Complain::query()->create([
+                'patient_id' => $request->id,
+                'details' => $com,
             ]);
+
+            $pay = PatientPayment::query()
+                ->create(
+                    [
+                        'patient_id'=>$pat->id,
+                        'total' => $request->total,
+                        'paid' => $request->paid,
+                        'dues' => $request->total - $request->paid,
+                    ]);
+
+            foreach ($request->medicine as $key => $item) {
+                PurposeMedicine::query()->create([
+                    'user_id' => $pat->id,
+                    'complain_id' => $complain->id,
+                    'medicine_id' => $item,
+                    'power_id' => $request->power[$key],
+                    'dose_id' => $request->dose[$key],
+                    'pack_size' => $request->pack_size[$key],
+                    'qty' => $request->qty[$key],
+                ]);
+                $med = Medicine::query()->findOrFail($item);
+                $med->update(['qty'=>$med->qty - $request->qty[$key]]);
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', "Complain has been added successfully");
+        }catch ( \Throwable $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Complain Create fail');
         }
 
-        return redirect()->back()->with('success', "Complain has been added successfully");
+
     }
 
     public function profile($id){
@@ -166,6 +245,22 @@ class PatientController extends Controller
             ->get();
 
        return view('patient-profile',compact('patient','complain'));
+    }
+
+    public function dateSearch(Request $request){
+        session()->put('search_date',$request->date);
+        return redirect()->route('searchByDate');
+
+    }
+    public function date(){
+        $date = session()->get('search_date');
+        $patients = Patient::query()->where('created_at','like',$date.'%')->get();
+        $totalPatient = Patient::query()->where('created_at','like',$date.'%')->get()->count();
+        $todayPatient = Patient::query()->where('created_at','like',$date.'%')->count();
+        $totalDues = Patient::query()->where('created_at','like',$date.'%')->get()->sum('dues');
+        $totalSale = Patient::query()->where('created_at','like',$date.'%')->get();
+        $diseases = Disease::all();
+        return view('patient.search-date',compact('patients','totalPatient','todayPatient','totalDues', 'diseases','date','totalSale'));
     }
 
 }

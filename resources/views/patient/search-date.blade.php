@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar1">
                                     <div class="circle-graph1" data-percent="75">
@@ -15,14 +15,14 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>Today Sale</h6>
-                                    <h3>{{todayPatient()->sum('paid')}}</h3>
-                                    <p class="text-muted">Till Today</p>
+                                    <h6>Total Sale</h6>
+                                    <h3>{{$totalSale->sum('paid')}}</h3>
+                                    <p class="text-muted">{{\Carbon\Carbon::parse($date)->format('d M y')}}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar1">
                                     <div class="circle-graph1" data-percent="75">
@@ -33,28 +33,11 @@
                                 <div class="dash-widget-info">
                                     <h6>Total Patient</h6>
                                     <h3>{{$totalPatient}}</h3>
-                                    <p class="text-muted">Till Today</p>
+                                    <p class="text-muted"><p class="text-muted">{{\Carbon\Carbon::parse($date)->format('d M y')}}</p></p>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-md-12 col-lg-3">
-                            <div class="dash-widget dct-border-rht">
-                                <div class="circle-bar circle-bar2">
-                                    <div class="circle-graph2" data-percent="65">
-                                        <img src="{{asset('assets')}}/img/icons/icon-02.png" class="img-fluid"
-                                             alt="Patient">
-                                    </div>
-                                </div>
-                                <div class="dash-widget-info">
-                                    <h6>Today Patient</h6>
-                                    <h3>{{$todayPatient}}</h3>
-                                    <p class="text-muted">{{now()->format('Y M d')}}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget">
                                 <div class="circle-bar circle-bar3">
                                     <div class="circle-graph3" data-percent="50">
@@ -63,8 +46,9 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>Total Dues</h6>
+                                    <h6>Dues</h6>
                                     <h3>{{$totalDues}}</h3>
+                                    <p class="text-muted"><p class="text-muted">{{\Carbon\Carbon::parse($date)->format('d M y')}}</p></p>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +60,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h4 class="mb-4">Patient</h4>
+            <h4 class="mb-4">Patient({{\Carbon\Carbon::parse($date)->format('d M y')}})</h4>
             <div class="appointment-tab">
 
                 <!-- Appointment Tab -->
@@ -103,12 +87,17 @@
                             @csrf
                             @method('POST')
                             <li class="ml-1">
-                                <input type="date" name="date" class="form-control float-left">
+                                <input type="date" name="date" class="form-control float-left" value="{{$date ?? ''}}">
                             </li>
                             <li>
                                 <button class="float-end btn btn-primary form-control">
                                     <i class="fa feather-search"></i>
                                 </button>
+                            </li>
+                            <li class="" style="margin-left: 5px; padding: 5px">
+                                <a href="{{route('home')}}" class="btn btn-primary" title="return to home">
+                                    <i class="fa feather-corner-down-left"></i>
+                                </a>
                             </li>
                         </form>
                     @endif
@@ -137,7 +126,7 @@
                                         </tr>
                                         </thead>
                                         <tbody id="ptn_tbl">
-                                        @forelse($patient as $pat)
+                                        @forelse($patients as $pat)
                                             <tr>
 
                                                 <td>{{$pat->serial}}</td>
@@ -278,7 +267,7 @@
                                                 <td style="border: 0; width: 20%;">
                                                     <select name="power[]" class="form-control" required>
                                                         <option value="" selected>Select Power</option>
-                                                        @foreach($powers as $item)
+                                                        @foreach(powers() as $item)
                                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                                         @endforeach
                                                     </select>
@@ -287,7 +276,7 @@
                                                 <td style="border: 0; width: 30%;">
                                                     <select name="dose[]" class="form-control" required>
                                                         <option value="" selected>Select Dose</option>
-                                                        @foreach($doses as $item)
+                                                        @foreach(does() as $item)
                                                             <option value="{{$item->id}}">{{$item->name}}</option>
                                                         @endforeach
                                                     </select>
@@ -396,7 +385,7 @@
                                                         <div class="col-md-2">
                                                             <select name="power[]" required class="form-control">
                                                                 <option value="" selected>Select Power</option>
-                                                                @foreach($powers as $item)
+                                                                @foreach(powers() as $item)
                                                                     <option
                                                                         value="{{$item->id}}">{{$item->name}}</option>
                                                                 @endforeach
@@ -405,7 +394,7 @@
                                                         <div class="col-md-2">
                                                             <select name="dose[]" required class="form-control">
                                                                 <option value="" selected>Select...</option>
-                                                                @foreach($doses as $item)
+                                                                @foreach(does() as $item)
                                                                     <option
                                                                         value="{{$item->id}}">{{$item->name}}</option>
                                                                 @endforeach

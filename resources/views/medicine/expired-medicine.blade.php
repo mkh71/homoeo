@@ -17,8 +17,8 @@
                                 <div class="dash-widget-info">
                                     <a href="{{route('medicine.low-stock')}}">
                                         <h6>Low Stock</h6>
-                                        <h3  class="text-danger">{{low_stock()->count()}}</h3>
-                                        <p class="text-muted">Less than 10</p>
+                                        <h3 class="text-danger">{{low_stock()->count()}}</h3>
+                                        <p class="text-muted text-danger">Less than 10</p>
                                     </a>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                                 <div class="dash-widget-info">
                                     <a href="{{route('medicine.expired-medicine')}}">
                                         <h6>Expired Medicine</h6>
-                                        <h3 class="text-danger">{{expire_medicine()->count()}}</h3>
+                                        <h3  class="text-danger">{{expire_medicine()->count()}}</h3>
                                         <p class="text-muted">Less than 6 months</p>
                                     </a>
                                 </div>
@@ -52,8 +52,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Total Stock Amount</h6>
-                                    {{totalStockAmount()->sum('total')}}
-{{--                                    <h3>{{medicines()->sum('mrp_price')}}</h3>--}}
+                                    <h3>{{medicines()->sum('mrp_price')}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -65,14 +64,14 @@
 
     <div class="row">
         <div class="col-md-12">
-            <h4 class="mb-4">Medicine List</h4>
+            <h4 class="mb-4">Expired Medicine List</h4>
             <div class="appointment-tab">
 
                 <!-- Appointment Tab -->
                 <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                     <li class="nav-item">
                         <a class="nav-link @if(!isset($id)) active @else disabled @endif " href="#medicine-list"
-                           data-bs-toggle="tab">Medicine List</a>
+                           data-bs-toggle="tab">Expired Medicine List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if(isset($id)) active @endif" href="#add-medicine"
@@ -116,8 +115,8 @@
                                             <th>Action</th>
                                         </tr>
                                         </thead>
-                                        <tbody id="med_table">
-                                        @forelse($medicines as $medi)
+                                        <tbody>
+                                        @forelse(expire_medicine() as $medi)
                                             <tr>
                                                 <td>{{$loop->iteration ?? '-'}}</td>
                                                 <td>{{$medi->name}}</td>
@@ -125,7 +124,7 @@
                                                 <td>{{$medi->net_price}}</td>
                                                 <td>{{$medi->mrp_price}}</td>
                                                 <td>{{@$medi->qty}}</td>
-                                                <td>{{@$medi->company->name}}</td>
+                                                <td>{{$medi->company->name}}</td>
                                                 <td>{{$medi->group}}</td>
                                                 <td>
                                                     @foreach($medi->diseases as $com)
@@ -141,12 +140,10 @@
                                                         @if(isset($medicine->id) && $medicine->id == $medi->id)
                                                             <a href="#" class="badge badge-rounded badge-success p-1">Updating....</a>
                                                         @else
-                                                            <a href="{{route('medicine.edit',$medi->id)}}"
-                                                               class="btn btn-sm bg-info-light" id="edit">
+                                                            <a href="{{route('medicine.edit',$medi->id)}}" class="btn btn-sm bg-info-light" id="edit">
                                                                 <i class="far fa-pencil">Edit</i>
                                                             </a>
-                                                            <a href="{{route('medicine-delete',$medi->id)}}"
-                                                               class="btn btn-sm bg-danger-light" id="delete">
+                                                            <a href="{{route('medicine-delete',$medi->id)}}" class="btn btn-sm bg-danger-light" id="delete">
                                                                 <i class="far fa-pencil">Delete</i>
                                                             </a>
                                                         @endif
@@ -169,8 +166,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
-                                        <h4 class="text-center">Add Medicine</h4>
-                                        <hr>
+                                        <h4 class="text-center">Add Medicine</h4><hr>
                                         </p>
                                         @if(isset($id))
                                             {!! Form::open(['route'=>['medicine.update',$id], 'method'=>'post']) !!}
@@ -182,103 +178,80 @@
 
                                             <div class="col-lg-4">
                                                 <label>Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" required name="name"
-                                                       value="{{$medicine->name ?? ''}}">
+                                                <input type="text" class="form-control" required name="name" value="{{$medicine->name ?? ''}}">
                                             </div>
 
                                             <div class="col-lg-2">
                                                 <label>Qty <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" required name="qty"
-                                                       value="{{ old('qty')}}">
+                                                <input type="number" class="form-control" required name="qty" value="{{ old('qty')}}">
                                             </div>
 
                                             <div class="col-lg-3">
                                                 <label>Net Price <span class="text-danger"></span></label>
-                                                <input type="number" class="form-control" name="net_price"
-                                                       value="{{isset($id) ? $medicine->net_price : old('price')}}">
+                                                <input type="number" class="form-control" name="net_price" value="{{isset($id) ? $medicine->net_price : old('price')}}">
                                             </div>
 
                                             <div class="col-lg-3">
                                                 <label>Mrp Price <span class="text-danger"></span></label>
-                                                <input type="number" class="form-control" name="mrp_price"
-                                                       value="{{isset($id) ? $medicine->mrp_price : old('price')}}">
+                                                <input type="number" class="form-control" name="mrp_price" value="{{isset($id) ? $medicine->mrp_price : old('price')}}">
                                             </div>
 
-                                            <div class="col-lg-3">
+
+                                            <div class="col-lg-4">
                                                 <label>Expired Date <span class="text-danger"></span></label>
-                                                <input type="date" class="form-control" name="expired_date"
-                                                       value="{{isset($id) ? $medicine->expired_date : old('expired_date')}}">
+                                                <input type="date" class="form-control" name="expired_date" value="{{isset($id) ? $medicine->expired_date : old('expired_date')}}">
                                             </div>
 
-                                            <div class="col-lg-3">
-                                                <label>Select Company <span class="text-danger">*</span></label>
-                                                <select name="company_id" class="form-control">
-                                                    @foreach(companies() as $info)
-                                                        <option value="{{$info->id}}"
-                                                                @if(isset($medicine) && $info->id == $medicine->id) selected @endif> {{$info->name}} </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-
-                                            <div class="col-lg-3">
-                                                <label>Select Group <span class="text-danger">*</span></label>
-                                                <select name="group" class="form-control">
-                                                    <option value="Dilution">Dilution</option>
-                                                    <option value="Mother">Mother</option>
-                                                    <option value="Biochemic">Biochemic</option>
-                                                    <option value="Biolaid">Biolaid</option>
-                                                    <option value="Trituration">Trituration</option>
-                                                    <option value="Homoeo patent">Homoeo patent</option>
-                                                    <option value="Unani patent">Unani patent</option>
-                                                    <option value="Others">Others</option>
-                                                </select>
-                                            </div>
-
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-4">
                                                 <label>Select Power <span class="text-danger">*</span></label>
                                                 <select name="power_id" class="select2 form-control">
-                                                    @foreach($powers as $p)
-                                                        <option value="{{$p->id}}"
-                                                                @if(isset($medicine) && $p->id == $medicine->power_id ) selected @endif> {{$p->name}} </option>
+                                                    @foreach(powers() as $p)
+                                                        <option value="{{$p->id}}" @if(isset($medicine) && $p->id == $medicine->power_id ) selected @endif> {{$p->name}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
 
 
                                             <div class="col-lg-4">
-                                                <label>Select Complain <span class="text-danger">*</span></label> <br>
-                                                <select name="diseases[]" class="select2 form-control"
-                                                        multiple="multiple">
-                                                    @foreach($diseases as $disease)
-                                                        <option value="{{$disease->id}}"
-                                                                @if(isset($medicine) && in_array($disease->id, $medicine->diseases()->allRelatedIds()->toArray())) selected @endif> {{$disease->name}} </option>
+                                                <label>Select Complain <span class="text-danger">*</span></label>
+                                                <select name="diseases[]" class="select2 form-control" multiple="multiple">
+                                                    @foreach(diseases() as $disease)
+                                                        <option value="{{$disease->id}}" @if(isset($medicine) && in_array($disease->id, $medicine->diseases()->allRelatedIds()->toArray())) selected @endif> {{$disease->name}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
 
 
-
-
+                                            <div class="col-lg-4">
+                                                <label>Select Company <span class="text-danger">*</span></label>
+                                                <select name="company_id" class="select2 form-control">
+                                                    @foreach(diseases() as $disease)
+                                                        <option value="{{$disease->id}}" @if(isset($medicine) && in_array($disease->id, $medicine->diseases()->allRelatedIds()->toArray())) selected @endif> {{$disease->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <label>Select Group <span class="text-danger">*</span></label>
+                                                <select name="group" class="select2 form-control">
+                                                    @foreach(diseases() as $disease)
+                                                        <option value="{{$disease->id}}" @if(isset($medicine) && in_array($disease->id, $medicine->diseases()->allRelatedIds()->toArray())) selected @endif> {{$disease->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
 
                                         <div class="col-lg-12">
                                             <label>Description <span class="text-danger"></span></label>
-                                            <textarea class="form-control summernote" rows="6" id="summernote"
-                                                      name="description">{!! $medicine->description ?? null !!}</textarea>
+                                            <textarea class="form-control summernote" rows="6" id="summernote" name="description">{!! $medicine->description ?? null !!}</textarea>
                                         </div>
                                         <div class="col-lg-12">
                                             @if(isset($medicine->id) && $medicine->id == $id)
                                                 <div class="form-group btn-inline" style="margin-top: 10px">
-                                                    <button type="submit" class="btn btn-block btn-warning">Update
-                                                    </button>
-                                                    <button type="button" class="btn btn-block btn-info"
-                                                            onclick="history.back()">Cancel
-                                                    </button>
+                                                    <button type="submit" class="btn btn-block btn-warning">Update</button>
+                                                    <button type="button" class="btn btn-block btn-info" onclick="history.back()">Cancel</button>
                                                 </div>
                                             @else
-                                                <button type="submit" class="btn btn-block btn-primary"
-                                                        style="margin-top: 10px">Save
-                                                </button>
+                                                <button type="submit" class="btn btn-block btn-primary" style="margin-top: 10px">Save</button>
                                             @endif
                                         </div>
 
@@ -300,19 +273,6 @@
 @stop
 @section('js')
     <script>
-        $(document).on('keyup', '#search', function () {
-            var word = $(this).val();
-
-            $.ajax({
-                method: "post",
-                url: "{{route('medicines.search')}}",
-                data: {word: word, _token: "{{csrf_token()}}"},
-                success: function (res) {
-                    console.log(res)
-                    $('#med_table').html(res);
-                }
-            });
-        });
 
     </script>
 @endsection
