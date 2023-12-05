@@ -14,6 +14,7 @@ class AddColumnInMedicineTable extends Migration
     public function up()
     {
         Schema::table('medicines', function (Blueprint $table) {
+            $table->bigInteger('qty')->nullable();
             $table->integer('power_id')->nullable();
             $table->string('pack_size')->nullable();
             $table->unsignedDouble('net_price')->nullable();

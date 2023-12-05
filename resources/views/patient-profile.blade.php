@@ -81,7 +81,6 @@
                                     </thead>
                                     <tbody id="ptn_tbl">
                                     @forelse($complain as $com)
-
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
                                             <td>{{$com->details}}</td>
@@ -90,15 +89,15 @@
                                                     <table class="table-responsive, table-striped">
                                                         <tr>
                                                             <td width="40%">{{@$medicine->medicine->name}}</td>
-                                                            <td width="10%">({{@$medicine->power->name}}) </td>
-                                                            <td width="20%">: {{ @$medicine->dose->name}}</td>
+                                                            <td width="10%">({{$medicine->power ? $medicine->power->name : '-'}}) </td>
+                                                            <td width="20%">: {{ $medicine->dose ? $medicine->dose->name : '-' }}</td>
                                                             <td width="20%">: {{ $medicine->pack_size}}</td>
                                                             <td width="10%">: {{ $medicine->qty}}</td>
                                                         </tr>
                                                     </table>
                                                 @endforeach
                                             </td>
-                                            <td>{{ date("d F, Y", strtotime($com->created_at))}} <br>({{ $com->updated_at->diffForHumans() }})</td>
+                                            <td>{{ date("d F, Y", strtotime($com->created_at))}} <br> ({{ $com->updated_at->diffForHumans() }}) </td>
                                         </tr>
                                     @empty
 

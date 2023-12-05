@@ -70,7 +70,7 @@ if (!function_exists('invoices')){
 
 if (!function_exists('todayPatient')){
     function todayPatient(){
-        return \App\Models\Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->get();
+        return \App\Models\Patient::query()->whereDate('created_at', '=', date('Y-m-d'))->get();
     }
 }
 
