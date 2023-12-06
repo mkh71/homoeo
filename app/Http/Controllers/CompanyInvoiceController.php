@@ -43,7 +43,7 @@ class CompanyInvoiceController extends Controller
             DB::beginTransaction();
             $data = $request->all();
             $data['total_dues'] = $request->total_amount - $request->total_paid;
-            CompanyInvoice::query()->create($request->all());
+            CompanyInvoice::query()->create($data);
             DB::commit();
             return redirect()->back()->with('success','Company Invoice Create Successfully');
         }catch (\Throwable $e){

@@ -6,7 +6,7 @@
                 <div class="card dash-card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12 col-lg-4">
+                            <div class="col-md-12 col-lg-3">
                                 <div class="dash-widget dct-border-rht">
                                     <div class="circle-bar circle-bar1">
                                         <div class="circle-graph1" data-percent="75">
@@ -15,13 +15,28 @@
                                         </div>
                                     </div>
                                     <div class="dash-widget-info">
-                                        <h6>Total Company Invoice</h6>
-                                        <h3>{{total_company()->count()}}</h3>
+                                        <h6>Total Invoice</h6>
+                                        <h3>{{invoices()->count()}}</h3>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-4">
+                            <div class="col-md-12 col-lg-3">
+                                <div class="dash-widget dct-border-rht">
+                                    <div class="circle-bar circle-bar1">
+                                        <div class="circle-graph1" data-percent="75">
+                                            <img src="{{asset('assets')}}/img/icons/icon-01.png" class="img-fluid"
+                                                 alt="patient">
+                                        </div>
+                                    </div>
+                                    <div class="dash-widget-info">
+                                        <h6>Total Bill</h6>
+                                        <h3>{{invoices()->sum('total_amount')}}</h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-3">
                                 <div class="dash-widget dct-border-rht">
                                     <div class="circle-bar circle-bar2">
                                         <div class="circle-graph2" data-percent="65">
@@ -30,14 +45,14 @@
                                         </div>
                                     </div>
                                     <div class="dash-widget-info">
-                                        <h6>Total Paid</h6>
-                                        <h3>{{total_company()->sum('total_paid')}}</h3>
+                                        <h6>Total Payment</h6>
+                                        <h3>{{invoices()->sum('total_paid')}}</h3>
                                         {{--                                    <p class="text-muted">{{now()->format('Y M d')}}</p>--}}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-4">
+                            <div class="col-md-12 col-lg-3">
                                 <div class="dash-widget">
                                     <div class="circle-bar circle-bar3">
                                         <div class="circle-graph3" data-percent="50">
@@ -47,7 +62,7 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>Total Dues</h6>
-                                        <h3>{{total_company()->sum('total_dues')}}</h3>
+                                        <h3>{{invoices()->sum('total_dues')}}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +76,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <p class="ml-2">
-                        <h4 class="">Add Company</h4><hr>
+                        <h4 class="">Add Invoice</h4><hr>
                         </p>
                         @if(isset($invoice->id))
                             {!! Form::open(['route'=>['companyInvoice.update',$invoice->id], 'method'=>'post']) !!}
@@ -95,9 +110,18 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Date <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" required name="date" value="{{$invoice->date ?? ''}}">
+                                    <input type="date" class="form-control" required name="date" value="{{isset($invoice) ? $invoice->date : old('date', \Carbon\Carbon::now()->toDateString()) }}">
                                 </div>
                             </div>
+                            @if(isset($invoice))
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Previous Dues <span class="text-danger">*</span></label>
+                                        <input type="number" disabled class="form-control" required value="{{$invoice->total_dues ?? ''}}">
+                                    </div>
+                                </div>
+
+                            @endif
 
                             <div class="col-md-4">
                                 <div class="form-group">

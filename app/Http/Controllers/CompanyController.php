@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\CompanyInvoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +41,9 @@ class CompanyController extends Controller
         $this->validate($request ,['name'=>'required | unique:companies']);
         try {
             DB::beginTransaction();
-            Company::query()->create($request->all());
+            $data = $request->all();
+            $data['total_dues'] = $request->total_amount - $request->total_paid;
+            Company::query()->create($data);
             DB::commit();
             return redirect()->back()->with('success', 'Company has been created successfully');
 
@@ -63,7 +66,11 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        $data['invoices']  = CompanyInvoice::query()
+            ->where('id',$company->id)
+            ->get();
+        $data['company']  = $company;
+        return view('companies.details')->with($data);
     }
 
     /**
@@ -93,7 +100,9 @@ class CompanyController extends Controller
         ]);
         try {
             DB::beginTransaction();
-            $company->update($request->all());
+            $data = $request->all();
+            $data['total_dues'] = $request->total_amount - $request->total_paid;
+            $company->update($data);
             DB::commit();
             return redirect()->route('companies.index')->with('success', 'Company has been update successfully');
 

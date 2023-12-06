@@ -18,7 +18,7 @@
                                     <a href="{{route('medicine.low-stock')}}">
                                         <h6>Low Stock</h6>
                                         <h3  class="text-danger">{{low_stock()->count()}}</h3>
-                                        <p class="text-muted">Less than 10</p>
+                                        <p class="text-muted">Less than 3</p>
                                     </a>
                                 </div>
                             </div>
@@ -185,20 +185,23 @@
                                                 <input type="text" class="form-control" required name="name"
                                                        value="{{$medicine->name ?? ''}}">
                                             </div>
-
+                                            <div class="col-lg-2">
+                                                <label>Prev Qty <span class="text-danger">*</span></label>
+                                                <input disabled class="form-control" value="{{isset($id) ? $medicine->qty : 0}} ">
+                                            </div>
                                             <div class="col-lg-2">
                                                 <label>Qty <span class="text-danger">*</span></label>
                                                 <input type="number" class="form-control" required name="qty"
                                                        value="{{ old('qty')}}">
                                             </div>
 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-2">
                                                 <label>Net Price <span class="text-danger"></span></label>
                                                 <input type="number" class="form-control" name="net_price"
                                                        value="{{isset($id) ? $medicine->net_price : old('price')}}">
                                             </div>
 
-                                            <div class="col-lg-3">
+                                            <div class="col-lg-2">
                                                 <label>Mrp Price <span class="text-danger"></span></label>
                                                 <input type="number" class="form-control" name="mrp_price"
                                                        value="{{isset($id) ? $medicine->mrp_price : old('price')}}">

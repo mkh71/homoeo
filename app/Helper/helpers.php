@@ -10,7 +10,7 @@ if (!function_exists('total_company')){
 
 if (!function_exists('low_stock')){
     function low_stock(){
-        return \App\Models\Medicine::query()->where('qty','<',10)->get();
+        return \App\Models\Medicine::query()->where('qty','<',3)->get();
     }
 }
 
@@ -71,6 +71,12 @@ if (!function_exists('invoices')){
 if (!function_exists('todayPatient')){
     function todayPatient(){
         return \App\Models\Patient::query()->whereDate('created_at', '=', date('Y-m-d'))->get();
+    }
+}
+
+if (!function_exists('peckSize')){
+    function peckSize(){
+        return \App\Models\PeackSize::query()->get();
     }
 }
 

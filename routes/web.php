@@ -5,6 +5,7 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\PowerController;
 use App\Http\Controllers\DoseController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\PeackSizeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::resource('companies','CompanyController');
     Route::get('company-delete/{companyId}','CompanyController@destroy')->name('company.delete');
     Route::resource('diseases','DiseaseController');
+    Route::resource('peack_sizes','PeackSizeController');
+    Route::get('peack_sizes-delete/{peackSize}','PeackSizeController@delete')->name('peack_sizes-delete');
     Route::get('disease-delete/{id}','DiseaseController@erase')->name('disease.delete');
     Route::post('medicineByDisease','HomeController@medicineByDisease')->name('medicineByDisease');
 

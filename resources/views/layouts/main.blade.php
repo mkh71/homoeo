@@ -84,6 +84,13 @@
                                             <span>Dose</span>
                                         </a>
                                     </li>
+
+                                    <li class="{{request()->is('peack_sizes*') ? 'active' : ''}}">
+                                        <a href="{{route('peack_sizes.index')}}">
+                                            <i class="fas feather-check-circle"></i>
+                                            <span>Peck Size</span>
+                                        </a>
+                                    </li>
                                     <li class="{{request()->is('medicine*') ? 'active' : ''}}">
                                         <a href="{{route('medicine.index')}}">
                                             <i class="fas feather-check-circle"></i>

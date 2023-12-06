@@ -17,5 +17,6 @@ class Company extends Model
       'total_amount',
       'total_paid',
       'total_dues',
+      'mpo'
     ];
 }

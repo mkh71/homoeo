@@ -74,6 +74,9 @@
                                 <div class="form-group">
                                     <label>Company<span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" required name="name" value="{{$company->name ?? ''}}">
+                                    @error('name')
+                                    <div class="alert text-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -86,24 +89,32 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Email <span class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" required name="email" value="{{$company->email ?? ''}}">
+                                    <label>MPO Name <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" required name="mpo" value="{{$company->mpo ?? ''}}">
+                                </div>
+                            </div>
+                            @if(isset($company))
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label>Previous Due <span class="text-danger">*</span></label>
+                                        <input type="number" disabled class="form-control" value="{{$company->total_dues ?? ''}}">
+                                    </div>
+                                </div>
+                            @endif
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Total Bill <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" name="total_amount" value="{{$company->total_amount ?? ''}}">
                                 </div>
                             </div>
 
                             <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Total Paid <span class="text-danger">*</span></label>
+                                    <label>Total Payment <span class="text-danger">*</span></label>
                                     <input type="number" class="form-control" name="total_paid" value="{{$company->total_paid ?? ''}}">
                                 </div>
                             </div>
 
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Total Due <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="total_dues" value="{{$company->total_dues ?? ''}}">
-                                </div>
-                            </div>
 
                             <div class="col-md-8">
                                 <div class="form-group">
@@ -137,8 +148,9 @@
                                     <th>#</th>
                                     <th>Company</th>
                                     <th>Phone</th>
-                                    <th>Email</th>
+                                    <th>MPO</th>
                                     <th>Address</th>
+                                    <th>Total Bill</th>
                                     <th>Total Paid</th>
                                     <th>Total Dues</th>
                                     <th>Action</th>
@@ -151,8 +163,9 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{$info->name ?? '-'}}</td>
                                         <td>{{$info->phone ?? '-'}}</td>
-                                        <td>{{$info->email ?? '-'}}</td>
+                                        <td>{{$info->mpo ?? '-'}}</td>
                                         <td>{{$info->address ?? '-'}}</td>
+                                        <td>{{$info->total_amount ?? '-'}}</td>
                                         <td>{{$info->total_paid ?? '-'}}</td>
                                         <td>{{$info->total_dues ?? '-'}}</td>
                                         <td class="text-end">
@@ -160,6 +173,9 @@
                                                 @if(isset($company) && $info->id == $company->id)
                                                     <a href="#" class="badge badge-rounded badge-success p-1">Updating....</a>
                                                 @else
+                                                    <a href="{{route('companies.show',$info->id)}}" class="btn btn-sm bg-info" id="edit">
+                                                        <i class="far feather-eye"></i>
+                                                    </a>
                                                     <a href="{{route('companies.edit',$info->id)}}" class="btn btn-sm bg-info-light" id="edit">
                                                         <i class="far fa-pencil">Edit</i>
                                                     </a>
