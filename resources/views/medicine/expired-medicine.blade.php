@@ -124,7 +124,7 @@
                                                 <td>{{$medi->net_price}}</td>
                                                 <td>{{$medi->mrp_price}}</td>
                                                 <td>{{@$medi->qty}}</td>
-                                                <td>{{$medi->company->name}}</td>
+                                                <td>{{@$medi->company->name}}</td>
                                                 <td>{{$medi->group}}</td>
                                                 <td>
                                                     @foreach($medi->diseases as $com)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Disease;
 use App\Models\Medicine;
+use App\Models\PeackSize;
 use App\Models\Power;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,14 @@ class MedicineController extends Controller
      */
     public function index()
     {
-        $medicines = Medicine::query()->latest()->get();
+        $medicines = Medicine::query()
+            ->with(['peckSize'])
+            ->latest()
+            ->get()
+            ->map(function ($data){
+                $data->peck_size = PeackSize::query()->where('id',$data->pack_size)->first()->name ?? '';
+                return $data;
+            });
         $diseases = Disease::query()->latest()->get();
         $powers = Power::get();
         return view('medicine.medicine',compact('medicines', 'diseases','powers'));
@@ -41,6 +49,7 @@ class MedicineController extends Controller
                     'group'=>$request->group,
                     'expired_date'=>$request->expired_date
                 ]);
+            dd($med);
             $med->diseases()->attach($request->diseases);
             DB::commit();
             return redirect(route('medicine.index'))->with('success', 'medicine has been deleted successfully');

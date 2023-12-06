@@ -103,14 +103,15 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Name</th>
+                                            <th>Complains</th>
+                                            <th>Medicine</th>
                                             <th>Power</th>
-                                            <th>Net Price</th>
-                                            <th>MRP Price</th>
+                                            <th>Peck Size</th>
                                             <th>Qty</th>
+                                            <th>Price</th>
+                                            <th>Total</th>
                                             <th>Company</th>
                                             <th>Group</th>
-                                            <th>Complains</th>
                                             <th>Description</th>
                                             <th>Expire Date</th>
                                             <th>Action</th>
@@ -120,22 +121,23 @@
                                         @forelse($medicines as $medi)
                                             <tr>
                                                 <td>{{$loop->iteration ?? '-'}}</td>
-                                                <td>{{$medi->name}}</td>
-                                                <td>{{@$medi->power->name}}</td>
-                                                <td>{{$medi->net_price}}</td>
-                                                <td>{{$medi->mrp_price}}</td>
-                                                <td>{{@$medi->qty}}</td>
-                                                <td>{{@$medi->company->name}}</td>
-                                                <td>{{$medi->group}}</td>
                                                 <td>
                                                     @foreach($medi->diseases as $com)
                                                         {{($com->name)}},
                                                     @endforeach
                                                 </td>
+                                                <td>{{$medi->name}}</td>
+                                                <td>{{@$medi->power->name}}</td>
+                                                <td>{{@$medi->peck_size}}</td>
+                                                <td>{{@$medi->qty}}</td>
+                                                <td>{{$medi->mrp_price}}</td>
+                                                <td>{{$medi->mrp_price * $medi->qty}}</td>
+                                                <td>{{@$medi->company->name}}</td>
+                                                <td>{{$medi->group}}</td>
                                                 <td>
                                                     {{ substr(strip_tags($medi->description), 0, 50) }}
                                                 </td>
-                                                <td>{{$medi->expired_date}}</td>
+                                                <td>{{\Carbon\Carbon::parse($medi->expired_date)->format('d M y')}}</td>
                                                 <td class="text-end">
                                                     <div class="table-action">
                                                         @if(isset($medicine->id) && $medicine->id == $medi->id)
@@ -191,7 +193,7 @@
                                             </div>
                                             <div class="col-lg-2">
                                                 <label>Qty <span class="text-danger">*</span></label>
-                                                <input type="number" class="form-control" required name="qty"
+                                                <input type="number" class="form-control" name="qty"
                                                        value="{{ old('qty')}}">
                                             </div>
 
@@ -243,6 +245,16 @@
                                                     @foreach($powers as $p)
                                                         <option value="{{$p->id}}"
                                                                 @if(isset($medicine) && $p->id == $medicine->power_id ) selected @endif> {{$p->name}} </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <label>Select PeckSize <span class="text-danger">*</span></label>
+                                                <select name="pack_size" class="select2 form-control">
+                                                    @foreach(peckSize() as $p)
+                                                        <option value="{{$p->id}}"
+                                                                @if(isset($medicine) && $p->id == $medicine->pack_size ) selected @endif> {{$p->name}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>

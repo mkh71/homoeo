@@ -91,7 +91,7 @@
                                                             <td width="40%">{{@$medicine->medicine->name}}</td>
                                                             <td width="10%">({{$medicine->power ? $medicine->power->name : '-'}}) </td>
                                                             <td width="20%">: {{ $medicine->dose ? $medicine->dose->name : '-' }}</td>
-                                                            <td width="20%">: {{ $medicine->pack_size}}</td>
+                                                            <td width="20%">: {{ \App\Models\PeackSize::query()->where('id',$medicine->pack_size)->first()->name?? ''}}</td>
                                                             <td width="10%">: {{ $medicine->qty}}</td>
                                                         </tr>
                                                     </table>

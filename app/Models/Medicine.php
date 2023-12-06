@@ -21,5 +21,9 @@ class Medicine extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function peckSize(){
+        return $this->belongsTo(PeackSize::class,'peck_size_id','id');
+    }
+
 
 }

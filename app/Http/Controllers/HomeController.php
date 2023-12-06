@@ -37,7 +37,16 @@ class HomeController extends Controller
         $powers = Power::get();
         $medicines = Medicine::get();
         $diseases = Disease::all();
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','doses','powers','medicines', 'diseases'));
+        return view('welcome',compact(
+            'patient',
+            'totalPatient',
+            'todayPatient',
+            'totalDues',
+            'doses',
+            'powers',
+            'medicines',
+            'diseases')
+        );
     }
     public function medicineByDisease(Request $request)
     {

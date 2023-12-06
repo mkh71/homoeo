@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Today Sale</h6>
-{{--                                    <h3>{{todayPatient()->sum('paid')}}</h3>--}}
+                                    <h3>{{todayPatient()->sum('total')}}</h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
@@ -129,6 +129,7 @@
                                             <th>Patient Name</th>
                                             <th>Age</th>
                                             <th>Contact</th>
+                                            <th>Date</th>
                                             <th>Address</th>
                                             <th>Complain</th>
                                             <th class="text-center">Total</th>
@@ -148,6 +149,7 @@
                                                 </td>
                                                 <td>{{$pat->age}} Yr.</td>
                                                 <td>{{$pat->mobile}}</td>
+                                                <td>{{ \Carbon\Carbon::parse($pat->created_at)->format('d M y') }}</td>
                                                 <td>{{$pat->address}}</td>
                                                 <td data-id="{{$pat->id}}" class="complain"
                                                     style="cursor: pointer">{{$pat->last_complain}}</td>
@@ -271,8 +273,13 @@
                                                 </td>
 
                                                 <td style="border: 0; width: 20%;">
-                                                    <input type="text" placeholder="Pack Size" name="pack_size[]"
-                                                           class="form-control" required/>
+                                                    <select name="pack_size[]" class="form-control" required>
+                                                        <option value="" selected>Select Pack Size</option>
+                                                        @foreach(peckSize() as $item)
+                                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{--                                                {!! Form::select('power[]', $powers, NULL , ['class'=>'form-control', 'placeholder'=>"Select Power"]) !!}--}}
                                                 </td>
 
                                                 <td style="border: 0; width: 20%;">
@@ -390,8 +397,12 @@
                                                         </div>
 
                                                         <div class="col-md-2">
-                                                            <input type="text" name="pack_size[]" class="form-control"
-                                                                   placeholder="Pack Size">
+                                                            <select name="pack_size[]" class="form-control" required>
+                                                                <option value="" selected>Select Pack Size</option>
+                                                                @foreach(peckSize() as $item)
+                                                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                                                @endforeach
+                                                            </select>
                                                         </div>
                                                         <div class="col-md-2">
                                                             <select name="power[]" required class="form-control">
