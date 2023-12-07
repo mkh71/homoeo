@@ -194,7 +194,7 @@
                                                 <input disabled class="form-control" value="{{isset($id) ? $medicine->qty : 0}} ">
                                             </div>
                                             <div class="col-lg-2">
-                                                <label>Qty <span class="text-danger">*</span></label>
+                                                <label>Add Qty <span class="text-danger">*</span></label>
                                                 <input type="number" class="form-control" name="qty"
                                                        value="{{ old('qty')}}">
                                             </div>
@@ -222,22 +222,21 @@
                                                 <select name="company_id" class="form-control">
                                                     @foreach(companies() as $info)
                                                         <option value="{{$info->id}}"
-                                                                @if(isset($medicine) && $info->id == $medicine->id) selected @endif> {{$info->name}} </option>
+                                                                @if(isset($medicine) && $info->id == $medicine->company_id) selected @endif> {{$info->name}} </option>
                                                     @endforeach
                                                 </select>
                                             </div>
-
                                             <div class="col-lg-3">
                                                 <label>Select Group <span class="text-danger">*</span></label>
                                                 <select name="group" class="form-control">
-                                                    <option value="Dilution">Dilution</option>
-                                                    <option value="Mother">Mother</option>
-                                                    <option value="Biochemic">Biochemic</option>
-                                                    <option value="Biolaid">Biolaid</option>
-                                                    <option value="Trituration">Trituration</option>
-                                                    <option value="Homoeo patent">Homoeo patent</option>
-                                                    <option value="Unani patent">Unani patent</option>
-                                                    <option value="Others">Others</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Dilution") selected @endif value="Dilution">Dilution</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Mother") selected @endif value="Mother">Mother</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Biochemic") selected @endif value="Biochemic">Biochemic</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Biolaid") selected @endif value="Biolaid">Biolaid</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Trituration") selected @endif value="Trituration">Trituration</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Homoeo patent") selected @endif value="Homoeo patent">Homoeo patent</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Unani patent") selected @endif value="Unani patent">Unani patent</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Others") selected @endif value="Others">Others</option>
                                                 </select>
                                             </div>
 

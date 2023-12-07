@@ -32,12 +32,18 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('/dose-delete/{id}','DoseController@delete')->name('dose-delete');
     Route::get('/medicine-delete/{id}','MedicineController@delete')->name('medicine-delete');
     Route::post('medicine-search', 'MedicineController@search')->name('medicines.search');
+
+    //patent route
     Route::resource('patients', 'PatientController');
     Route::post('patient-search', 'PatientController@search')->name('patients.search');
     Route::post('date-search', 'PatientController@dateSearch')->name('date.search');
     Route::get('search-by-date', 'PatientController@date')->name('searchByDate');
     Route::post('patient-complain', 'PatientController@complain')->name('patients.complain');
     Route::get('patient-profile/{id}', 'PatientController@profile')->name('patients.profile');
+    Route::get('patient-dues-list', 'PatientController@duesList')->name('patients.dues.list');
+    Route::post('dateTo-search', 'PatientController@dateToSearch')->name('patients.dateTo.search');
+
+
     Route::resource('power','PowerController');
     Route::resource('dose','DoseController');
     Route::resource('medicine','MedicineController');

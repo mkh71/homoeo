@@ -61,6 +61,7 @@ class HomeController extends Controller
         return $data;
     }
 
+
     public function backup(){
         // Get connection object and set the charset
         $conn = mysqli_connect('127.0.0.1', 'root', null, 'nhp');

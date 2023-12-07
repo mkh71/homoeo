@@ -104,6 +104,13 @@
                                         </a>
                                     </li>
 
+                                    <li class="{{request()->is('invoice*') ? 'active' : ''}}">
+                                        <a href="{{route('companyInvoice.index')}}">
+                                            <i class="fas feather-check-circle"></i>
+                                            <span>Purchase</span>
+                                        </a>
+                                    </li>
+
                                     <li class="{{request()->is('companies*') ? 'active' : ''}}">
                                         <a href="{{route('companies.index')}}">
                                             <i class="fas feather-check-circle"></i>
@@ -111,12 +118,6 @@
                                         </a>
                                     </li>
 
-                                    <li class="{{request()->is('invoice*') ? 'active' : ''}}">
-                                        <a href="{{route('companyInvoice.index')}}">
-                                            <i class="fas feather-check-circle"></i>
-                                            <span>Invoice</span>
-                                        </a>
-                                    </li>
 
 
                                     <li>

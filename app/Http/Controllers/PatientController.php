@@ -10,6 +10,7 @@ use App\Models\Patient;
 use App\Models\PatientPayment;
 use App\Models\Power;
 use App\Models\PurposeMedicine;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -147,9 +148,9 @@ class PatientController extends Controller
     public function search(Request $request)
     {
         $data = Patient::query()
-            ->where('serial', 'like', $request->word . '%')
-            ->orWhere('name', 'like', $request->word . '%')
-            ->orWhere('mobile', 'like', $request->word . '%')
+            ->where('serial', 'like', '%'.$request->word . '%')
+            ->orWhere('name', 'like', '%'.$request->word . '%')
+            ->orWhere('mobile', 'like', '%'.$request->word . '%')
             ->get();
         if (count($data) ==0){
             echo '<tr colspan="5" class="text-danger text-center">No Data Found</tr>';
@@ -166,13 +167,16 @@ class PatientController extends Controller
                     </td>
                     <td >'.$pat->age.' Yr.</td>
                     <td>'.$pat->mobile.'</td>
+                    <td>'.Carbon::parse($pat->created_at)->format('d M y').'</td>
                     <td>'.$pat->address.'</td>
                     <td data-id="'.$pat->id.'" class="complain">'.$pat->last_complain.'</td>
+                    <td data-id="'.$pat->id.'" class="dues">'.$pat->total.'</td>
+                    <td data-id="'.$pat->id.'" class="dues">'.$pat->paid.'</td>
                     <td data-id="'.$pat->id.'" class="dues">'.$pat->dues.'</td>
                     <td class="text - end">
                         <div class="table - action">
-                            <a href="'.route('patients.edit', $pat->id).'" class="btn btn - sm bg - info - light" id="edit">
-                                <i class="far fa - pencil">Edit</i>
+                            <a href="'.route('patients.edit', $pat->id).'" class="btn btn-sm bg-info-light" id="edit">
+                                <i class="far fa-pencil ">Edit</i>
                             </a>
                         </div>
                     </td>
@@ -251,6 +255,52 @@ class PatientController extends Controller
         session()->put('search_date',$request->date);
         return redirect()->route('searchByDate');
 
+    }
+
+    public function duesList(){
+        $patient = Patient::query()->latest()->limit(24)->where('dues', '>', 0)->get();
+        $totalPatient = Patient::query()->get()->count();
+        $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
+        $totalDues = Patient::query()->get()->sum('dues');
+        $doses = Dose::get();
+        $powers = Power::get();
+        $medicines = Medicine::get();
+        $diseases = Disease::all();
+        return view('patient.dues-list',compact(
+                'patient',
+                'totalPatient',
+                'todayPatient',
+                'totalDues',
+                'doses',
+                'powers',
+                'medicines',
+                'diseases')
+        );
+    }
+
+    public function dateToSearch(Request $request){
+        $patient = Patient::query()
+            ->latest()
+            ->limit(24)
+            ->whereBetween('created_at', [$request->from, $request->to])
+            ->get();
+        $totalPatient = Patient::query()->get()->count();
+        $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
+        $totalDues = Patient::query()->get()->sum('dues');
+        $doses = Dose::get();
+        $powers = Power::get();
+        $medicines = Medicine::get();
+        $diseases = Disease::all();
+        return view('welcome',compact(
+                'patient',
+                'totalPatient',
+                'todayPatient',
+                'totalDues',
+                'doses',
+                'powers',
+                'medicines',
+                'diseases')
+        );
     }
     public function date(){
         $date = session()->get('search_date');

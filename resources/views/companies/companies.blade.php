@@ -153,6 +153,7 @@
                                     <th>Total Bill</th>
                                     <th>Total Paid</th>
                                     <th>Total Dues</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -168,6 +169,7 @@
                                         <td>{{$info->total_amount ?? '-'}}</td>
                                         <td>{{$info->total_paid ?? '-'}}</td>
                                         <td>{{$info->total_dues ?? '-'}}</td>
+                                        <td>{{\Carbon\Carbon::parse($info->created_at)->format('d M y')}}</td>
                                         <td class="text-end">
                                             <div class="table-action">
                                                 @if(isset($company) && $info->id == $company->id)

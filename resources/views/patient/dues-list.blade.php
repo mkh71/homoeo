@@ -63,10 +63,8 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <a href="{{route('patients.dues.list')}}">
-                                        <h6 class="text-danger">Total Dues</h6>
-                                        <h3 class="text-danger">{{$totalDues}}</h3>
-                                    </a>
+                                    <h6>Total Dues</h6>
+                                    <h3>{{$totalDues}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -80,9 +78,8 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-4">
-                    <h4 class="mb-4">Patient</h4>
+                    <h4 class="mb-4">Patient Dues</h4>
                 </div>
-
                 <div class="col-md-8">
                     <form action="{{route('patients.dateTo.search')}}" class="d-flex" style="margin-left: 10px" method="POST">
                         @csrf
@@ -108,7 +105,7 @@
                 <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
                     <li class="nav-item">
                         <a class="nav-link @if(!isset($id)) active @else disabled @endif " href="#upcoming-appointments"
-                           data-bs-toggle="tab">Patient List</a>
+                           data-bs-toggle="tab">Patient Dues List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link @if(isset($id)) active @endif" href="#today-appointments"
