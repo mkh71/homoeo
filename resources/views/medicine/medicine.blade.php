@@ -107,8 +107,8 @@
                                             <th>Power</th>
                                             <th>Peck Size</th>
                                             <th>Qty</th>
-                                            <th>NET Price</th>
-                                            <th>MRP Price</th>
+                                            <th>Net Price</th>
+                                            <th>Mrp Price</th>
                                             <th>Total</th>
                                             <th>Company</th>
                                             <th>Group</th>
