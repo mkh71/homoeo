@@ -127,4 +127,13 @@ class CompanyController extends Controller
     {
         dd($id);
     }
+
+    public function companyInvoices($id)
+    {
+        $data['invoices']  = CompanyInvoice::query()
+            ->where('id',$id)
+            ->get();
+        $data['company']  = Company::query()->findOrFail($id);
+        return view('companies.details')->with($data);
+    }
 }

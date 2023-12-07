@@ -173,7 +173,7 @@
                                                 @if(isset($company) && $info->id == $company->id)
                                                     <a href="#" class="badge badge-rounded badge-success p-1">Updating....</a>
                                                 @else
-                                                    <a href="{{route('companies.show',$info->id)}}" class="btn btn-sm bg-info" id="edit">
+                                                    <a href="{{route('company.invoices',$info->id)}}" class="btn btn-sm bg-info" id="edit">
                                                         <i class="far feather-eye"></i>
                                                     </a>
                                                     <a href="{{route('companies.edit',$info->id)}}" class="btn btn-sm bg-info-light" id="edit">

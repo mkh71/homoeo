@@ -48,6 +48,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('invoice-delete/{id}','CompanyInvoiceController@delete')->name('invoice.delete');
     Route::resource('companies','CompanyController');
     Route::get('company-delete/{companyId}','CompanyController@destroy')->name('company.delete');
+    Route::get('company-invoices/{id}','CompanyController@companyInvoices')->name('company.invoices');
     Route::resource('diseases','DiseaseController');
     Route::resource('peack_sizes','PeackSizeController');
     Route::get('peack_sizes-delete/{peackSize}','PeackSizeController@delete')->name('peack_sizes-delete');
