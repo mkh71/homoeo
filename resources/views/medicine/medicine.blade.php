@@ -107,8 +107,8 @@
                                             <th>Power</th>
                                             <th>Peck Size</th>
                                             <th>Qty</th>
-                                            <th>MRP Price</th>
                                             <th>NET Price</th>
+                                            <th>MRP Price</th>
                                             <th>Total</th>
                                             <th>Company</th>
                                             <th>Group</th>
@@ -126,8 +126,8 @@
                                                 <td>{{@$medi->power->name}}</td>
                                                 <td>{{@$medi->peck_size}}</td>
                                                 <td>{{@$medi->qty}}</td>
-                                                <td>{{$medi->mrp_price}}</td>
                                                 <td>{{$medi->net_price}}</td>
+                                                <td>{{$medi->mrp_price}}</td>
                                                 <td>{{$medi->mrp_price * $medi->qty}} tk</td>
                                                 <td>{{@$medi->company->name}}</td>
                                                 <td>{{$medi->group}}</td>
