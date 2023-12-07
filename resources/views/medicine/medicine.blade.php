@@ -103,15 +103,16 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Complains</th>
                                             <th>Medicine</th>
                                             <th>Power</th>
                                             <th>Peck Size</th>
                                             <th>Qty</th>
-                                            <th>Price</th>
+                                            <th>MRP Price</th>
+                                            <th>NET Price</th>
                                             <th>Total</th>
                                             <th>Company</th>
                                             <th>Group</th>
+                                            <th>Complains</th>
                                             <th>Description</th>
                                             <th>Expire Date</th>
                                             <th>Action</th>
@@ -121,19 +122,20 @@
                                         @forelse($medicines as $medi)
                                             <tr>
                                                 <td>{{$loop->iteration ?? '-'}}</td>
+                                                <td>{{$medi->name}}</td>
+                                                <td>{{@$medi->power->name}}</td>
+                                                <td>{{@$medi->peck_size}}</td>
+                                                <td>{{$medi->mrp_price}}</td>
+                                                <td>{{$medi->net_price}}</td>
+                                                <td>{{@$medi->qty}}</td>
+                                                <td>{{$medi->mrp_price * $medi->qty}} tk</td>
+                                                <td>{{@$medi->company->name}}</td>
+                                                <td>{{$medi->group}}</td>
                                                 <td>
                                                     @foreach($medi->diseases as $com)
                                                         {{($com->name)}},
                                                     @endforeach
                                                 </td>
-                                                <td>{{$medi->name}}</td>
-                                                <td>{{@$medi->power->name}}</td>
-                                                <td>{{@$medi->peck_size}}</td>
-                                                <td>{{@$medi->qty}}</td>
-                                                <td>{{$medi->mrp_price}}</td>
-                                                <td>{{$medi->mrp_price * $medi->qty}}</td>
-                                                <td>{{@$medi->company->name}}</td>
-                                                <td>{{$medi->group}}</td>
                                                 <td>
                                                     {{ substr(strip_tags($medi->description), 0, 50) }}
                                                 </td>
