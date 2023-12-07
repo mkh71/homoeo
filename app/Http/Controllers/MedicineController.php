@@ -49,7 +49,6 @@ class MedicineController extends Controller
                     'group'=>$request->group,
                     'expired_date'=>$request->expired_date
                 ]);
-            dd($med);
             $med->diseases()->attach($request->diseases);
             DB::commit();
             return redirect(route('medicine.index'))->with('success', 'medicine has been deleted successfully');
