@@ -131,7 +131,7 @@ class CompanyController extends Controller
     public function companyInvoices($id)
     {
         $data['invoices']  = CompanyInvoice::query()
-            ->where('id',$id)
+            ->where('company_id',$id)
             ->get();
         $data['company']  = Company::query()->findOrFail($id);
         return view('companies.details')->with($data);
