@@ -31,7 +31,7 @@ class MedicineController extends Controller
         return view('medicine.medicine',compact('medicines', 'diseases','powers'));
     }
 
-    
+
     public function store(Request $request)
     {
         $this->validate($request ,['name'=>'required | unique:medicines']);
