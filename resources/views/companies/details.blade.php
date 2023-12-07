@@ -99,7 +99,7 @@
                                         <td>{{$info->total_amount ?? '-'}}</td>
                                         <td>{{$info->total_paid ?? '-'}}</td>
                                         <td>{{$info->total_dues ?? '-'}}</td>
-                                        <td>{{$info->date ?? '-'}}</td>
+                                        <td>{{\Carbon\Carbon::parse($info->date ?? '-')->format('d M y')}}</td>
                                         <td class="text-end">
                                             <div class="table-action">
                                                 @if(isset($invoice) && $info->id == $invoice->id)
