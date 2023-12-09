@@ -60,6 +60,13 @@ class HomeController extends Controller
         }
         return $data;
     }
+    public function medPrice(Request $request)
+    {
+        $med = Medicine::query()->findOrFail($request->id);
+        $price = $med->mrp_price;
+
+        return response()->json(['price'=>$price]);
+    }
 
 
     public function backup(){

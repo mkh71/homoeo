@@ -29,4 +29,5 @@ class Patient extends Model
     public function perpose(){
         return $this->hasOne(Complain::class, 'patient_id', 'id');
     }
+
 }

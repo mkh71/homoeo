@@ -106,10 +106,7 @@
 
                 <!-- Appointment Tab -->
                 <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                    <li class="nav-item">
-                        <a class="nav-link @if(!isset($id)) active @else disabled @endif " href="#upcoming-appointments"
-                           data-bs-toggle="tab">Patient List</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link @if(isset($id)) active @endif" href="#today-appointments"
                            data-bs-toggle="tab"> @if(!isset($id))
@@ -141,64 +138,6 @@
                 <!-- /Appointment Tab -->
 
                 <div class="tab-content">
-
-                    <!-- Upcoming Appointment Tab -->
-                    <div class="tab-pane show @if(!isset($id)) active @endif" id="upcoming-appointments">
-                        <div class="card card-table mb-0">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-center mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th>Serial No.</th>
-                                            <th>Patient Name</th>
-                                            <th>Age</th>
-                                            <th>Contact</th>
-                                            <th>Date</th>
-                                            <th>Address</th>
-                                            <th>Complain</th>
-                                            <th class="text-center">Total</th>
-                                            <th class="text-center">Paid</th>
-                                            <th class="text-center">Dues</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody id="ptn_tbl">
-                                        @forelse($patient as $pat)
-                                            <tr>
-
-                                                <td>{{$pat->serial}}</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="{{route('patients.profile',$pat->id)}}">{{$pat->name}}</a>
-                                                    </h2>
-                                                </td>
-                                                <td>{{$pat->age}} Yr.</td>
-                                                <td>{{$pat->mobile}}</td>
-                                                <td>{{ \Carbon\Carbon::parse($pat->created_at)->format('d M y') }}</td>
-                                                <td>{{$pat->address}}</td>
-                                                <td data-id="{{$pat->id}}" class="complain"
-                                                    style="cursor: pointer">{{$pat->last_complain}}</td>
-                                                <td data-id="{{$pat->id}}" class="dues">{{$pat->total}}</td>
-                                                <td data-id="{{$pat->id}}" class="dues">{{$pat->paid}}</td>
-                                                <td data-id="{{$pat->id}}" class="dues">{{$pat->dues}}</td>
-                                                <td class="text-end">
-                                                    <div class="table-action">
-                                                        <a href="{{route('patients.edit',$pat->id)}}"
-                                                           class="btn btn-sm bg-info-light" id="edit">
-                                                            <i class="far fa-pencil">Edit</i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                        @endforelse
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Upcoming Appointment Tab -->
 
                     <!-- Today Appointment Tab -->
                     <div class="tab-pane @if(isset($id)) active @endif" id="today-appointments">
@@ -240,10 +179,13 @@
                                     </div>
 
 
+
+
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Date</label>
-                                            <input type="date" class="form-control"  name="date" value="{{\Carbon\Carbon::now()->toDateString()}}">
+                                            <input type="date" class="form-control"
+                                                   name="date" value="{{$data->date ?? ''}}">
                                         </div>
                                     </div>
 
@@ -254,26 +196,40 @@
                                                    name="address" value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Total Bill</label>
-                                            <input type="text" class="form-control" name="total" id="totalPrice" value="">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Prev Total</label>
+                                                <input disabled type="number" class="form-control"
+                                                       name="total" value="{{$data->total ?? ''}}" id="prevTotal">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Payment</label>
-                                            <input type="number" class="form-control" name="paid" id="payment" onkeyup="calculate()">
-                                        </div>
-                                    </div>
 
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Prev Payment</label>
+                                                <input disabled type="number" class="form-control"
+                                                        value="{{$data->paid ?? ''}}">
+                                            </div>
+                                        </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label>Dues</label>
-                                            <input type="number" disabled class="form-control" value="" id="dues">
+                                            <label>Today bill</label>
+                                            <input type="number" class="form-control" id="totalPrice">
                                         </div>
                                     </div>
-
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Total Bill Now</label>
+                                            <input type="number" class="form-control"
+                                                   name="total" value="" id="totalBillNow">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Today Payment</label>
+                                            <input type="number" class="form-control" name="paid" >
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Complain</label><br>
@@ -282,8 +238,13 @@
                                                     style="width: 100%"
                                                     placeholder="Pick complain(s)" multiple="multiple">
                                                 @foreach($diseases as $item)
-                                                    <option value="{{$item->name}}"
-                                                            data-id="{{$item->id}}">{{$item->name}}</option>
+                                                    <option
+                                                        value="{{ $item->name }}"
+                                                        data-id="{{$item->id}}" @if(in_array($item->name, $data->complains->pluck('details')->toArray()))
+                                                            selected @endif>
+                                                        {{$item->name}}
+                                                    </option>
+
                                                 @endforeach
                                             </select>
                                         </div>
@@ -292,7 +253,7 @@
 
 
                                     <div>
-                                        <div class="row heading">
+                                        <div class="row">
                                             <div class="col-md-3">
                                                 <b>Medicine</b>
                                             </div>
@@ -306,7 +267,7 @@
                                                 <b>Price</b>
                                             </div>
                                             <div class="col-md-1">
-                                                <b>Qty</b>
+                                                 <b>Qty</b>
                                             </div>
                                             <div class="col-md-2">
                                                 <b>Total</b>
@@ -315,6 +276,43 @@
                                                 <b>Cancel</b>
                                             </div>
                                         </div>
+                                        @forelse($data->medicine as $info)
+                                        <div class="row rowId{{$info->id}} mb-2">
+                                            <div class="col-md-2">
+                                                <select name="medicine[]" class="form-control"
+                                                        required>
+                                                    <option value="{{$info->medicine_id}}" selected>{{@$info->medicine->name}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select name="power[]" class="form-control" required>
+                                                    @foreach($powers as $item)
+                                                        <option value="{{$item->id}}" {{$info->power_id == $item->id ? 'selected' : ''}} >{{$item->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <select name="dose[]" class="form-control" required>
+                                                    @foreach($doses as $item)
+                                                        <option value="{{$item->id}}" {{$info->dose_id == $item->id ? 'selected' : ''}}>{{$item->name}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input id="mprice{{$info->id}}" onkeyup="sumTotal({{$info->id}})" type="number" class="form-control" value="{{$info->price}}" disabled>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <input id="qty{{$info->id}}" type="text" name="qty[]" value="{{$info->qty}}"class="form-control">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <input id="subTotal" type="text" value="{{$info->price * $info->qty}}" class="form-control" disabled>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <a class="btn btn-danger"  onclick="deleteRow({{$info->id}})"> <i class="fa feather-trash "></i> </a>
+                                            </div>
+                                        </div>
+                                        @empty
+                                        @endforelse
                                     </div>
 
 
@@ -350,143 +348,10 @@
         </div>
     </div>
 @stop
-@section('modal')
-    {{--    patient edit modal start--}}
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                {!! Form::open(['route'=>['patients.complain',0], 'method'=>'post','id'=>'patient_form']) !!}
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Patient Update</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="tab-pane" id="today-appointments">
-                        <div class="card card-table mb-0">
-                            <div class="card-body">
-                                <div class="row form-row">
-                                    <input type="hidden" name="id" id="user_id" value="">
-                                    <div class="col-md-4">
-                                        <lable for="paid">Total</lable>
-                                        <input type="number" name="total" class="form-control"
-                                               placeholder="Total Amount">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <lable for="paid">Paid</lable>
-                                        <input type="number" name="paid" class="form-control" placeholder="Paid Amount">
-                                    </div>
 
-                                    <div class="col-md-4">
-                                        <lable for="paid">Date</lable>
-                                        <input type="date" name="date" class="form-control" value="{{\Illuminate\Support\Carbon::today()}}">
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Purpose</label><br>
-                                            <div class="form-group">
-                                                <select name="last_complain[]" required
-                                                        class="form-control last_complain select2"
-                                                        placeholder="Pick complain(s)" multiple="multiple"
-                                                        style="width: 100%">
-                                                    @foreach($diseases as $item)
-                                                        <option value="{{$item->name}}"
-                                                                data-id="{{$item->id}}">{{$item->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="row mt-2">
-                                                <div class="col-md-12">
-                                                    <div class="row appendRow">
-                                                        <div class="col-md-3">
-                                                            <select name="medicine[]"
-                                                                    class="form-control disease_medicines" required>
-                                                                <option value="" selected>Select medicines</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-md-2">
-                                                            <select name="pack_size[]" class="form-control" required>
-                                                                <option value="" selected>Select Pack Size</option>
-                                                                @foreach(peckSize() as $item)
-                                                                    <option value="{{$item->id}}">{{$item->name}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <select name="power[]" required class="form-control">
-                                                                <option value="" selected>Select Power</option>
-                                                                @foreach($powers as $item)
-                                                                    <option
-                                                                        value="{{$item->id}}">{{$item->name}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <select name="dose[]" required class="form-control">
-                                                                <option value="" selected>Select...</option>
-                                                                @foreach($doses as $item)
-                                                                    <option
-                                                                        value="{{$item->id}}">{{$item->name}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-2">
-                                                            <input type="text" name="qty[]" class="form-control"
-                                                                   placeholder="qty">
-                                                        </div>
-                                                        <div class="col-md-1 addbtn">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="plusBtn">
-                                    <button type="button" class="btn btn-warning addRow ">
-                                        <i class="fa fa-plus-circle">Add More Medicine</i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {!! Form::close() !!}
-            </div>
-        </div>
-    </div>
-    {{--    patient edit modal start--}}
-    {{-- purpose modal --}}
-    @include('include.modals.addMadicine')
-    {{-- end purpose modal --}}
-@endsection
 @section('js')
     <script>
-        function calculate() {
-            var total = $('#totalPrice').val();
-            var payment = $('#payment').val();
-            var dues = total - payment;
-            $('#dues').val(dues);
-        }
-        $('.heading').hide()
-        $(document).on('keyup', '#search', function () {
-            var word = $(this).val();
-            $.ajax({
-                method: "post",
-                url: "{{route('patients.search')}}",
-                data: {word: word, _token: "{{csrf_token()}}"},
-                success: function (res) {
-                    console.log(res);
-                    $('#ptn_tbl').html(res);
-                }
-            });
-        });
         $(document).on('click', '.apndBtn', function () {
-            $('.heading').show()
-
             var selectedValues = $(".last_complain").val();
             $.ajax({
                 method: 'post',
@@ -526,7 +391,7 @@
             });
             // Display the total wherever you want on the page
             $("#totalPrice").val(totalPrice);
-            document.getElementById('totalPrice').value = totalPrice;
+            $("#totalBillNow").val(totalPrice + {{$data->total}}) ;
         }
         function sumTotal(ref) {
             var price = $('#mprice'+ref).val();
@@ -539,7 +404,7 @@
         function deleteRow(id) {
             $('.rowId'+id).html('')
             setTimeout(function () {
-                calculateTotal();
+            calculateTotal();
             }, 100);
         }
 
@@ -555,6 +420,12 @@
                     $(".disease_medicines").html(response);
                 }
             })
+        })
+        $(document).on('click', '.complain', function () {
+            $('#exampleModal').modal('show');
+            var id = $(this).attr('data-id');
+            $('#user_id').val(id);
+
         })
         $(document).on('click', '#addPurpose', function () {
             $('#addMadicine').modal('show');
@@ -582,6 +453,7 @@
             $(row_item).remove();
         });
         $(document).on('click', '.addRow', function () {
+
             $('.appendRow').clone().first().appendTo('.addCloneData').after();
             $('.addbtn').html('<button type="button" class="btn-sm btn-danger deleteRow"> ' +
                 '<i class="fa fa-times-circle"></i>' +

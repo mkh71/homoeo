@@ -14,6 +14,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Ramsey\Uuid\Uuid;
 
 class PatientController extends Controller
 {
@@ -59,6 +61,7 @@ class PatientController extends Controller
                         'dues' => $request->total - $request->paid,
                     ]);
             $complain = Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
+
             foreach ($request->medicine as $key => $item) {
                 PurposeMedicine::query()->create([
                     'user_id' => $pat->id,
@@ -67,7 +70,7 @@ class PatientController extends Controller
                     'power_id' => $request->power[$key],
                     'dose_id' => $request->dose[$key],
                     'qty' => $request->qty[$key],
-                    'pack_size' => $request->pack_size[$key]
+//                    'pack_size' => $request->pack_size[$key]
                 ]);
                 $med = Medicine::query()->findOrFail($item);
                 $med->update(['qty'=>$med->qty - $request->qty[$key]]);
@@ -90,7 +93,15 @@ class PatientController extends Controller
     public function edit($id)
     {
         $patient = Patient::query()->latest()->limit(12)->get();
-        $data = Patient::query()->find($id);
+        $data = Patient::query()->with(['complains','perpose'])->find($id);
+        $data->medicine = PurposeMedicine::query()
+            ->where('user_id',$data->id)
+            ->get()
+            ->map(function ($data){
+                $data->price = @$data->medicine->mrp_price;
+                return $data;
+            })
+        ;
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
@@ -98,11 +109,12 @@ class PatientController extends Controller
         $powers = Power::get();
         $medicines = Medicine::get();
         $diseases = Disease::all();
-        return view('welcome',compact('patient','totalPatient','todayPatient','totalDues','data','id','doses','powers','medicines', 'diseases'));
+        return view('patient.edit',compact('patient','totalPatient','todayPatient','totalDues','data','id','doses','powers','medicines', 'diseases'));
     }
 
     public function update(Request $request, $id)
     {
+
         $pat = Patient::query()->find($id);
         $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
         $pat->update([
@@ -114,7 +126,7 @@ class PatientController extends Controller
             'total' => $request->total,
             'paid' => $request->paid,
             'dues' => $request->total - $request->paid,
-//            'last_complain' => $com,
+            'last_complain' => $com,
             'date' => $request->date,
         ]);
        $pay =  PatientPayment::query()
@@ -258,7 +270,7 @@ class PatientController extends Controller
     }
 
     public function duesList(){
-        $patient = Patient::query()->latest()->limit(24)->where('dues', '>', 0)->get();
+        $patient = Patient::query()->latest()->where('dues', '>', 0)->get();
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
@@ -313,4 +325,17 @@ class PatientController extends Controller
         return view('patient.search-date',compact('patients','totalPatient','todayPatient','totalDues', 'diseases','date','totalSale'));
     }
 
+    public function appendPurRow(Request $request){
+        if($request->name !=null){
+            $meds = Disease::query()->whereIn('name', $request->name)->get() ?? null;
+        }else{
+            $meds = null;
+        }
+        $min = 1000;
+        $max = 1030;
+        $info = random_int($min, $max);
+        $rows = view('patient.rowAppend',compact('meds','info'))->render();
+
+        return response()->json(['rows'=>$rows]);
+    }
 }

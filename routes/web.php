@@ -42,6 +42,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('patient-profile/{id}', 'PatientController@profile')->name('patients.profile');
     Route::get('patient-dues-list', 'PatientController@duesList')->name('patients.dues.list');
     Route::post('dateTo-search', 'PatientController@dateToSearch')->name('patients.dateTo.search');
+    Route::post('appendPurRow', 'PatientController@appendPurRow')->name('appendPurRow');
 
 
     Route::resource('power','PowerController');
@@ -60,6 +61,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('peack_sizes-delete/{peackSize}','PeackSizeController@delete')->name('peack_sizes-delete');
     Route::get('disease-delete/{id}','DiseaseController@erase')->name('disease.delete');
     Route::post('medicineByDisease','HomeController@medicineByDisease')->name('medicineByDisease');
+    Route::post('medPrice','HomeController@medPrice')->name('medPrice');
 
     Route::get('prescription', function (){
        return view('prescription.index');

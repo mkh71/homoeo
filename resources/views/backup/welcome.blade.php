@@ -239,11 +239,28 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Total</label>
+                                            <input type="number" class="form-control"
+                                                   name="total" value="{{$data->total ?? ''}}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Paid</label>
+                                            <input type="number" class="form-control"
+                                                   name="paid" value="{{$data->paid ?? ''}}">
+                                        </div>
+                                    </div>
+
 
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Date</label>
-                                            <input type="date" class="form-control"  name="date" value="{{\Carbon\Carbon::now()->toDateString()}}">
+                                            <input type="date" class="form-control"
+                                                   name="date" value="{{$data->date ?? ''}}">
                                         </div>
                                     </div>
 
@@ -254,89 +271,87 @@
                                                    name="address" value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    @if(!isset($id))
+                                        <table class="table table-borderless table-responsive" id="medTable">
+                                            <tr style="border: 0">
+                                                <td colspan="3" style="border: 0; margin: 0">
+                                                    <div class="form-group">
+                                                        <label>Complain</label><br>
+                                                        <select name="last_complain[]" required
+                                                                class="form-control last_complain select2"
+                                                                style="width: 100%"
+                                                                placeholder="Pick complain(s)" multiple="multiple">
+                                                            @foreach($diseases as $item)
+                                                                <option value="{{$item->name}}"
+                                                                        data-id="{{$item->id}}">{{$item->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="newRow form-group">
+                                                <td style="border: 0; width: 20%;">
+                                                    <select name="medicine[]" class="form-control disease_medicines"
+                                                            required>
+                                                        <option value="" selected>Select medicines</option>
+                                                    </select>
+                                                </td>
+
+                                                <td style="border: 0; width: 20%;">
+                                                    <select name="pack_size[]" class="form-control" required>
+                                                        <option value="" selected>Select Pack Size</option>
+                                                        @foreach(peckSize() as $item)
+                                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{--                                                {!! Form::select('power[]', $powers, NULL , ['class'=>'form-control', 'placeholder'=>"Select Power"]) !!}--}}
+                                                </td>
+
+                                                <td style="border: 0; width: 20%;">
+                                                    <select name="power[]" class="form-control" required>
+                                                        <option value="" selected>Select Power</option>
+                                                        @foreach($powers as $item)
+                                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{--                                                {!! Form::select('power[]', $powers, NULL , ['class'=>'form-control', 'placeholder'=>"Select Power"]) !!}--}}
+                                                </td>
+                                                <td style="border: 0; width: 30%;">
+                                                    <select name="dose[]" class="form-control" required>
+                                                        <option value="" selected>Select Dose</option>
+                                                        @foreach($doses as $item)
+                                                            <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{--                                                {!! Form::select('dose[]', $doeses, NULL , ['class'=>'form-control', 'placeholder'=>"Select Dose"]) !!}--}}
+                                                </td>
+
+                                                <td style="border: 0; width: 20%;">
+                                                    <input type="number" name="qty[]" class="form-control"
+                                                           placeholder="Quantity">
+                                                    {{--                                                {!! Form::select('dose[]', $doeses, NULL , ['class'=>'form-control', 'placeholder'=>"Select Dose"]) !!}--}}
+                                                </td>
+
+                                            </tr>
+                                        </table>
+                                    @endif
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 pull-right">
+                                        <button type="button" class="btn btn-warning add" id="plus">
+                                            <i class="fa fa-plus-circle"> Add More Medicine</i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6 pull-right">
                                         <div class="form-group">
-                                            <label>Total Bill</label>
-                                            <input type="text" class="form-control" name="total" id="totalPrice" value="">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Payment</label>
-                                            <input type="number" class="form-control" name="paid" id="payment" onkeyup="calculate()">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Dues</label>
-                                            <input type="number" disabled class="form-control" value="" id="dues">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label>Complain</label><br>
-                                            <select name="last_complain[]" required
-                                                    class="form-control last_complain select2"
-                                                    style="width: 100%"
-                                                    placeholder="Pick complain(s)" multiple="multiple">
-                                                @foreach($diseases as $item)
-                                                    <option value="{{$item->name}}"
-                                                            data-id="{{$item->id}}">{{$item->name}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div>
-                                        <div class="row heading">
-                                            <div class="col-md-3">
-                                                <b>Medicine</b>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <b>Power</b>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <b>Does</b>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <b>Price</b>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <b>Qty</b>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <b>Total</b>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <b>Cancel</b>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="appendRow"></div>
-
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-warning apndBtn">
-                                                <i class="fa fa-plus-circle"> Add More Medicine</i>
+                                            <button type="submit" class="btn btn-block btn-primary pt-10">
+                                                Save Patient
                                             </button>
-                                        </div>
-                                        <div class="col-md-6 pull-right">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-block btn-primary pt-10">
-                                                    Save Patient
-                                                </button>
-                                                @if(isset($id))
-                                                    <a href="{{route('home')}}" class="btn btn-warning pt-10">
-                                                        Cancel
-                                                    </a>
-                                                @endif
-                                            </div>
+                                            @if(isset($id))
+                                                <a href="{{route('home')}}" class="btn btn-warning pt-10">
+                                                    Cancel
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -379,7 +394,7 @@
 
                                     <div class="col-md-4">
                                         <lable for="paid">Date</lable>
-                                        <input type="date" name="date" class="form-control" value="{{\Illuminate\Support\Carbon::today()}}">
+                                        <input type="date" name="date" class="form-control">
                                     </div>
 
                                     <div class="col-md-12">
@@ -433,7 +448,7 @@
                                                             </select>
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <input type="text" name="qty[]" class="form-control"
+                                                            <input type="number" name="qty[]" class="form-control"
                                                                    placeholder="qty">
                                                         </div>
                                                         <div class="col-md-1 addbtn">
@@ -441,6 +456,14 @@
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-md-12">
+                                                    <div class="row mt-2 addCloneData"></div>
+                                                </div>
+                                                <div class="col-md-2 dltBtn">
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -454,6 +477,13 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Complain</button>
+                    </div>
+                </div>
                 {!! Form::close() !!}
             </div>
         </div>
@@ -465,13 +495,6 @@
 @endsection
 @section('js')
     <script>
-        function calculate() {
-            var total = $('#totalPrice').val();
-            var payment = $('#payment').val();
-            var dues = total - payment;
-            $('#dues').val(dues);
-        }
-        $('.heading').hide()
         $(document).on('keyup', '#search', function () {
             var word = $(this).val();
             $.ajax({
@@ -484,67 +507,7 @@
                 }
             });
         });
-        $(document).on('click', '.apndBtn', function () {
-            $('.heading').show()
-
-            var selectedValues = $(".last_complain").val();
-            $.ajax({
-                method: 'post',
-                url: '{{route('appendPurRow')}}',
-                data: {name: selectedValues, _token: "{{csrf_token()}}"},
-                success: function (response) {
-                    $(".appendRow").append(response.rows);
-                    // $(".disease_medicines").html(response);
-                }
-            })
-        })
-
-        function medicine(id,value) {
-            var id = $(id).val();
-            $.ajax({
-                method: 'post',
-                url: '{{route('medPrice')}}',
-                data: {id: id, _token: "{{csrf_token()}}"},
-                success: function (res) {
-                    $('#mprice'+value).val(res.price)
-                    alert(response);
-                }
-            })
-        }
-
-
-        $(document).ready(function () {
-            calculateTotal();
-        });
-
-        function calculateTotal() {
-            var totalPrice = 0;
-
-            $("input[name='price']").each(function () {
-                var price = parseFloat($(this).val()) || 0;
-                totalPrice += price;
-            });
-            // Display the total wherever you want on the page
-            $("#totalPrice").val(totalPrice);
-            document.getElementById('totalPrice').value = totalPrice;
-        }
-        function sumTotal(ref) {
-            var price = $('#mprice'+ref).val();
-            var qty = $('#qty'+ref).val();
-            var total = price * qty;
-            $('#totalPrice'+ref).val(total);
-            calculateTotal();
-
-        }
-        function deleteRow(id) {
-            $('.rowId'+id).html('')
-            setTimeout(function () {
-                calculateTotal();
-            }, 100);
-        }
-
         $(document).on('change', '.last_complain', function () {
-            calculateTotal();
             var name = $(this).val();
             var id = $(this).data('id');
             $.ajax({
@@ -555,6 +518,12 @@
                     $(".disease_medicines").html(response);
                 }
             })
+        })
+        $(document).on('click', '.complain', function () {
+            $('#exampleModal').modal('show');
+            var id = $(this).attr('data-id');
+            $('#user_id').val(id);
+
         })
         $(document).on('click', '#addPurpose', function () {
             $('#addMadicine').modal('show');
