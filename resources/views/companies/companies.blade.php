@@ -101,19 +101,6 @@
                                     </div>
                                 </div>
                             @endif
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Total Bill <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="total_amount" value="{{$company->total_amount ?? ''}}">
-                                </div>
-                            </div>
-
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Total Payment <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" name="total_paid" value="{{$company->total_paid ?? ''}}">
-                                </div>
-                            </div>
 
 
                             <div class="col-md-8">
@@ -166,9 +153,9 @@
                                         <td>{{$info->phone ?? '-'}}</td>
                                         <td>{{$info->mpo ?? '-'}}</td>
                                         <td>{{$info->address ?? '-'}}</td>
-                                        <td>{{$info->total_amount ?? '-'}}</td>
-                                        <td>{{$info->total_paid ?? '-'}}</td>
-                                        <td>{{$info->total_dues ?? '-'}}</td>
+                                        <td class="bg-success-light">{{@$info->total ?? '-'}}</td>
+                                        <td class="bg-info-light">{{@$info->paid ?? '-'}}</td>
+                                        <td class="bg-danger-light">{{@$info->dues ?? '-'}}</td>
                                         <td>{{\Carbon\Carbon::parse($info->created_at)->format('d M y')}}</td>
                                         <td class="text-end">
                                             <div class="table-action">

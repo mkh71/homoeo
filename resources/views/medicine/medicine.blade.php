@@ -105,7 +105,6 @@
                                             <th>#</th>
                                             <th>Medicine</th>
                                             <th>Power</th>
-                                            <th>Peck Size</th>
                                             <th>Qty</th>
                                             <th>Net Price</th>
                                             <th>Mrp Price</th>
@@ -124,11 +123,10 @@
                                                 <td>{{$loop->iteration ?? '-'}}</td>
                                                 <td>{{$medi->name}}</td>
                                                 <td>{{@$medi->power->name}}</td>
-                                                <td>{{@$medi->peck_size}}</td>
-                                                <td>{{@$medi->qty}}</td>
-                                                <td>{{$medi->net_price}}</td>
-                                                <td>{{$medi->mrp_price}}</td>
-                                                <td>{{$medi->net_price * $medi->qty}} tk</td>
+                                                <td class="bg-primary-light">{{@$medi->qty}}</td>
+                                                <td class="bg-info-light">{{$medi->net_price}}</td>
+                                                <td class="bg-warning-light">{{$medi->mrp_price}}</td>
+                                                <td class="bg-success-light">{{$medi->net_price * $medi->qty}} tk</td>
                                                 <td>{{@$medi->company->name}}</td>
                                                 <td>{{$medi->group}}</td>
                                                 <td>

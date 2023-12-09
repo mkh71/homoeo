@@ -80,3 +80,16 @@ if (!function_exists('peckSize')){
     }
 }
 
+function getRandomColor() {
+    // Generate a random hex color code
+    return '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+}
+
+function getRandomColorName() {
+    // Array of color names
+    $colorNames = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink', 'Brown'];
+
+    // Get a random color name from the array
+    return $colorNames[array_rand($colorNames)];
+}
+

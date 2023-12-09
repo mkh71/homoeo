@@ -1,12 +1,13 @@
 <div>
         <div class="row rowId{{$info}}  mb-2">
             <div class="col-md-2">
-                <select name="medicine[]" class="form-control disease_medicines" onchange="medicine(this,{{$info}})" required>
+                <select name="medicine[]" class="form-control" onchange="medicine(this,{{$info}})" required>
                         <option selected>Select Medicine</option>
                     @if($meds !=null)
                         @foreach ($meds as $disease){
+                            @php $color =  getRandomColorName()  @endphp
                             @foreach ($disease->medicines as $item) {
-                                <option value="{{$item->id}}">{{$item->name}}</option>;
+                                <option value="{{$item->id}}" style="color: {{$color}}">{{$item->name}}</option>;
                             @endforeach
                         @endforeach
                     @endif
@@ -22,7 +23,7 @@
             </div>
             <div class="col-md-2">
                 <select name="dose[]" class="form-control" required>
-                    <option selected>Select Does</option>
+                    <option disabled selected>Select Does</option>
                     @foreach(does() as $item)
                         <option value="{{$item->id}}">{{$item->name}}</option>
                     @endforeach

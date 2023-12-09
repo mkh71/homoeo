@@ -182,9 +182,9 @@ class PatientController extends Controller
                     <td>'.Carbon::parse($pat->created_at)->format('d M y').'</td>
                     <td>'.$pat->address.'</td>
                     <td data-id="'.$pat->id.'" class="complain">'.$pat->last_complain.'</td>
-                    <td data-id="'.$pat->id.'" class="dues">'.$pat->total.'</td>
-                    <td data-id="'.$pat->id.'" class="dues">'.$pat->paid.'</td>
-                    <td data-id="'.$pat->id.'" class="dues">'.$pat->dues.'</td>
+                    <td data-id="'.$pat->id.'" class="bg-primary-light">'.$pat->total.'</td>
+                    <td data-id="'.$pat->id.'" class="bg-info-light">'.$pat->paid.'</td>
+                    <td data-id="'.$pat->id.'" class="bg-danger-light">'.$pat->dues.'</td>
                     <td class="text - end">
                         <div class="table - action">
                             <a href="'.route('patients.edit', $pat->id).'" class="btn btn-sm bg-info-light" id="edit">
@@ -327,7 +327,7 @@ class PatientController extends Controller
 
     public function appendPurRow(Request $request){
         if($request->name !=null){
-            $meds = Disease::query()->whereIn('name', $request->name)->get() ?? null;
+            $meds = Disease::query()->whereIn('name', $request->name)->get()->unique('name') ?? null;
         }else{
             $meds = null;
         }
@@ -337,5 +337,64 @@ class PatientController extends Controller
         $rows = view('patient.rowAppend',compact('meds','info'))->render();
 
         return response()->json(['rows'=>$rows]);
+    }
+
+    public function patientNewPur($id){
+        $data['patient'] = Patient::query()->findOrFail($id);
+        $data['diseases'] = Disease::all();
+        return view('patient.newPurpose')->with($data);
+    }
+    public function newPurposeStore(Request $request,$patientId){
+//        dd($patientId);
+        try {
+            DB::beginTransaction();
+            $pat = Patient::query()->find($patientId);
+            $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
+            $pat->update(
+                [
+                    'last_complain'=>$com,
+                    'total' => $request->total,
+                    'paid' => $request->paid,
+                    'dues' => $request->total - $request->paid,
+                    'date' => $request->date,
+                ]);
+            $complain = Complain::query()->create([
+                'patient_id' => $patientId,
+                'details' => $com,
+            ]);
+            $pay = PatientPayment::query()
+                ->create(
+                    [
+                        'patient_id'=>$pat->id,
+                        'total' => $request->total,
+                        'paid' => $request->paid,
+                        'dues' => $request->total - $request->paid,
+                    ]);
+            foreach ($request->medicine as $key => $item) {
+                PurposeMedicine::query()->create([
+                    'user_id' => $pat->id,
+                    'complain_id' => $complain->id,
+                    'medicine_id' => $item,
+                    'power_id' => $request->power[$key],
+                    'dose_id' => $request->dose[$key],
+                    'qty' => $request->qty[$key],
+                ]);
+
+                $med = Medicine::query()->findOrFail($item);
+                $med->update(['qty'=>$med->qty - $request->qty[$key]]);
+            }
+
+            DB::commit();
+            return redirect()->route('home')->with('success', "Complain has been added successfully");
+        }catch ( \Throwable $e){
+            DB::rollBack();
+            dd(
+                $e->getFile(),
+                $e->getCode(),
+                $e->getMessage(),
+                $e->getPrevious(),
+            );
+            return redirect()->back()->with('error', 'Complain Create fail');
+        }
     }
 }

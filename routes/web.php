@@ -43,6 +43,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('patient-dues-list', 'PatientController@duesList')->name('patients.dues.list');
     Route::post('dateTo-search', 'PatientController@dateToSearch')->name('patients.dateTo.search');
     Route::post('appendPurRow', 'PatientController@appendPurRow')->name('appendPurRow');
+    Route::get('patientNewPur/{patientId}', 'PatientController@patientNewPur')->name('patients.new');
+    Route::post('newPurposeStore/{patientId}', 'PatientController@newPurposeStore')->name('newPurposeStore');
 
 
     Route::resource('power','PowerController');

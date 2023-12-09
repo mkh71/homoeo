@@ -16,7 +16,14 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $data['companies'] = Company::query()->get();
+        $data['companies'] = Company::query()
+            ->get()
+            ->map(function ($item){
+                $item->total = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_amount');
+                $item->paid = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_paid');
+                $item->dues = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_dues');
+                return $item;
+            });
         return view('companies.companies')->with($data);
     }
 
@@ -81,7 +88,13 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        $data['companies'] = Company::query()->get();
+        $data['companies'] = Company::query()->get()
+            ->map(function ($item){
+                $item->total = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_amount');
+                $item->paid = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_paid');
+                $item->dues = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_dues');
+                return $item;
+            });
         $data['company'] = $company;
         return view('companies.companies')->with($data);
     }

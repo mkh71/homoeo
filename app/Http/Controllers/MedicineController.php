@@ -145,34 +145,39 @@ class MedicineController extends Controller
         }
         $html = '';
         foreach ($data as $medi) {
+            $diseases = '';
+            foreach ($medi->diseases as $com) {
+                $diseases .= $com->name.',';
+            }
             $html .=  '
-   <tr>
-        <td>'.$medi->id.'</td>
-        <td>'.$medi->name.'</td>
-        <td>'.@$medi->power->name.'</td>
-        <td>'.$medi->net_price.'</td>
-        <td>'.$medi->mrp_price.'</td>
-        <td>'.@$medi->qty.'</td>
-        <td>'.@$medi->company->name.'</td>
-        <td>'.$medi->group.'</td>
-        <td></td>
-        <td>'.
-            substr(strip_tags($medi->description), 0, 50)
-                    .'</td>
-        <td>'.$medi->expired_date.'</td>
-        <td class="text-end">
-            <div class="table-action">
-                    <a href="'.route('medicine.edit',$medi->id).'"
-                       class="btn btn-sm bg-info-light" id="edit">
-                        <i class="far fa-pencil">Edit</i>
-                    </a>
-                    <a href="'.route('medicine-delete',$medi->id).'"
-                       class="btn btn-sm bg-danger-light" id="delete">
-                        <i class="far fa-pencil">Delete</i>
-                    </a>
-            </div>
-        </td>
-    </tr>';
+               <tr>
+                    <td>'.$medi->id.'</td>
+                    <td>'.$medi->name.'</td>
+                    <td>'.@$medi->power->name.'</td>
+                    <td class="bg-warning-light">'.@$medi->qty.'</td>
+                    <td class="bg-success-light">'.$medi->net_price.'</td>
+                    <td class="bg-info-light">'.$medi->mrp_price.'</td>
+                    <td class="bg-primary-light-light">'.$medi->mrp_price * $medi->qty.'</td>
+                    <td>'.@$medi->company->name.'</td>
+                    <td>'.$medi->group.'</td>
+                    <td>'. $diseases.'</td>
+                    <td>'.
+                        substr(strip_tags($medi->description), 0, 50)
+                                .'</td>
+                    <td>'.$medi->expired_date.'</td>
+                    <td class="text-end">
+                        <div class="table-action">
+                                <a href="'.route('medicine.edit',$medi->id).'"
+                                   class="btn btn-sm bg-info-light" id="edit">
+                                    <i class="far fa-pencil">Edit</i>
+                                </a>
+                                <a href="'.route('medicine-delete',$medi->id).'"
+                                   class="btn btn-sm bg-danger-light" id="delete">
+                                    <i class="far fa-pencil">Delete</i>
+                                </a>
+                        </div>
+                    </td>
+                </tr>';
         }
         return $html;
     }
