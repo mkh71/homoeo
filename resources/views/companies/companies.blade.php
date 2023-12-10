@@ -6,7 +6,7 @@
                 <div class="card dash-card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12 col-lg-4">
+                            <div class="col-md-12 col-lg-3">
                                 <div class="dash-widget dct-border-rht">
                                     <div class="circle-bar circle-bar1">
                                         <div class="circle-graph1" data-percent="75">
@@ -21,7 +21,23 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-4">
+                            <div class="col-md-12 col-lg-3">
+                                <div class="dash-widget dct-border-rht">
+                                    <div class="circle-bar circle-bar2">
+                                        <div class="circle-graph2" data-percent="65">
+                                            <img src="{{asset('assets')}}/img/icons/icon-02.png" class="img-fluid"
+                                                 alt="Patient">
+                                        </div>
+                                    </div>
+                                    <div class="dash-widget-info">
+                                        <h6>Total Bill</h6>
+                                        <h3>{{$companies->sum('total')}}</h3>
+                                        {{--                                    <p class="text-muted">{{now()->format('Y M d')}}</p>--}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-3">
                                 <div class="dash-widget dct-border-rht">
                                     <div class="circle-bar circle-bar2">
                                         <div class="circle-graph2" data-percent="65">
@@ -31,13 +47,13 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>Total Paid</h6>
-                                        <h3>{{total_company()->sum('total_paid')}}</h3>
+                                        <h3>{{$companies->sum('paid')}}</h3>
                                         {{--                                    <p class="text-muted">{{now()->format('Y M d')}}</p>--}}
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-12 col-lg-4">
+                            <div class="col-md-12 col-lg-3">
                                 <div class="dash-widget">
                                     <div class="circle-bar circle-bar3">
                                         <div class="circle-graph3" data-percent="50">
@@ -47,7 +63,7 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>Total Dues</h6>
-                                        <h3>{{total_company()->sum('total_dues')}}</h3>
+                                        <h3>{{$companies->sum('dues')}}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -168,7 +184,7 @@
                                                     <a href="{{route('companies.edit',$info->id)}}" class="btn btn-sm bg-info-light" id="edit">
                                                         <i class="far fa-pencil">Edit</i>
                                                     </a>
-                                                    <a href="{{route('company.delete',$info->id)}}" class="btn btn-sm bg-danger-light" id="edit">
+                                                    <a onclick="deleteCompany({{ $info->id }})" class="btn btn-sm bg-danger-light" id="edit">
                                                         <i class="far fa-pencil">Delete</i>
                                                     </a>
                                                 @endif
@@ -189,5 +205,25 @@
 @stop
 @section('js')
     <script>
+        function deleteCompany(companyId) {
+            var confirmed = confirm('Are you sure you want to delete this patient?');
+
+            if (confirmed) {
+                // Make an Ajax request to delete the patient
+                $.ajax({
+                    url: '/companyId/' + companyId,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Reload the page or update the UI as needed
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
     </script>
 @endsection

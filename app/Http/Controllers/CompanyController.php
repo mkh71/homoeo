@@ -138,7 +138,9 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
+        Company::destroy($id);
+        session()->flash('success', 'Patient has been Deleted successfully');
+        return response()->json(['success' => true]);
     }
 
     public function companyInvoices($id)

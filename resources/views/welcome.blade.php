@@ -175,7 +175,7 @@
                                                 </td>
                                                 <td>{{$pat->age}} Yr.</td>
                                                 <td>{{$pat->mobile}}</td>
-                                                <td>{{ \Carbon\Carbon::parse($pat->created_at)->format('d M y') }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($pat->updated_at ?? $pat->created_at)->format('d M y') }}</td>
                                                 <td>{{$pat->address}}</td>
                                                 <td data-id="{{$pat->id}}" class="complain"
                                                     style="cursor: pointer">{{$pat->last_complain}}</td>
