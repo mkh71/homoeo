@@ -180,7 +180,7 @@
                                                 <td data-id="{{$pat->id}}" class="complain"
                                                     style="cursor: pointer">{{$pat->last_complain}}</td>
                                                 <td data-id="{{$pat->id}}" class="bg-info-light">{{$pat->total}}</td>
-                                                <td data-id="{{$pat->id}}" class="bg-success-light">{{$pat->paid}}</td>
+                                                <td data-id="{{$pat->id}}" class="bg-success-light">{{$pat->paid}}  {{$pat->discount != 0 ? '('.$pat->discount.')' : ''}}</td>
                                                 <td data-id="{{$pat->id}}" class="bg-danger-light">{{$pat->dues}}</td>
                                                 <td class="text-end">
                                                     <div class="table-action" style="">
@@ -272,6 +272,12 @@
                                         <div class="form-group">
                                             <label>Total Bill</label>
                                             <input type="text" class="form-control" name="total" id="totalPrice" value="">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Discount</label>
+                                            <input type="text" class="form-control" name="discount" id="discount" value="">
                                         </div>
                                     </div>
                                     <div class="col-md-2">

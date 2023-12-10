@@ -226,6 +226,13 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
+                                            <label>Discount</label>
+                                            <input type="number" class="form-control"
+                                                   name="discount" value="" id="discount">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
                                             <label>Today Payment</label>
                                             <input type="number" class="form-control" name="paid" >
                                         </div>
@@ -299,10 +306,10 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                                <input id="mprice{{$info->id}}" onkeyup="sumTotal({{$info->id}})" type="number" class="form-control" value="{{$info->price}}" disabled>
+                                                <input id="mprice{{$info->id}}" onkeyup="sumTotal({{$info->id}})" type="number" class="form-control" value="{{$info->price}}">
                                             </div>
                                             <div class="col-md-1">
-                                                <input id="qty{{$info->id}}" type="text" name="qty[]" value="{{$info->qty}}"class="form-control">
+                                                <input id="qty{{$info->id}}" type="text" name="qty[]" onkeyup="sumTotal({{$info->id}})" value="{{$info->qty}}"class="form-control">
                                             </div>
                                             <div class="col-md-2">
                                                 <input id="subTotal" type="text" value="{{$info->price * $info->qty}}" class="form-control" disabled>
@@ -391,12 +398,14 @@
             });
             // Display the total wherever you want on the page
             $("#totalPrice").val(totalPrice);
-            $("#totalBillNow").val(totalPrice + {{$data->total}}) ;
+            $("#totalBillNow").val(totalPrice + {{$data->dues}}) ;
         }
         function sumTotal(ref) {
+
             var price = $('#mprice'+ref).val();
             var qty = $('#qty'+ref).val();
             var total = price * qty;
+            alert(total)
             $('#totalPrice'+ref).val(total);
             calculateTotal();
 

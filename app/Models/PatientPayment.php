@@ -13,6 +13,7 @@ class PatientPayment extends Model
       'patient_id',
       'total',
       'paid',
+      'discount',
       'dues',
     ];
 }

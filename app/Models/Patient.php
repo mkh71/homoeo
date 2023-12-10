@@ -16,6 +16,7 @@ class Patient extends Model
         'address',
         'age',
         'dues',
+        'discount',
         'last_complain',
         'total',
         'paid',

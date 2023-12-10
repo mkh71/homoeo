@@ -182,6 +182,13 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
+                                            <label>Discount</label>
+                                            <input type="number" class="form-control"
+                                                   name="discount" value="" id="discount">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
                                             <label>Today Payment</label>
                                             <input type="number" class="form-control" name="paid" >
                                         </div>
