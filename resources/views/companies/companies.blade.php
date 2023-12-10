@@ -226,13 +226,13 @@
 @section('js')
     <script>
         function deleteCompany(companyId) {
-            var confirmed = confirm('Are you sure you want to delete this patient?');
+            var confirmed = confirm('Are you sure you want to delete this Company?');
 
             if (confirmed) {
                 // Make an Ajax request to delete the patient
                 $.ajax({
-                    url: '/companyId/' + companyId,
-                    type: 'DELETE',
+                    url: '/company/delete/' + companyId,
+                    type: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },

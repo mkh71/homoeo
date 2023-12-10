@@ -105,6 +105,13 @@ class PatientController extends Controller
                 $data->price = @$data->medicine->mrp_price;
                 return $data;
             });
+//        $data->previus = PurposeMedicine::query()
+//            ->where('user_id',$data->id)
+//            ->get()
+//            ->map(function ($data){
+//                $data->price = @$data->medicine->mrp_price;
+//                return $data;
+//            });
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
@@ -161,6 +168,15 @@ class PatientController extends Controller
     {
         // Logic to delete the patient record
         Patient::destroy($id);
+        session()->flash('success', 'Patient has been Deleted successfully');
+        return response()->json(['success' => true]);
+    }
+
+
+    public function delete($id)
+    {
+        // Logic to delete the patient record
+        Patient::query()->findOrFail($id)->delete();
         session()->flash('success', 'Patient has been Deleted successfully');
         return response()->json(['success' => true]);
     }

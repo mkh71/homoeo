@@ -35,6 +35,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
 
     //patent route
     Route::resource('patients', 'PatientController');
+    Route::get('patient/delete/{id}', 'PatientController@delete')->name('patient.delete');
+
     Route::post('patient-search', 'PatientController@search')->name('patients.search');
     Route::post('date-search', 'PatientController@dateSearch')->name('date.search');
     Route::get('search-by-date', 'PatientController@date')->name('searchByDate');
@@ -50,6 +52,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::resource('power','PowerController');
     Route::resource('dose','DoseController');
     Route::resource('medicine','MedicineController');
+    Route::get('medicine/delete/{id}','MedicineController@delete');
     Route::get('medicine/low/stock','MedicineController@lowStock')->name('medicine.low-stock');
     Route::get('expired-medicine','MedicineController@expiredMedicine')->name('medicine.expired-medicine');
     Route::resource('complains','ComplainController');
@@ -57,6 +60,8 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('invoice-delete/{id}','CompanyInvoiceController@delete')->name('invoice.delete');
     Route::resource('companies','CompanyController');
     Route::post('company-date-search', 'CompanyController@dateToSearch')->name('companies.dateTo.search');
+    Route::post('invoice-date-search', 'CompanyController@InvoiceDateToSearch')->name('invoice.dateTo.search');
+    Route::get('company/delete/{id}', 'CompanyController@delete')->name('companies.delete');
 
 
     Route::get('company-delete/{companyId}','CompanyController@destroy')->name('company.delete');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\CompanyInvoice;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -143,6 +144,13 @@ class CompanyController extends Controller
         return response()->json(['success' => true]);
     }
 
+    public function delete($id)
+    {
+        Company::query()->findOrFail($id)->delete();
+        session()->flash('success', 'Company has been Deleted successfully');
+        return response()->json(['success' => true]);
+    }
+
     public function companyInvoices($id)
     {
         $data['invoices']  = CompanyInvoice::query()
@@ -166,5 +174,15 @@ class CompanyController extends Controller
             });
 
         return view('companies.dateTo')->with($data);
+    }
+    public function InvoiceDateToSearch(Request $request){
+        $data['invoices'] = CompanyInvoice::query()->with(['company'])
+            ->whereBetween('created_at', [$request->from, $request->to])
+//            ->orWhereBetween('updated_at', [$request->from, $request->to])
+            ->latest()
+            ->get();
+        $data['to'] = $request->to;
+        $data['from'] = $request->from;
+        return view('companies.invoice-dateTo')->with($data);
     }
 }

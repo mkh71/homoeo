@@ -16,7 +16,7 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>Total Invoice</h6>
-                                        <h3>{{invoices()->count()}}</h3>
+                                        <h3>{{$invoices->count()}}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>Total Bill</h6>
-                                        <h3>{{invoices()->sum('total_amount')}}</h3>
+                                        <h3>{{$invoices->sum('total_amount')}}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>Total Payment</h6>
-                                        <h3>{{invoices()->sum('total_paid')}}</h3>
+                                        <h3>{{$invoices->sum('total_paid')}}</h3>
                                         {{--                                    <p class="text-muted">{{now()->format('Y M d')}}</p>--}}
                                     </div>
                                 </div>
@@ -62,7 +62,7 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>Total Dues</h6>
-                                        <h3>{{invoices()->sum('total_dues')}}</h3>
+                                        <h3>{{$invoices->sum('total_dues')}}</h3>
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                                 </thead>
                                 <tbody>
 
-                                @forelse(invoices() as $info)
+                                @forelse($invoices as $info)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{$info->invoice_no ?? '-'}}</td>
