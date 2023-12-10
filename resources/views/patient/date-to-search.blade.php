@@ -15,8 +15,8 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>Today Sale</h6>
-                                    <h3>{{todayPatient()->sum('total')}}</h3>
+                                    <h6>Total Sale</h6>
+                                    <h3>{{$totalBill}}</h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
@@ -38,21 +38,25 @@
                             </div>
                         </div>
 
+
+
                         <div class="col-md-12 col-lg-3">
-                            <div class="dash-widget dct-border-rht">
-                                <div class="circle-bar circle-bar2">
-                                    <div class="circle-graph2" data-percent="65">
-                                        <img src="{{asset('assets')}}/img/icons/icon-02.png" class="img-fluid"
+                            <div class="dash-widget">
+                                <div class="circle-bar circle-bar3">
+                                    <div class="circle-graph3" data-percent="50">
+                                        <img src="{{asset('assets')}}/img/icons/icon-03.png" class="img-fluid"
                                              alt="Patient">
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>Today Patient</h6>
-                                    <h3>{{$todayPatient}}</h3>
-                                    <p class="text-muted">{{now()->format('Y M d')}}</p>
+                                    <a href="{{route('patients.dues.list')}}">
+                                        <h6 class="text-danger">Total Payment</h6>
+                                        <h3 class="text-danger">{{$totalPayment}}</h3>
+                                    </a>
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="col-md-12 col-lg-3">
                             <div class="dash-widget">
@@ -228,8 +232,7 @@
                                         <div class="form-group">
                                             <label>Serial No. <span class="text-danger">*</span></label>
                                             <input type="number" class="form-control"
-
-                                                   name="serial" value="{{serial()}}">
+                                                   name="serial" value="{{$data->serial ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">

@@ -154,7 +154,10 @@ class PatientController extends Controller
 
     public function destroy($id)
     {
-        //
+        // Logic to delete the patient record
+        Patient::destroy($id);
+        session()->flash('success', 'Patient has been Deleted successfully');
+        return response()->json(['success' => true]);
     }
 
     public function search(Request $request)
@@ -187,8 +190,19 @@ class PatientController extends Controller
                     <td data-id="'.$pat->id.'" class="bg-danger-light">'.$pat->dues.'</td>
                     <td class="text - end">
                         <div class="table - action">
-                            <a href="'.route('patients.edit', $pat->id).'" class="btn btn-sm bg-info-light" id="edit">
-                                <i class="far fa-pencil ">Edit</i>
+                             <a href="'.route('patients.new',$pat->id).'"
+                               class="btn btn-sm bg-primary" id="edit">
+                                <i class="far feather-plus-circle">New</i>
+                            </a>
+
+                            <a href="'.route('patients.edit',$pat->id).'"
+                               class="btn btn-sm bg-info" id="edit">
+                                <i class="far feather-edit"> Edit</i>
+                            </a>
+
+                            <a onclick="deletePatient('.$pat->id .')"
+                               class="btn btn-sm bg-danger text-white" id="edit">
+                                <i class="far feather-trash"> Delete</i>
                             </a>
                         </div>
                     </td>
@@ -296,17 +310,19 @@ class PatientController extends Controller
             ->limit(24)
             ->whereBetween('created_at', [$request->from, $request->to])
             ->get();
-        $totalPatient = Patient::query()->get()->count();
-        $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
-        $totalDues = Patient::query()->get()->sum('dues');
+        $totalPatient = $patient->count();
+        $totalBill = $patient->sum('total');
+        $totalPayment = $patient->sum('paid');
+        $totalDues = $totalBill - $totalPayment;
         $doses = Dose::get();
         $powers = Power::get();
         $medicines = Medicine::get();
         $diseases = Disease::all();
-        return view('welcome',compact(
+        return view('patient.date-to-search',compact(
                 'patient',
                 'totalPatient',
-                'todayPatient',
+                'totalBill',
+                'totalPayment',
                 'totalDues',
                 'doses',
                 'powers',

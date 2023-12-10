@@ -147,7 +147,7 @@
                                                                class="btn btn-sm bg-info-light" id="edit">
                                                                 <i class="far fa-pencil">Edit</i>
                                                             </a>
-                                                            <a href="{{route('medicine-delete',$medi->id)}}"
+                                                            <a onclick="deleteMedicine({{ $medi->id }})"
                                                                class="btn btn-sm bg-danger-light" id="delete">
                                                                 <i class="far fa-pencil">Delete</i>
                                                             </a>
@@ -235,6 +235,13 @@
                                                     <option @if(isset($medicine) && $medicine->group == "Homoeo patent") selected @endif value="Homoeo patent">Homoeo patent</option>
                                                     <option @if(isset($medicine) && $medicine->group == "Unani patent") selected @endif value="Unani patent">Unani patent</option>
                                                     <option @if(isset($medicine) && $medicine->group == "Others") selected @endif value="Others">Others</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Harbal") selected @endif value="Others">Harbal</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Pill") selected @endif value="Others">Pill</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Cosmetic") selected @endif value="Others">Cosmetic</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Plastic") selected @endif value="Others">Plastic</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Botal") selected @endif value="Others">Botal</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Oil") selected @endif value="Others">Oil</option>
+                                                    <option @if(isset($medicine) && $medicine->group == "Powder") selected @endif value="Others">Powder</option>
                                                 </select>
                                             </div>
 
@@ -327,6 +334,27 @@
                 }
             });
         });
+
+        function deleteMedicine(medicineId) {
+            var confirmed = confirm('Are you sure you want to delete this Medicine?');
+
+            if (confirmed) {
+                // Make an Ajax request to delete the medicine
+                $.ajax({
+                    url: '/medicine/' + medicineId,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Reload the page or update the UI as needed
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
 
     </script>
 @endsection

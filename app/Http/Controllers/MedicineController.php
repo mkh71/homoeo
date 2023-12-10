@@ -124,7 +124,10 @@ class MedicineController extends Controller
 
     public function destroy(medicine $medicine)
     {
-        //
+        // Logic to delete the patient record
+        $medicine->delete();
+        session()->flash('success', 'Medicine has been Deleted successfully');
+        return response()->json(['success' => true]);
     }
     public function delete($id){
         $data = medicine::query()->find($id);
@@ -157,7 +160,7 @@ class MedicineController extends Controller
                     <td class="bg-warning-light">'.@$medi->qty.'</td>
                     <td class="bg-success-light">'.$medi->net_price.'</td>
                     <td class="bg-info-light">'.$medi->mrp_price.'</td>
-                    <td class="bg-primary-light-light">'.$medi->mrp_price * $medi->qty.'</td>
+                    <td class="bg-primary-light-light">'.$medi->net_price * $medi->qty.'</td>
                     <td>'.@$medi->company->name.'</td>
                     <td>'.$medi->group.'</td>
                     <td>'. $diseases.'</td>

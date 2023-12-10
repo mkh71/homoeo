@@ -93,3 +93,10 @@ function getRandomColorName() {
     return $colorNames[array_rand($colorNames)];
 }
 
+if (!function_exists('serial')){
+    function serial(){
+        $patinet =  \App\Models\Patient::query()->latest()->first();
+        $serial = $patinet->serial+1;
+        return $serial;
+    }
+}
