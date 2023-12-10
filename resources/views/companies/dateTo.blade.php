@@ -75,29 +75,29 @@
         <div class="card card-table mb-0">
             <div class="card-body">
                 <div class="row">
-                        <div class="col-md-5 ">
-                            <p class="">
-                                <h4 class="">Add Company</h4>
-                            </p>
-                        </div>
-                        <div class="col-md-7 text-center float-end">
-                            <form action="{{route('companies.dateTo.search')}}" class="d-flex" style="margin-left: 10px" method="POST">
-                                @csrf
-                                @method('POST')
-                                <div class="col-md-3">
-                                    <input type="date" name="from" class="form-control float-left">
-                                </div>
-                                <div class="col-md-1 text-center mt-2"> <b>To</b> </div>
-                                <div class="col-md-3">
-                                    <input type="date" name="to" class="form-control float-left">
-                                </div>
-                                <div class="col-md-1">
-                                    <button class="float-end btn btn-primary form-control">
-                                        <i class="fa feather-search"></i>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="col-md-5 ">
+                        <p class="">
+                        <h4 class="">Add Company</h4>
+                        </p>
+                    </div>
+                    <div class="col-md-7 text-center float-end">
+                        <form action="{{route('companies.dateTo.search')}}" class="d-flex" style="margin-left: 10px" method="POST">
+                            @csrf
+                            @method('POST')
+                            <div class="col-md-3">
+                                <input type="date" name="from" class="form-control float-left">
+                            </div>
+                            <div class="col-md-1 text-center mt-2"> <b>To</b> </div>
+                            <div class="col-md-3">
+                                <input type="date" name="to" class="form-control float-left">
+                            </div>
+                            <div class="col-md-1">
+                                <button class="float-end btn btn-primary form-control">
+                                    <i class="fa feather-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                     <div class="col-md-12">
                         @if(isset($company->id))
                             {!! Form::open(['route'=>['companies.update',$company->id], 'method'=>'post']) !!}
@@ -147,16 +147,16 @@
                             </div>
                             <div class="form-group">
 
-                                    @if(isset($company->id))
+                                @if(isset($company->id))
                                     <button type="submit" class="btn btn-block btn-primary pt-10">
                                         Update
                                     </button>
                                     <a href="{{route('companies.index')}}" class="btn btn-warning">Cancel</a>
-                                    @else
+                                @else
                                     <button type="submit" class="btn btn-block btn-primary pt-10">
                                         Save
                                     </button>
-                                    @endif
+                                @endif
 
                             </div>
 

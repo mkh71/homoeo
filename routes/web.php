@@ -56,6 +56,9 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::resource('companyInvoice','CompanyInvoiceController');
     Route::get('invoice-delete/{id}','CompanyInvoiceController@delete')->name('invoice.delete');
     Route::resource('companies','CompanyController');
+    Route::post('company-date-search', 'CompanyController@dateToSearch')->name('companies.dateTo.search');
+
+
     Route::get('company-delete/{companyId}','CompanyController@destroy')->name('company.delete');
     Route::get('company-invoices/{id}','CompanyController@companyInvoices')->name('company.invoices');
     Route::resource('diseases','DiseaseController');

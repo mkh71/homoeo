@@ -151,4 +151,20 @@ class CompanyController extends Controller
         $data['company']  = Company::query()->findOrFail($id);
         return view('companies.details')->with($data);
     }
+
+    public function dateToSearch(Request $request){
+        $data['companies'] = Company::query()
+            ->whereBetween('created_at', [$request->from, $request->to])
+            ->orWhereBetween('updated_at', [$request->from, $request->to])
+            ->latest()
+            ->get()
+            ->map(function ($item){
+                $item->total = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_amount');
+                $item->paid = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_paid');
+                $item->dues = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_dues');
+                return $item;
+            });
+
+        return view('companies.dateTo')->with($data);
+    }
 }

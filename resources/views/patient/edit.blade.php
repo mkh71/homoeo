@@ -284,7 +284,7 @@
                                             </div>
                                         </div>
                                         @forelse($data->medicine as $info)
-                                        <div class="row rowId{{$info->id}} mb-2">
+                                                <div class="row rowId{{$info->id}} mb-2">
                                             <div class="col-md-2">
                                                 <select name="medicine[]" class="form-control"
                                                         required>

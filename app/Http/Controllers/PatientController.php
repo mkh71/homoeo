@@ -81,6 +81,7 @@ class PatientController extends Controller
             return redirect()->back()->with('success', 'Patient has been created successfully');
         }catch ( \Throwable $e){
             DB::rollBack();
+            dd($e->getFile(),$e->getMessage());
             return redirect()->back()->with('error', 'Patient Create fail');
         }
 
@@ -97,13 +98,13 @@ class PatientController extends Controller
         $patient = Patient::query()->latest()->limit(12)->get();
         $data = Patient::query()->with(['complains','perpose'])->find($id);
         $data->medicine = PurposeMedicine::query()
+            ->whereDate('created_at', Carbon::today())
             ->where('user_id',$data->id)
             ->get()
             ->map(function ($data){
                 $data->price = @$data->medicine->mrp_price;
                 return $data;
-            })
-        ;
+            });
         $totalPatient = Patient::query()->get()->count();
         $todayPatient = Patient::query()->where('created_at', '>=', date('Y-m-d 00:00:00').'%')->count();
         $totalDues = Patient::query()->get()->sum('dues');
