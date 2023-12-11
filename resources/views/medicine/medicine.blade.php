@@ -341,7 +341,7 @@
             if (confirmed) {
                 // Make an Ajax request to delete the medicine
                 $.ajax({
-                    url: '/medicine/delete/' + medicineId,
+                    url: '/medicine-delete/' + medicineId,
                     type: 'GET',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
