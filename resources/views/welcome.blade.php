@@ -246,15 +246,15 @@
                                             {!! Form::number('age', $data->age ?? '',['class' => 'form-control', 'step'=>'any']) !!}
                                         </div>
                                     </div>
+
+
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Mobile Number</label>
+                                            <label>Address</label>
                                             <input type="text" class="form-control"
-                                                   name="mobile" value="{{$data->mobile ?? ''}}">
+                                                   name="address" value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
-
-
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Date</label>
@@ -264,9 +264,9 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Address</label>
+                                            <label>Mobile Number</label>
                                             <input type="text" class="form-control"
-                                                   name="address" value="{{$data->address ?? ''}}">
+                                                   name="mobile" value="{{$data->mobile ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -275,25 +275,7 @@
                                             <input type="text" class="form-control" name="total" id="totalPrice" value="">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Discount</label>
-                                            <input type="text" class="form-control" name="discount" id="discount" value="">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Payment</label>
-                                            <input type="number" class="form-control" name="paid" id="payment" onkeyup="calculate()">
-                                        </div>
-                                    </div>
 
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Dues</label>
-                                            <input type="number" disabled class="form-control" value="" id="dues">
-                                        </div>
-                                    </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -342,14 +324,33 @@
                                     <div class="appendRow"></div>
 
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-warning apndBtn">
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-warning apndBtn mt-4" >
                                                 <i class="fa fa-plus-circle"> Add More Medicine</i>
                                             </button>
                                         </div>
-                                        <div class="col-md-6 pull-right">
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <button type="submit" class="btn btn-block btn-primary pt-10">
+                                                <label>Discount</label>
+                                                <input type="text" class="form-control" name="discount" id="discount" value="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Payment</label>
+                                                <input type="number" class="form-control" name="paid" id="payment" onkeyup="calculate()">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Dues</label>
+                                                <input type="number" disabled class="form-control" value="" id="dues">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 pull-right">
+                                            <div class="form-group mt-4" >
+                                                <button type="submit" style="margin-top: 17px" class="btn btn-block btn-primary pt-10">
                                                     Save Patient
                                                 </button>
                                                 @if(isset($id))
