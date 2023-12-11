@@ -183,34 +183,6 @@
                                     </div>
 
 
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Today bill</label>
-                                            <input type="number" class="form-control" id="totalPrice" name="new">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Dues + Today Bill</label>
-                                            <input type="number" class="form-control"  name="totalNow" value="" id="totalBillNow">
-                                            <input type="hidden" class="form-control" name="prevTotal" value="{{$data->total ?? ''}}" id="prevTotal">
-                                            <input type="hidden" class="form-control" name="prevPaid" value="{{$data->paid ?? ''}}" id="prevPaid">
-                                            <input type="hidden" class="form-control" name="prevDue" value="{{$data->dues ?? ''}}">
-                                            <input type="hidden" class="form-control" name="prevDiscount" value="{{$data->discount ?? ''}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Discount</label>
-                                            <input type="number" class="form-control" name="discount" value="" id="discount">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Today Payment</label>
-                                            <input type="number" class="form-control" name="paid" >
-                                        </div>
-                                    </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Complain</label><br>
@@ -305,8 +277,41 @@
                                                 <i class="fa fa-plus-circle"> Add More Medicine</i>
                                             </button>
                                         </div>
-                                        <div class="col-md-6 pull-right">
+
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-2">
                                             <div class="form-group">
+                                                <label>Today bill</label>
+                                                <input type="number" class="form-control" id="totalPrice" name="new">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Dues + Today Bill</label>
+                                                <input type="number" class="form-control"  name="totalNow" value="" id="totalBillNow">
+                                                <input type="hidden" class="form-control" name="prevTotal" value="{{$data->total ?? ''}}" id="prevTotal">
+                                                <input type="hidden" class="form-control" name="prevPaid" value="{{$data->paid ?? ''}}" id="prevPaid">
+                                                <input type="hidden" class="form-control" name="prevDue" value="{{$data->dues ?? ''}}">
+                                                <input type="hidden" class="form-control" name="prevDiscount" value="{{$data->discount ?? ''}}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Discount</label>
+                                                <input type="number" class="form-control" name="discount" value="" id="discount">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Today Payment</label>
+                                                <input type="number" class="form-control" name="paid" >
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 pull-right mt-4">
+                                            <div class="form-group" style="margin-top: 10px">
                                                 <button type="submit" class="btn btn-block btn-primary pt-10">
                                                     Save Patient
                                                 </button>
