@@ -152,35 +152,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
 
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Today bill</label>
-                                            <input type="number" class="form-control" id="totalPrice">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Dues + Today Bill</label>
-                                            <input type="number" class="form-control"
-                                                   name="total" value="" id="totalBillNow">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Discount</label>
-                                            <input type="number" class="form-control"
-                                                   name="discount" id="discount">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Today Payment</label>
-                                            <input type="number" class="form-control" name="paid" >
-                                        </div>
-                                    </div>
-                                </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Complain</label><br>
@@ -226,25 +198,55 @@
 
 
                                     <div class="appendRow"></div>
+                                <div class="col-md-6">
+                                    <button type="button" class="btn btn-warning apndBtn">
+                                        <i class="fa fa-plus-circle"> Add More Medicine</i>
+                                    </button>
+                                </div>
 
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-warning apndBtn">
-                                                <i class="fa fa-plus-circle"> Add More Medicine</i>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Today bill</label>
+                                            <input type="number" class="form-control" id="totalPrice">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Dues + Today Bill</label>
+                                            <input type="number" class="form-control"
+                                                   name="total" value="" id="totalBillNow">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Discount</label>
+                                            <input type="number" class="form-control"
+                                                   name="discount" id="discount">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>Today Payment</label>
+                                            <input type="number" class="form-control" name="paid" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 pull-right mt-4" >
+                                        <div class="form-group" style="margin-top: 15px">
+                                            <button type="submit" class="btn btn-block btn-primary pt-10">
+                                                Save Patient
                                             </button>
+                                            @if(isset($patient))
+                                                <a href="{{route('home')}}" class="btn btn-warning pt-10">
+                                                    Cancel
+                                                </a>
+                                            @endif
                                         </div>
-                                        <div class="col-md-6 pull-right">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-block btn-primary pt-10">
-                                                    Save Patient
-                                                </button>
-                                                @if(isset($patient))
-                                                    <a href="{{route('home')}}" class="btn btn-warning pt-10">
-                                                        Cancel
-                                                    </a>
-                                                @endif
-                                            </div>
-                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="row">
+
+
                                     </div>
                                 </div>
                                 {!! Form::close() !!}
