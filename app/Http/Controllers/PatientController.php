@@ -184,9 +184,9 @@ class PatientController extends Controller
     public function search(Request $request)
     {
         $data = Patient::query()
-            ->where('serial', 'like', '%'.$request->word . '%')
-            ->orWhere('name', 'like', '%'.$request->word . '%')
-            ->orWhere('mobile', 'like', '%'.$request->word . '%')
+            ->where('serial', 'like', $request->word . '%')
+            ->orWhere('name', 'like', $request->word . '%')
+            ->orWhere('mobile', 'like', $request->word . '%')
             ->get();
         if (count($data) ==0){
             echo '<tr colspan="5" class="text-danger text-center">No Data Found</tr>';
