@@ -399,7 +399,7 @@ class PatientController extends Controller
         $dues = $request->total - ($request->paid + $request->discount ?? 0);
         $total = $request->total;
         $paid = $request->paid;
-        $discount = $request->discount;
+        $discount = $request->discount ?? 0;
 
         try {
             DB::beginTransaction();
