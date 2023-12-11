@@ -36,6 +36,10 @@ class PatientController extends Controller
 
     public function store(Request $request)
     {
+        $total = $request->total;
+        $paid = $request->paid;
+        $dues = $request->total - ($request->paid + $request->discount ?? 0);
+        $discount = $request->discount ?? 0;
         try {
             DB::beginTransaction();
             $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
@@ -45,10 +49,10 @@ class PatientController extends Controller
                 'mobile' => $request->mobile,
                 'address' => $request->address,
                 'age' => $request->age,
-                'total' => $request->total,
-                'paid' => $request->paid,
-                'discount' => $request->discount ?? 0,
-                'dues' => $request->total - ($request->paid + $request->discount ?? 0),
+                'total' => $total,
+                'paid' => $paid,
+                'discount' => $discount,
+                'dues' => $dues,
                 'last_complain' => $com,
                 'date' => $request->date,
             ]);
@@ -57,10 +61,10 @@ class PatientController extends Controller
                 ->create(
                     [
                         'patient_id'=>$pat->id,
-                        'total' => $request->total,
-                        'paid' => $request->paid,
-                        'discount' => $request->discount ?? 0,
-                        'dues' => $request->total - ($request->paid + $request->discount ?? 0),
+                        'total' => $total,
+                        'paid' => $paid,
+                        'discount' => $discount,
+                        'dues' => $dues,
                     ]);
             $complain = Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
 
@@ -124,6 +128,11 @@ class PatientController extends Controller
 
     public function update(Request $request, $id)
     {
+//        dd($request->all());
+        $total = $request->prevTotal + $request->new;
+        $paid = $request->prevPaid + $request->paid;
+        $duesTotal = $total - $paid;
+        $dues = $duesTotal - $request->discount;
         $pat = Patient::query()->find($id);
         $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
         $pat->update([
@@ -132,10 +141,10 @@ class PatientController extends Controller
             'mobile' => $request->mobile,
             'address' => $request->address,
             'age' => $request->age,
-            'total' => $request->total,
-            'paid' => $request->paid,
+            'total' => $total,
+            'paid' => $paid,
             'discount' => $request->discount ?? 0,
-            'dues' => $request->total - ($request->paid + $request->discount ?? 0),
+            'dues' => $dues,
             'last_complain' => $com,
             'date' => $request->date,
         ]);
@@ -146,10 +155,10 @@ class PatientController extends Controller
         if ($pay == null){
             PatientPayment::query()->create([
                     'patient_id'=>$pat->id,
-                    'total' => $request->total,
-                    'paid' => $request->paid,
+                    'total' => $total,
+                    'paid' => $paid,
                     'discount' => $request->discount ?? 0,
-                    'dues' => $request->total - ($request->paid + $request->discount ?? 0),
+                    'dues' => $dues,
             ]);
         }else{
             $pay->update([
@@ -341,6 +350,8 @@ class PatientController extends Controller
         $powers = Power::get();
         $medicines = Medicine::get();
         $diseases = Disease::all();
+        $to = $request->to;
+        $from = $request->from;
         return view('patient.date-to-search',compact(
                 'patient',
                 'totalPatient',
@@ -350,6 +361,8 @@ class PatientController extends Controller
                 'doses',
                 'powers',
                 'medicines',
+                'from',
+                'to',
                 'diseases')
         );
     }
@@ -384,7 +397,11 @@ class PatientController extends Controller
         return view('patient.newPurpose')->with($data);
     }
     public function newPurposeStore(Request $request,$patientId){
-//        dd($patientId);
+        $dues = $request->total - ($request->paid + $request->discount ?? 0);
+        $total = $request->total;
+        $paid = $request->paid;
+        $discount = $request->discount;
+
         try {
             DB::beginTransaction();
             $pat = Patient::query()->find($patientId);
@@ -392,10 +409,10 @@ class PatientController extends Controller
             $pat->update(
                 [
                     'last_complain'=>$com,
-                    'total' => $request->total,
-                    'paid' => $request->paid,
-                    'discount' => $request->discount ?? 0,
-                    'dues' => $request->total - ($request->paid + $request->discount ?? 0),
+                    'total' => $total,
+                    'paid' => $paid,
+                    'discount' => $discount,
+                    'dues' => $dues,
                     'date' => $request->date,
                 ]);
             $complain = Complain::query()->create([
@@ -406,10 +423,10 @@ class PatientController extends Controller
                 ->create(
                     [
                         'patient_id'=>$pat->id,
-                        'total' => $request->total,
-                        'paid' => $request->paid,
-                        'discount' => $request->discount ?? 0,
-                        'dues' => $request->total - ($request->paid + $request->discount ?? 0),
+                        'total' => $total,
+                        'paid' => $paid,
+                        'discount' =>$discount,
+                        'dues' =>  $dues,
                     ]);
             foreach ($request->medicine as $key => $item) {
                 PurposeMedicine::query()->create([

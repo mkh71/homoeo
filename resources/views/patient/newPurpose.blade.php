@@ -6,7 +6,7 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar1">
                                     <div class="circle-graph1" data-percent="75">
@@ -15,14 +15,14 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>total Paid</h6>
-                                    <h3>{{todayPatient()->sum('total')}}</h3>
+                                    <h6>Previous bill</h6>
+                                    <h3>{{$patient->total}}</h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar1">
                                     <div class="circle-graph1" data-percent="75">
@@ -31,15 +31,15 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>Total Dues</h6>
-{{--                                    <h3>{{$totalPatient}}</h3>--}}
+                                    <h6>Previous Total Payment</h6>
+                                    <h3>{{$patient->paid}} <small style="font-size: 13px">{{$patient->discount !=0 ?'('.$patient->discount.')':''}}</small></h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
                         </div>
 
 
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget">
                                 <div class="circle-bar circle-bar3">
                                     <div class="circle-graph3" data-percent="50">
@@ -48,9 +48,9 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <a href="{{route('patients.dues.list')}}">
+                                    <a>
                                         <h6 class="text-danger">Total Dues</h6>
-{{--                                        <h3 class="text-danger">{{$totalDues}}</h3>--}}
+                                        <h3 class="text-danger">{{$patient->dues}}</h3>
                                     </a>
                                 </div>
                             </div>
@@ -153,20 +153,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Prev Total</label>
-                                            <input disabled type="number" class="form-control"
-                                                   name="total" value="{{$patient->total ?? ''}}" id="prevTotal">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Prev Payment</label>
-                                            <input disabled type="number" class="form-control"
-                                                   value="{{$patient->paid ?? ''}}">
-                                        </div>
-                                    </div>
+
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Today bill</label>
@@ -175,7 +162,7 @@
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label>Total Bill Now</label>
+                                            <label>Dues + Today Bill</label>
                                             <input type="number" class="form-control"
                                                    name="total" value="" id="totalBillNow">
                                         </div>
@@ -184,7 +171,7 @@
                                         <div class="form-group">
                                             <label>Discount</label>
                                             <input type="number" class="form-control"
-                                                   name="discount" value="" id="discount">
+                                                   name="discount" id="discount">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -331,11 +318,16 @@
             $("input[name='price']").each(function () {
                 var price = parseFloat($(this).val()) || 0;
                 totalPrice += price;
+
             });
             // Display the total wherever you want on the page
             $("#totalPrice").val(totalPrice);
             document.getElementById('totalPrice').value = totalPrice;
-            $("#totalBillNow").val(totalPrice + {{$patient->total - $patient->paid}}) ;
+            @php
+                $paid = $patient->paid + $patient->discount;
+                $prev = $patient->total - $paid;
+             @endphp
+            $("#totalBillNow").val(totalPrice + {{$prev}}) ;
         }
         function sumTotal(ref) {
             var price = $('#mprice'+ref).val();

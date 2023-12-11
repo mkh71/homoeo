@@ -87,7 +87,7 @@ function getRandomColor() {
 
 function getRandomColorName() {
     // Array of color names
-    $colorNames = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink', 'Brown'];
+    $colorNames = ['Red', 'Green', 'blue', 'Yellow', 'black'];
 
     // Get a random color name from the array
     return $colorNames[array_rand($colorNames)];

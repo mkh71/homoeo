@@ -92,11 +92,11 @@
                         @csrf
                         @method('POST')
                         <div class="col-md-3">
-                            <input type="date" name="from" class="form-control float-left">
+                            <input type="date" name="from" class="form-control float-left" value="{{$from}}">
                         </div>
                         <div class="col-md-1 text-center mt-2"> <b>To</b> </div>
                         <div class="col-md-3">
-                            <input type="date" name="to" class="form-control float-left">
+                            <input type="date" name="to" class="form-control float-left" value="{{$to}}">
                         </div>
                         <div class="col-md-1">
                             <button class="float-end btn btn-primary form-control">

@@ -6,7 +6,9 @@
                 <div class="card-body">
                     <div class="row">
 
-                        <div class="col-md-12 col-lg-3">
+
+
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar1">
                                     <div class="circle-graph1" data-percent="75">
@@ -15,30 +17,13 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>Today Sale</h6>
-                                    <h3>{{todayPatient()->sum('total')}}</h3>
-                                    <p class="text-muted">Till Today</p>
+                                    <h6>Total Bill</h6>
+                                    <h3>{{$data->total ?? 0}}</h3>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-3">
-                            <div class="dash-widget dct-border-rht">
-                                <div class="circle-bar circle-bar1">
-                                    <div class="circle-graph1" data-percent="75">
-                                        <img src="{{asset('assets')}}/img/icons/icon-01.png" class="img-fluid"
-                                             alt="patient">
-                                    </div>
-                                </div>
-                                <div class="dash-widget-info">
-                                    <h6>Total Patient</h6>
-                                    <h3>{{$totalPatient}}</h3>
-                                    <p class="text-muted">Till Today</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar2">
                                     <div class="circle-graph2" data-percent="65">
@@ -47,14 +32,14 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <h6>Today Patient</h6>
-                                    <h3>{{$todayPatient}}</h3>
-                                    <p class="text-muted">{{now()->format('Y M d')}}</p>
+                                    <h6>Total Payment</h6>
+                                    <h3>{{$data->paid ?? 0}}</h3>
+{{--                                    <p class="text-muted">{{now()->format('Y M d')}}</p>--}}
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-3">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget">
                                 <div class="circle-bar circle-bar3">
                                     <div class="circle-graph3" data-percent="50">
@@ -63,10 +48,11 @@
                                     </div>
                                 </div>
                                 <div class="dash-widget-info">
-                                    <a href="{{route('patients.dues.list')}}">
+                                    <p>
                                         <h6 class="text-danger">Total Dues</h6>
-                                        <h3 class="text-danger">{{$totalDues}}</h3>
-                                    </a>
+                                        <h3 class="text-danger">{{$data->dues ?? 0}}</h3>
+                                        <p class="text-muted">Till Today</p>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -170,15 +156,14 @@
                                             {!! Form::number('age', $data->age ?? '',['class' => 'form-control', 'step'=>'any']) !!}
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Mobile Number</label>
+                                            <label>Address</label>
                                             <input type="text" class="form-control"
-                                                   name="mobile" value="{{$data->mobile ?? ''}}">
+                                                   name="address" value="{{$data->address ?? ''}}">
                                         </div>
                                     </div>
-
-
 
 
                                     <div class="col-md-6">
@@ -191,44 +176,33 @@
 
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Address</label>
+                                            <label>Mobile Number</label>
                                             <input type="text" class="form-control"
-                                                   name="address" value="{{$data->address ?? ''}}">
+                                                   name="mobile" value="{{$data->mobile ?? ''}}">
                                         </div>
                                     </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label>Prev Total</label>
-                                                <input disabled type="number" class="form-control"
-                                                       name="total" value="{{$data->total ?? ''}}" id="prevTotal">
-                                            </div>
-                                        </div>
 
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label>Prev Payment</label>
-                                                <input disabled type="number" class="form-control"
-                                                        value="{{$data->paid ?? ''}}">
-                                            </div>
-                                        </div>
+
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Today bill</label>
-                                            <input type="number" class="form-control" id="totalPrice">
+                                            <input type="number" class="form-control" id="totalPrice" name="new">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
-                                            <label>Total Bill Now</label>
-                                            <input type="number" class="form-control"
-                                                   name="total" value="" id="totalBillNow">
+                                            <label>Dues + Today Bill</label>
+                                            <input type="number" class="form-control"  name="totalNow" value="" id="totalBillNow">
+                                            <input type="hidden" class="form-control" name="prevTotal" value="{{$data->total ?? ''}}" id="prevTotal">
+                                            <input type="hidden" class="form-control" name="prevPaid" value="{{$data->paid ?? ''}}" id="prevPaid">
+                                            <input type="hidden" class="form-control" name="prevDue" value="{{$data->dues ?? ''}}">
+                                            <input type="hidden" class="form-control" name="prevDiscount" value="{{$data->discount ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Discount</label>
-                                            <input type="number" class="form-control"
-                                                   name="discount" value="" id="discount">
+                                            <input type="number" class="form-control" name="discount" value="" id="discount">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -379,7 +353,7 @@
                 data: {id: id, _token: "{{csrf_token()}}"},
                 success: function (res) {
                     $('#mprice'+value).val(res.price)
-                    alert(response);
+
                 }
             })
         }
@@ -405,7 +379,6 @@
             var price = $('#mprice'+ref).val();
             var qty = $('#qty'+ref).val();
             var total = price * qty;
-            alert(total)
             $('#totalPrice'+ref).val(total);
             calculateTotal();
 

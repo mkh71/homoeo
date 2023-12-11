@@ -5,7 +5,7 @@
                         <option selected>Select Medicine</option>
                     @if($meds !=null)
                         @foreach ($meds as $disease){
-                            @php $color =  getRandomColorName()  @endphp
+                            @php $color =  getRandomColor()  @endphp
                             @foreach ($disease->medicines as $item) {
                                 <option value="{{$item->id}}" style="color: {{$color}}">{{$item->name}}</option>;
                             @endforeach

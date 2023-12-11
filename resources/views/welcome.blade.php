@@ -181,7 +181,8 @@
                                                     style="cursor: pointer">{{$pat->last_complain}}</td>
                                                 <td data-id="{{$pat->id}}" class="bg-info-light">{{$pat->total}}</td>
                                                 <td data-id="{{$pat->id}}" class="bg-success-light">{{$pat->paid}}  {{$pat->discount != 0 ? '('.$pat->discount.')' : ''}}</td>
-                                                <td data-id="{{$pat->id}}" class="bg-danger-light">{{$pat->dues}}</td>
+                                                <td data-id="{{$pat->id}}" class="bg-danger-light">{{$pat->dues}}
+                                                </td>
                                                 <td class="text-end">
                                                     <div class="table-action" style="">
 

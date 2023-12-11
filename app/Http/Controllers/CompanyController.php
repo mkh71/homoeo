@@ -172,7 +172,8 @@ class CompanyController extends Controller
                 $item->dues = CompanyInvoice::query()->where('company_id',$item->id)->get()->sum('total_dues');
                 return $item;
             });
-
+        $data['to'] = $request->to;
+        $data['from'] = $request->from;
         return view('companies.dateTo')->with($data);
     }
     public function InvoiceDateToSearch(Request $request){
