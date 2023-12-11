@@ -139,12 +139,6 @@ class MedicineController extends Controller
         session()->flash('success', 'Medicine has been Deleted successfully');
         return response()->json(['success' => true]);
     }
-//    public function delete($id){
-//        $data = medicine::query()->find($id);
-//        $data->diseases()->detach();
-//        $data->delete();
-//        return redirect(route('medicine.index'))->with('success', 'Medicine has been deleted successfully');
-//    }
 
     public function search(Request $request)
     {
