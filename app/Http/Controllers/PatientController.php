@@ -339,7 +339,6 @@ class PatientController extends Controller
     public function dateToSearch(Request $request){
         $patient = Patient::query()
             ->latest()
-            ->limit(24)
             ->whereBetween('created_at', [$request->from, $request->to])
             ->get();
         $totalPatient = $patient->count();
