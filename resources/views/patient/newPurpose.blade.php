@@ -215,7 +215,7 @@
                                         <div class="form-group">
                                             <label>Dues + Today Bill</label>
                                             <input type="number" class="form-control"
-                                                   name="total" value="" id="totalBillNow">
+                                                   name="total" value="{{$patient->dues}}" id="totalBillNow">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -327,9 +327,14 @@
             document.getElementById('totalPrice').value = totalPrice;
             @php
                 $paid = $patient->paid + $patient->discount;
-                $prev = $patient->total - $paid;
+                if ($patient->total == null && $patient->paid == null ){
+                    $prev = $patient->dues;
+                }else{
+                    $prev = $patient->total - $paid;
+                }
+
              @endphp
-            $("#totalBillNow").val(totalPrice + {{$prev}}) ;
+            $("#totalBillNow").val(totalPrice + {{$prev ?? $patient->dues}}) ;
         }
         function sumTotal(ref) {
             var price = $('#mprice'+ref).val();

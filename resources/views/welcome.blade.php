@@ -269,13 +269,6 @@
                                                    name="mobile" value="{{$data->mobile ?? ''}}">
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="form-group">
-                                            <label>Total Bill</label>
-                                            <input type="text" class="form-control" name="total" id="totalPrice" value="">
-                                        </div>
-                                    </div>
-
 
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -331,6 +324,12 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
+                                                <label>Total Bill</label>
+                                                <input type="text" class="form-control" name="total" id="totalPrice" value="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <div class="form-group">
                                                 <label>Discount</label>
                                                 <input type="text" class="form-control" name="discount" id="discount" value="">
                                             </div>
@@ -342,15 +341,15 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-2">
+                                        <div class="col-md-1">
                                             <div class="form-group">
                                                 <label>Dues</label>
                                                 <input type="number" disabled class="form-control" value="" id="dues">
                                             </div>
                                         </div>
                                         <div class="col-md-3 pull-right">
-                                            <div class="form-group mt-4" >
-                                                <button type="submit" style="margin-top: 17px" class="btn btn-block btn-primary pt-10">
+                                            <div class="form-group mt-3" >
+                                                <button type="submit" style="margin-top: 17px" class="btn btn-primary form-control">
                                                     Save Patient
                                                 </button>
                                                 @if(isset($id))
