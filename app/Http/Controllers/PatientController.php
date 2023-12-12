@@ -397,8 +397,8 @@ class PatientController extends Controller
     }
     public function newPurposeStore(Request $request,$patientId){
         $dues = $request->total - ($request->paid + $request->discount ?? 0);
-        $total = $request->total;
-        $paid = $request->paid;
+        $total = $request->total ?? 0;
+        $paid = $request->paid ?? 0;
         $discount = $request->discount ?? 0;
 
         try {
@@ -448,6 +448,7 @@ class PatientController extends Controller
             dd(
                 $e->getFile(),
                 $e->getCode(),
+                $e->getLine(),
                 $e->getMessage(),
                 $e->getPrevious(),
             );

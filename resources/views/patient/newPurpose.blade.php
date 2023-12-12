@@ -328,13 +328,15 @@
             @php
                 $paid = $patient->paid + $patient->discount;
                 if ($patient->total == null && $patient->paid == null ){
-                    $prev = $patient->dues;
+                    $prev = $patient->dues ?? 0;
                 }else{
                     $prev = $patient->total - $paid;
                 }
 
              @endphp
-            $("#totalBillNow").val(totalPrice + {{$prev ?? $patient->dues}}) ;
+                var prev = 0;
+                prev = totalPrice + {{$prev}}
+            $("#totalBillNow").val(prev) ;
         }
         function sumTotal(ref) {
             var price = $('#mprice'+ref).val();
