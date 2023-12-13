@@ -15,5 +15,6 @@ class PatientPayment extends Model
       'paid',
       'discount',
       'dues',
+      'serial',
     ];
 }

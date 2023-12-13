@@ -1148,16 +1148,16 @@ Version      : 1.3
 		$status.text(i + '/' + (slick.$dots[0].children.length));
 	});
 
-	if($('.home-banner-three-slider').length > 0) {
-		$slickElement.slick({
-			autoplay:false,
-			infinite: false,
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			autoplay: true,
-			dots: true
-		});
-	}
+	// if($('.home-banner-three-slider').length > 0) {
+	// 	$slickElement.slick({
+	// 		autoplay:false,
+	// 		infinite: false,
+	// 		slidesToShow: 1,
+	// 		slidesToScroll: 1,
+	// 		autoplay: true,
+	// 		dots: true
+	// 	});
+	// }
 
 	// AOS Animation
 

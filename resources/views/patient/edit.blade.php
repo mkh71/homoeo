@@ -377,7 +377,17 @@
             });
             // Display the total wherever you want on the page
             $("#totalPrice").val(totalPrice);
-            $("#totalBillNow").val(totalPrice + {{$data->dues}}) ;
+            @php
+                $paid = $data->paid + $data->discount;
+                if ($data->total == null && $data->paid == null ){
+                    $prev = $data->dues ?? 0;
+                }else{
+                    $prev = $data->total - $paid;
+                }
+            @endphp
+            var prev = 0;
+            prev = totalPrice + {{$prev}}
+            $("#totalBillNow").val(prev) ;
         }
         function sumTotal(ref) {
 
