@@ -188,17 +188,22 @@
 
                                                         <a href="{{route('patients.new',$pat->id)}}"
                                                            class="btn btn-sm bg-primary" id="edit">
-                                                            <i class="far feather-plus-circle"> New</i>
+                                                            <i class="far feather-plus-circle"> </i>
                                                         </a>
 
                                                         <a href="{{route('patients.edit',$pat->id)}}"
                                                            class="btn btn-sm bg-info" id="edit">
-                                                            <i class="far feather-edit"> Edit</i>
+                                                            <i class="far feather-edit"> </i>
                                                         </a>
 
                                                         <a onclick="deletePatient({{ $pat->id }})"
                                                            class="btn btn-sm bg-danger text-white" id="edit">
-                                                            <i class="far feather-trash"> Delete</i>
+                                                            <i class="far feather-trash"> </i>
+                                                        </a>
+
+                                                        <a onclick="deletePatient({{ $pat->id }})"
+                                                           class="btn btn-sm bg-danger text-white" id="edit">
+                                                            <i class="far feather-dollar-sign"> </i>
                                                         </a>
 
                                                     </div>

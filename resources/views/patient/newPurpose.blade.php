@@ -112,7 +112,7 @@
                                         <div class="form-group">
                                             <label>Serial No. <span class="text-danger">*</span></label>
                                             <input type="number" class="form-control"
-                                                   name="serial" value="{{serial()}}">
+                                                   name="serial" value="{{$patient->serial}}">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
