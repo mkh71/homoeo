@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Today Sale</h6>
-                                    <h3>{{todayPatient()->sum('total')}}</h3>
+                                    <h3>{{todayPatient()->sum('paid')}}</h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
