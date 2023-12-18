@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Today Sale</h6>
-                                    <h3>{{todayPatient()->sum('paid')}}</h3>
+                                    <h3>{{todaySale()->sum('paid')}}</h3>
                                     <p class="text-muted">Till Today</p>
                                 </div>
                             </div>
@@ -188,12 +188,12 @@
 
                                                         <a href="{{route('patients.new',$pat->id)}}"
                                                            class="btn btn-sm bg-primary" id="edit">
-                                                            <i class="far feather-plus-circle"> </i>
+                                                            <i class="far feather-plus-circle"> New</i>
                                                         </a>
 
                                                         <a href="{{route('patients.edit',$pat->id)}}"
                                                            class="btn btn-sm bg-info" id="edit">
-                                                            <i class="far feather-edit"> </i>
+                                                            <i class="far feather-edit">Edit </i>
                                                         </a>
 
                                                         <a onclick="deletePatient({{ $pat->id }})"
@@ -201,10 +201,10 @@
                                                             <i class="far feather-trash"> </i>
                                                         </a>
 
-                                                        <a onclick="deletePatient({{ $pat->id }})"
-                                                           class="btn btn-sm bg-danger text-white" id="edit">
-                                                            <i class="far feather-dollar-sign"> </i>
-                                                        </a>
+{{--                                                        <a onclick="deletePatient({{ $pat->id }})"--}}
+{{--                                                           class="btn btn-sm bg-danger text-white" id="edit">--}}
+{{--                                                            <i class="far feather-dollar-sign"> </i>--}}
+{{--                                                        </a>--}}
 
                                                     </div>
                                                 </td>
@@ -294,7 +294,7 @@
 
                                     <div>
                                         <div class="row heading">
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <b>Medicine</b>
                                             </div>
                                             <div class="col-md-2">
@@ -305,6 +305,9 @@
                                             </div>
                                             <div class="col-md-1">
                                                 <b>Price</b>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <b>Pr-Qty</b>
                                             </div>
                                             <div class="col-md-1">
                                                 <b>Qty</b>
@@ -533,6 +536,7 @@
                 data: {id: id, _token: "{{csrf_token()}}"},
                 success: function (res) {
                     $('#mprice'+value).val(res.price)
+                    $('#qtyCheck'+value).val(res.qty)
                     alert(response);
                 }
             })

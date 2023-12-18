@@ -172,7 +172,7 @@
 
                                     <div>
                                         <div class="row heading">
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 <b>Medicine</b>
                                             </div>
                                             <div class="col-md-2">
@@ -183,6 +183,9 @@
                                             </div>
                                             <div class="col-md-1">
                                                 <b>Price</b>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <b>Pr-Qty</b>
                                             </div>
                                             <div class="col-md-1">
                                                 <b>Qty</b>
@@ -208,7 +211,7 @@
                                     <div class="col-md-2">
                                         <div class="form-group">
                                             <label>Today bill</label>
-                                            <input type="number" class="form-control" id="totalPrice">
+                                            <input type="number" name="today_bill" class="form-control" id="totalPrice">
                                         </div>
                                     </div>
                                     <div class="col-md-2">
@@ -304,6 +307,7 @@
                 data: {id: id, _token: "{{csrf_token()}}"},
                 success: function (res) {
                     $('#mprice'+value).val(res.price)
+                    $('#qtyCheck'+value).val(res.qty)
                     alert(response);
                 }
             })

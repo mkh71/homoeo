@@ -56,18 +56,15 @@ class PatientController extends Controller
                 'last_complain' => $com,
                 'date' => $request->date,
             ]);
-
-            $pay = PatientPayment::query()
-                ->create(
-                    [
-                        'serial' =>$pat->serial,
-                        'patient_id'=>$pat->id,
-                        'total' => $total,
-                        'paid' => $paid,
-                        'discount' => $discount,
-                        'dues' => $dues,
-                    ]);
-            $complain = Complain::query()->create(['details' => $com, 'patient_id' => $pat->id]);
+            $complain = Complain::query()->create(
+                [
+                    'details' => $com,
+                    'patient_id' => $pat->id,
+                    'total' => $total,
+                    'paid' => $paid,
+                    'discount' => $discount,
+                    'dues' => $dues,
+                ]);
 
             foreach ($request->medicine as $key => $item) {
                 PurposeMedicine::query()->create([
@@ -82,7 +79,20 @@ class PatientController extends Controller
                 ]);
                 $med = Medicine::query()->findOrFail($item);
                 $med->update(['qty'=>$med->qty - $request->qty[$key]]);
+
             }
+            $pay = PatientPayment::query()
+                ->create(
+                    [
+                        'serial' =>$request->serial,
+                        'complain_id' =>$complain->id,
+                        'patient_id'=>$pat->id,
+                        'total' => $total,
+                        'paid' => $paid,
+                        'discount' => $discount,
+                        'dues' => $dues,
+                    ]);
+
             DB::commit();
             return redirect()->back()->with('success', 'Patient has been created successfully');
         }catch ( \Throwable $e){
@@ -111,6 +121,14 @@ class PatientController extends Controller
                 $data->price = @$data->medicine->mrp_price;
                 return $data;
             });
+//        $complain = Complain::query()->where('patient_id',$id);
+        $complain = Complain::query()
+            ->where('patient_id',$id)
+            ->with('medicines')
+            ->orderByDesc('created_at')
+            ->latest()
+            ->first();
+
 //        $data->previus = PurposeMedicine::query()
 //            ->where('user_id',$data->id)
 //            ->get()
@@ -125,89 +143,94 @@ class PatientController extends Controller
         $powers = Power::get();
         $medicines = Medicine::get();
         $diseases = Disease::all();
-        return view('patient.edit',compact('patient','totalPatient','todayPatient','totalDues','data','id','doses','powers','medicines', 'diseases'));
+        return view('patient.edit',compact('patient','complain','totalPatient','todayPatient','totalDues','data','id','doses','powers','medicines', 'diseases'));
     }
 
     public function update(Request $request, $id)
     {
-//        dd($request->all());
-        $total = $request->prevTotal + $request->new;
-        $paid = $request->prevPaid + $request->paid;
-        $duesTotal = $total - $paid;
-        $dues = $duesTotal - $request->discount;
-        $pat = Patient::query()->find($id);
-        $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
-        $pat->update([
-            'serial' => $request->serial,
-            'name' => $request->name,
-            'mobile' => $request->mobile,
-            'address' => $request->address,
-            'age' => $request->age,
-            'total' => $total,
-            'paid' => $paid,
-            'discount' => $request->discount ?? 0,
-            'dues' => $dues,
-            'last_complain' => $com,
-            'date' => $request->date,
-        ]);
-        $complain = Complain::query()->where('patient_id',$pat->id)->latest()->first();
-        $comp = $complain->update([
-            'details'    => $com,
-        ]);
+        try {
+            DB::beginTransaction();
+            $total = $request->prevTotal + $request->new;
+            $paid = $request->prevPaid + $request->paid;
+            $duesTotal = $total - $paid;
+            $dues = $duesTotal - $request->discount;
+            $complain = Complain::query()->where('id',$id)->latest()->first();
+            $pat = Patient::query()->find($complain->patient_id);
 
-
-       $pay =  PatientPayment::query()
-            ->where('patient_id',$pat->id)
-            ->where('serial',$pat->serial)
-            ->latest()
-            ->first();
-        if ($pay == null){
-            PatientPayment::query()->create([
-                    'patient_id'=>$pat->id,
-                    'total' => $total,
-                    'paid' => $paid,
-                    'discount' => $request->discount ?? 0,
-                    'dues' => $dues,
-                    'serial' => $pat->serial,
+            $com = str_replace(['[',']', '"'],'', json_encode($request->last_complain));
+            $pat->update([
+                'serial' => $request->serial,
+                'name' => $request->name,
+                'mobile' => $request->mobile,
+                'address' => $request->address,
+                'age' => $request->age,
+                'total' => $total,
+                'paid' => $paid,
+                'discount' => $request->discount ?? 0,
+                'dues' => $dues,
+                'last_complain' => $com,
+                'date' => $request->date,
             ]);
-        }else{
-            $pay->update([
-                    'patient_id'=>$pat->id,
-                    'total' => $request->total,
-                    'paid' => $request->paid,
-                    'discount' => $request->discount ?? 0,
-                    'dues' => $request->total - ($request->paid + $request->discount ?? 0),
-                ]);
-        }
-        foreach ($request->medicine as $key => $item) {
-            $check = PurposeMedicine::query()->where('user_id',$pat->id)->where('serial',$request->serial)->where('medicine_id',$item)->latest()->first();
-            if ($check == null){
-                PurposeMedicine::query()->create([
-                    'serial'        => $request->serial,
-                    'user_id'       => $pat->id,
-                    'complain_id'   => $complain->id,
-                    'medicine_id'   => $item,
-                    'power_id'      => $request->power[$key],
-                    'dose_id'       => $request->dose[$key],
-                    'qty'           => $request->qty[$key],
-                ]);
-            }else{
-                $check->update([
-                    'serial'        => $request->serial,
-                    'user_id'       => $pat->id,
-                    'complain_id'   => $complain->id,
-                    'medicine_id'   => $item,
-                    'power_id'      => $request->power[$key],
-                    'dose_id'       => $request->dose[$key],
-                    'qty'           => $request->qty[$key],
-                ]);
+            $complain = Complain::query()->where('id',$id)->latest()->first();
+            $comp = $complain->update([
+                'details'    => $com,
+                'total' => $total,
+                'paid' => $paid,
+                'discount' => $request->discount ?? 0,
+                'dues' => $dues,
+            ]);
+
+
+            $pay =  PatientPayment::query()->create([
+                'patient_id'=>$pat->id,
+                'complain_id'=>$complain->id,
+                'total' => $request->new,
+                'paid' => $request->paid,
+                'discount' => $request->discount ?? 0,
+                'dues' => $request->new - $request->paid,
+                'serial' => $pat->serial,
+            ]);
+            foreach ($request->medicine as $key => $item) {
+                $check = PurposeMedicine::query()->where('complain_id',$id)->where('medicine_id',$item)->latest()->first();
+                $checkQty = $check->qty ?? 0;
+                $qty = $request->qty[$key] - $checkQty;
+                if ($check == null){
+                    dd(1);
+                    PurposeMedicine::query()->create([
+                        'serial'        => $request->serial,
+                        'user_id'       => $pat->id,
+                        'complain_id'   => $complain->id,
+                        'medicine_id'   => $item,
+                        'power_id'      => $request->power[$key],
+                        'dose_id'       => $request->dose[$key],
+                        'qty'           => $request->qty[$key],
+                    ]);
+                }else{
+
+                    $check->update([
+                        'serial'        => $request->serial,
+                        'user_id'       => $pat->id,
+                        'complain_id'   => $complain->id,
+                        'medicine_id'   => $item,
+                        'power_id'      => $request->power[$key],
+                        'dose_id'       => $request->dose[$key],
+                        'qty'           => $request->qty[$key],
+                    ]);
+                }
+
+                $med = Medicine::query()->findOrFail($item);
+                $med->update(['qty'=>$med->qty - $qty]);
             }
 
-            $med = Medicine::query()->findOrFail($item);
-            $med->update(['qty'=>$med->qty - $request->qty[$key]]);
+            DB::commit();
+            return redirect(route('home'))->with('success', 'Data Updated');
+
+        }catch (\Throwable $e){
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Patient Medicine Update Error');
+
         }
 
-        return redirect(route('home'))->with('success', 'Data Updated');
     }
 
     public function destroy($id)
@@ -253,7 +276,7 @@ class PatientController extends Controller
                     <td>'.$pat->address.'</td>
                     <td data-id="'.$pat->id.'" class="complain">'.$pat->last_complain.'</td>
                     <td data-id="'.$pat->id.'" class="bg-primary-light">'.$pat->total.'</td>
-                    <td data-id="'.$pat->id.'" class="bg-info-light">'.$pat->paid.'</td>
+                    <td data-id="'.$pat->id.'" class="bg-info-light">'.$pat->paid .'<small>('. $pat->discount.')</small></td>
                     <td data-id="'.$pat->id.'" class="bg-danger-light">'.$pat->dues.'</td>
                     <td class="text - end">
                         <div class="table - action">
@@ -280,7 +303,6 @@ class PatientController extends Controller
     }
 
     public function complain(Request $request){
-
         try {
             DB::beginTransaction();
             $pat = Patient::query()->find($request->id);
@@ -298,6 +320,11 @@ class PatientController extends Controller
                 'patient_id' => $request->id,
                 'details'    => $com,
             ]);
+            $complain = Complain::query()->create(
+                [
+                    'details' => $com,
+                    'patient_id' => $pat->id,
+                ]);
 
             $pay = PatientPayment::query()
                 ->create(
@@ -344,7 +371,12 @@ class PatientController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-       return view('patient-profile',compact('patient','complain'));
+        $payments = PatientPayment::query()
+            ->where('patient_id',$id)
+            ->orderByDesc('created_at')
+            ->get();
+
+       return view('patient-profile',compact('patient','complain','payments'));
     }
 
     public function dateSearch(Request $request){
@@ -475,16 +507,21 @@ class PatientController extends Controller
             $complain = Complain::query()->create([
                 'patient_id'    => $patientId,
                 'details'       => $com,
+                'total'     =>  $request->today_bill,
+                'paid'      =>  $request->paid,
+                'discount'  =>  $discount,
+                'dues'      =>  $request->today_bill - $request->paid,
             ]);
             $pay = PatientPayment::query()
                 ->create(
                     [
                         'serial'    =>  $request->serial,
+                        'complain_id'    =>  $complain->id,
                         'patient_id'=>  $pat->id,
-                        'total'     =>  $total,
-                        'paid'      =>  $paid,
+                        'total'     =>  $request->today_bill,
+                        'paid'      =>  $request->paid,
                         'discount'  =>  $discount,
-                        'dues'      =>  $dues,
+                        'dues'      =>  $request->today_bill - $request->paid,
                     ]);
             foreach ($request->medicine as $key => $item) {
                 PurposeMedicine::query()->create([

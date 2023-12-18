@@ -77,6 +77,16 @@ if (!function_exists('todayPatient')){
     }
 }
 
+
+if (!function_exists('todaySale')){
+    function todaySale(){
+        return \App\Models\PatientPayment::query()
+            ->whereDate('created_at', '=', date('Y-m-d'))
+            ->get();
+    }
+
+}
+
 if (!function_exists('peckSize')){
     function peckSize(){
         return \App\Models\PeackSize::query()->get();

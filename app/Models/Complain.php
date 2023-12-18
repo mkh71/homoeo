@@ -13,6 +13,10 @@ class Complain extends Model
         'patient_id',
         'details',
         'duration',
+        'total',
+        'paid',
+        'discount',
+        'dues',
     ];
     public function patient(){
         return $this->belongsTo(Patient::class);

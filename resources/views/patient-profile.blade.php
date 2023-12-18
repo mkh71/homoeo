@@ -5,7 +5,7 @@
             <div class="card dash-card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12 col-lg-6">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar1">
                                     <div class="circle-graph1" data-percent="75">
@@ -31,7 +31,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-6">
+                        <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar2">
                                     <div class="circle-graph2" data-percent="65">
@@ -55,6 +55,34 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-12 col-lg-4">
+                            <div class="dash-widget dct-border-rht">
+                                <div class="circle-bar circle-bar1">
+                                    <div class="circle-graph1" data-percent="75">
+                                        <img src="{{asset('assets')}}/img/icons/icon-01.png" class="img-fluid"
+                                             alt="patient">
+                                    </div>
+                                </div>
+                                <div class="dash-widget-info">
+                                    <div class="text-info">
+                                        <td>Bill : </td>
+                                        <span class="text-center">{{$patient->sum('total')}}</span>
+                                    </div>
+                                    <div class="text-success">
+                                        <span>Paid : </span>
+                                        <span class="text-center">{{$patient->sum('paid')}}</span>
+                                    </div>
+                                    <div class="text-danger">
+                                        <span>Dues : </span>
+                                        <span class="text-center">{{$patient->sum('dues')}}</span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -76,6 +104,9 @@
                                         <th>#</th>
                                         <th>purpose</th>
                                         <th>Medicine (Power) : Does :PackSize :Qty</th>
+                                        <th>Total</th>
+                                        <th>Paid</th>
+                                        <th>Dues</th>
                                         <th>Date</th>
                                     </tr>
                                     </thead>
@@ -97,6 +128,9 @@
                                                     </table>
                                                 @endforeach
                                             </td>
+                                            <td>{{$com->total}}</td>
+                                            <td>{{$com->paid}}</td>
+                                            <td>{{$com->dues}}</td>
                                             <td>{{ date("d F, Y", strtotime($com->created_at))}} <br> ({{ $com->updated_at->diffForHumans() }}) </td>
                                         </tr>
                                     @empty

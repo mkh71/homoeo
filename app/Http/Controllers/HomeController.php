@@ -64,8 +64,9 @@ class HomeController extends Controller
     {
         $med = Medicine::query()->findOrFail($request->id);
         $price = $med->mrp_price;
+        $qty = $med->qty;
 
-        return response()->json(['price'=>$price]);
+        return response()->json(['price'=>$price,'qty'=>$qty]);
     }
 
 

@@ -126,11 +126,11 @@
                 <div class="tab-content">
 
                     <!-- Today Appointment Tab -->
-                    <div class="tab-pane @if(isset($id)) active @endif" id="today-appointments">
+                    <div class="tab-pane @if(isset($complain->id)) active @endif" id="today-appointments">
                         <div class="card card-table mb-0">
                             <div class="card-body">
-                                @if(isset($id))
-                                    {!! Form::open(['route'=>['patients.update',$id], 'method'=>'post']) !!}
+                                @if(isset($complain->id))
+                                    {!! Form::open(['route'=>['patients.update',$complain->id], 'method'=>'post']) !!}
                                     @method('PATCH')
                                 @else
                                     {!! Form::open(['route'=>'patients.store', 'method'=>'post']) !!}
@@ -229,7 +229,7 @@
                                                 <b>Cancel</b>
                                             </div>
                                         </div>
-                                        @forelse($data->medicine as $info)
+                                        @forelse($complain->medicines as $info)
                                                 <div class="row rowId{{$info->id}} mb-2">
                                             <div class="col-md-2">
                                                 <select name="medicine[]" class="form-control"
@@ -252,13 +252,13 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                                <input id="mprice{{$info->id}}" onkeyup="sumTotal({{$info->id}})" type="number" class="form-control" value="{{$info->price}}">
+                                                <input id="mprice{{$info->id}}" type="number" class="form-control" value="{{@$info->medicine->mrp_price}}">
                                             </div>
                                             <div class="col-md-1">
                                                 <input id="qty{{$info->id}}" type="text" name="qty[]" onkeyup="sumTotal({{$info->id}})" value="{{$info->qty}}"class="form-control">
                                             </div>
                                             <div class="col-md-2">
-                                                <input id="subTotal" type="text" value="{{$info->price * $info->qty}}" class="form-control" disabled>
+                                                <input id="totalPrice{{$info->id}}" type="text" name="price" value="{{@$info->medicine->mrp_price * $info->qty}}" class="form-control" disabled>
                                             </div>
                                             <div class="col-md-1">
                                                 <a class="btn btn-danger"  onclick="deleteRow({{$info->id}})"> <i class="fa feather-trash "></i> </a>
@@ -358,7 +358,6 @@
                 data: {id: id, _token: "{{csrf_token()}}"},
                 success: function (res) {
                     $('#mprice'+value).val(res.price)
-
                 }
             })
         }
@@ -390,10 +389,10 @@
             $("#totalBillNow").val(prev) ;
         }
         function sumTotal(ref) {
-
             var price = $('#mprice'+ref).val();
             var qty = $('#qty'+ref).val();
             var total = price * qty;
+
             $('#totalPrice'+ref).val(total);
             calculateTotal();
 
