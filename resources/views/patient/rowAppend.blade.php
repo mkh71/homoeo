@@ -30,12 +30,10 @@
                 </select>
             </div>
 
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <input id="mprice{{$info}}"  type="number" class="form-control" value="" disabled>
             </div>
-            <div class="col-md-1">
-                <input id="qtyCheck{{$info}}" class="form-control" value="">
-            </div>
+
             <div class="col-md-1">
                 <input id="qty{{$info}}" onkeyup="sumTotal({{$info}})" type="text" name="qty[]" class="form-control" value="" placeholder="Quantity">
             </div>

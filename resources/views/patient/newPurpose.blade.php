@@ -137,18 +137,24 @@
                                     </div>
 
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Date</label>
                                             <input type="date" class="form-control"  name="date" value="{{\Carbon\Carbon::now()->toDateString()}}">
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Address</label>
                                             <input type="text" class="form-control"
                                                    name="address" value="{{$patient->address ?? ''}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Pre Qty</label>
+                                            <input id="qtyCheck" class="form-control" value="" >
                                         </div>
                                     </div>
                                 </div>
@@ -181,12 +187,10 @@
                                             <div class="col-md-2">
                                                 <b>Does</b>
                                             </div>
-                                            <div class="col-md-1">
+                                            <div class="col-md-2">
                                                 <b>Price</b>
                                             </div>
-                                            <div class="col-md-1">
-                                                <b>Pr-Qty</b>
-                                            </div>
+
                                             <div class="col-md-1">
                                                 <b>Qty</b>
                                             </div>
@@ -307,7 +311,7 @@
                 data: {id: id, _token: "{{csrf_token()}}"},
                 success: function (res) {
                     $('#mprice'+value).val(res.price)
-                    $('#qtyCheck'+value).val(res.qty)
+                    $('#qtyCheck').val(res.qty)
                     alert(response);
                 }
             })

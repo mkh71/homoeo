@@ -48,10 +48,7 @@
                                         <span>Address : </span>
                                         <span class="text-center">{{$patient->address}}</span>
                                     </div>
-                                    <div>
-                                        <span>Dues : </span>
-                                        <span class="text-center">{{$patient->dues}}</span>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -67,15 +64,15 @@
                                 <div class="dash-widget-info">
                                     <div class="text-info">
                                         <td>Bill : </td>
-                                        <span class="text-center">{{$patient->sum('total')}}</span>
+                                        <span class="text-center">{{$payments->sum('total')}}</span>
                                     </div>
                                     <div class="text-success">
                                         <span>Paid : </span>
-                                        <span class="text-center">{{$patient->sum('paid')}}</span>
+                                        <span class="text-center">{{$payments->sum('paid')}}</span>
                                     </div>
                                     <div class="text-danger">
                                         <span>Dues : </span>
-                                        <span class="text-center">{{$patient->sum('dues')}}</span>
+                                        <span class="text-center">{{$payments->sum('dues')}}</span>
                                     </div>
 
                                 </div>
