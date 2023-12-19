@@ -130,9 +130,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Mobile Number</label>
+                                            <label>Address</label>
                                             <input type="text" class="form-control"
-                                                   name="mobile" value="{{$patient->mobile ?? ''}}">
+                                                   name="address" value="{{$patient->address ?? ''}}">
                                         </div>
                                     </div>
 
@@ -146,9 +146,9 @@
 
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Address</label>
+                                            <label>Mobile Number</label>
                                             <input type="text" class="form-control"
-                                                   name="address" value="{{$patient->address ?? ''}}">
+                                                   name="mobile" value="{{$patient->mobile ?? ''}}">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
