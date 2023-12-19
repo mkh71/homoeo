@@ -7,7 +7,6 @@
                     <div class="row">
 
 
-
                         <div class="col-md-12 col-lg-4">
                             <div class="dash-widget dct-border-rht">
                                 <div class="circle-bar circle-bar1">
@@ -258,7 +257,7 @@
                                                 <input id="qty{{$info->id}}" type="text" name="qty[]" onkeyup="sumTotal({{$info->id}})" value="{{$info->qty}}"class="form-control">
                                             </div>
                                             <div class="col-md-2">
-                                                <input id="totalPrice{{$info->id}}" type="text" name="price" value="{{@$info->medicine->mrp_price * $info->qty}}" class="form-control" disabled>
+                                                <input id="totalPrice{{$info->id}}" type="text"  value="{{@$info->medicine->mrp_price * $info->qty}}" class="form-control" disabled>
                                             </div>
                                             <div class="col-md-1">
                                                 <a class="btn btn-danger"  onclick="deleteRow({{$info->id}})"> <i class="fa feather-trash "></i> </a>

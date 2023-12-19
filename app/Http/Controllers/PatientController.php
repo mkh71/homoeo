@@ -171,6 +171,7 @@ class PatientController extends Controller
                 'last_complain' => $com,
                 'date' => $request->date,
             ]);
+            dd($pat);
             $complain = Complain::query()->where('id',$id)->latest()->first();
             $comp = $complain->update([
                 'details'    => $com,
