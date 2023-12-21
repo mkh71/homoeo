@@ -63,22 +63,21 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <div class="text-info">
-                                        <td>Bill : </td>
+                                        <td>Total Bill : </td>
                                         <span class="text-center">{{$payments->sum('total')}}</span>
                                     </div>
                                     <div class="text-success">
-                                        <span>Paid : </span>
+                                        <span>Total Paid : </span>
                                         <span class="text-center">{{$payments->sum('paid')}}</span>
                                     </div>
                                     <div class="text-success">
-                                        <span>Discount : </span>
+                                        <span>Total Discount : </span>
                                         <span class="text-center">{{$payments->sum('discount')}}</span>
                                     </div>
                                     <div class="text-danger">
-                                        <span>Dues : </span>
+                                        <span>Total Dues : </span>
                                         <span class="text-center">{{$payments->sum('total') - $payments->sum('paid') - $payments->sum('discount')}}</span>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
