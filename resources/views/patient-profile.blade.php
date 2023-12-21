@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="text-success">
                                         <span>Paid : </span>
-                                        <span class="text-center">{{$payments->sum('paid')}}</span>
+                                        <span class="text-center">{{$payments->sum('paid')}} {{$payments->sum('discount')}}</span>
                                     </div>
                                     <div class="text-danger">
                                         <span>Dues : </span>
