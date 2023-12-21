@@ -70,7 +70,7 @@
                                         <span>Total Paid : </span>
                                         <span class="text-center">{{$payments->sum('paid')}}</span>
                                     </div>
-                                    <div class="text-warning">
+                                    <div class="text-primary">
                                         <span>Total Discount : </span>
                                         <span class="text-center">{{$payments->sum('discount')}}</span>
                                     </div>
