@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="text-danger">
                                         <span>Dues : </span>
-                                        <span class="text-center">{{$payments->sum('dues')}}</span>
+                                        <span class="text-center">{{$payments->sum('total') - $payments->sum('paid') - $payments->sum('discount')}}</span>
                                     </div>
 
                                 </div>
@@ -126,7 +126,7 @@
                                                 @endforeach
                                             </td>
                                             <td>{{$com->total}}</td>
-                                            <td>{{$com->paid}}</td>
+                                            <td>{{$com->paid}} <small>({{$com->discount ??0 }})</small></td>
                                             <td>{{$com->dues}}</td>
                                             <td>{{ date("d F, Y", strtotime($com->created_at))}} <br> ({{ $com->updated_at->diffForHumans() }}) </td>
                                         </tr>

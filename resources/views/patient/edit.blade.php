@@ -32,7 +32,7 @@
                                 </div>
                                 <div class="dash-widget-info">
                                     <h6>Total Payment</h6>
-                                    <h3>{{$data->paid ?? 0}}</h3>
+                                    <h3>{{$data->paid ?? 0}} <small>({{$data->discount ?? 0}})</small></h3>
 {{--                                    <p class="text-muted">{{now()->format('Y M d')}}</p>--}}
                                 </div>
                             </div>
