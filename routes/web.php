@@ -6,6 +6,7 @@ use App\Http\Controllers\PowerController;
 use App\Http\Controllers\DoseController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\PeackSizeController;
+use App\Http\Controllers\ExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +49,7 @@ Route::namespace('App\Http\Controllers')->group(function () {
     Route::get('patientNewPur/{patientId}', 'PatientController@patientNewPur')->name('patients.new');
     Route::post('newPurposeStore/{patientId}', 'PatientController@newPurposeStore')->name('newPurposeStore');
 
-
+    Route::resource('expenses','ExpenseController');
     Route::resource('power','PowerController');
     Route::resource('dose','DoseController');
     Route::resource('medicine','MedicineController');

@@ -118,6 +118,13 @@
                                         </a>
                                     </li>
 
+                                    <li class="{{request()->is('expenses*') ? 'active' : ''}}">
+                                        <a href="{{route('expenses.index')}}">
+                                            <i class="fas feather-check-circle"></i>
+                                            <span>Expense</span>
+                                        </a>
+                                    </li>
+
 
 
                                     <li>

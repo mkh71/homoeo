@@ -77,6 +77,14 @@ if (!function_exists('todayPatient')){
     }
 }
 
+if (!function_exists('todayExpense')){
+    function todayExpense(){
+        return \App\Models\Expense::query()
+            ->whereDate('created_at', '=', date('Y-m-d'))
+            ->get();
+    }
+}
+
 
 if (!function_exists('todaySale')){
     function todaySale(){
