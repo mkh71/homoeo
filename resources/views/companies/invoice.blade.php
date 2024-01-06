@@ -119,7 +119,7 @@
                                     <select name="company_id" id="" class="form-control" required>
                                         <option selected disabled>Select Company</option>
                                         @forelse(companies() as $info)
-                                            <option value="{{$info->id}}" {{isset($invoice) && $info->id == $invoice->id ? 'selected' : ''}}>{{$info->name}}</option>
+                                            <option value="{{$info->id}}" {{isset($invoice) && $info->id == $invoice->company_id ? 'selected' : ''}}>{{$info->name}}</option>
                                         @empty
                                         @endforelse
                                     </select>

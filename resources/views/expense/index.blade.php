@@ -87,7 +87,7 @@
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Date <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" required name="date" value="{{$expense->date ?? ''}}">
+                                    <input type="date" class="form-control" required name="date"  value="{{isset($expense) ? $expense->date : old('date', \Carbon\Carbon::now()->toDateString()) }}">
                                 </div>
                             </div>
 
