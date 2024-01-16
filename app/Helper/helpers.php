@@ -121,3 +121,16 @@ if (!function_exists('serial')){
         return $serial;
     }
 }
+
+
+
+if (!function_exists('lastMonthExpense')){
+    function lastMonthExpense(){
+        $startDate = Carbon\Carbon::now()->startOfMonth();
+        $endDate = Carbon\Carbon::now()->endOfMonth();
+
+        $total = \App\Models\Expense::whereBetween('created_at', [$startDate, $endDate])->get()->sum('total');
+        return $total;
+    }
+}
+

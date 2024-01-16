@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="dash-widget-info">
                                         <h6>This Month Expense</h6>
-                                        <!-- <h3>{{$expenses->sum('total')}}</h3> -->
+                                        <h3>{{lastMonthExpense()}}</h3>
                                         {{--                                    <p class="text-muted">{{now()->format('Y M d')}}</p>--}}
                                     </div>
                                 </div>
