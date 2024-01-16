@@ -410,13 +410,16 @@ class PatientController extends Controller
     }
 
     public function dateToSearch(Request $request){
-        $patient = Patient::query()
-            ->latest()
-            ->whereBetween('created_at', [$request->from, $request->to])
+
+        $patient = Patient::where('created_at', '>', $request->from . ' 00:00:00')
+            ->where('created_at', '<', $request->to . ' 23:59:59')
+            ->get();
+        $payment = PatientPayment::where('created_at', '>', $request->from . ' 00:00:00')
+            ->where('created_at', '<', $request->to . ' 23:59:59')
             ->get();
         $totalPatient   = $patient->count();
-        $totalBill      = $patient->sum('total');
-        $totalPayment   = $patient->sum('paid');
+        $totalBill      = $payment->sum('total');
+        $totalPayment   = $payment->sum('paid');
         $totalDues      = $totalBill - $totalPayment;
         $doses          = Dose::get();
         $powers         = Power::get();
